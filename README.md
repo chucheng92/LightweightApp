@@ -1,15 +1,11 @@
 /************************************
-<p>Source Code</p>
-
 WeChat Account Application！
 
 /**********************************************
- *	@author kotori
- *	Study java from now !
- *	Record the learning progress every day!  
+ * 一个Java开发的微信公众号
  **********************************************
  *	Chat with me !
- *	http://blog.csdn.net/plu_mik
+ *	http://www.tinymood.com
  *	qq: 932191671
- *	Email: kotori92@vip.qq.com    
+ *	Email: 932191671@qq.com    
  *********************************************/
