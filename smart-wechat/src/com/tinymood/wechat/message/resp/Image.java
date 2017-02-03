@@ -1,13 +1,13 @@
-package org.taoran.course.message.resp;
+package com.tinymood.wechat.message.resp;
 
 /**
- * Í¼Æ¬Àà
- * 
- * @author ßØßØ
- * @date 2015-4-6
+ * @author nothankyou
+ * @date 2017-02-03 14:11:36
+ *
+ * å›¾ç‰‡å®žä½“
  */
 public class Image {
-	// Ã½ÌåÎÄ¼þid
+	// åª’ä½“æ–‡ä»¶id
 	private String MediaId;
 
 	public String getMediaId() {

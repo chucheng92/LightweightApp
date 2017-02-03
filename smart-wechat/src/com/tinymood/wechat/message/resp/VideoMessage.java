@@ -1,12 +1,13 @@
-package org.taoran.course.message.resp;
+package com.tinymood.wechat.message.resp;
 
 /**
- * 响应消息 -> 视频消息消息
- * 
- * @author 哓哓
- * @date 2015-4-6
+ * @author nothankyou
+ * @date 2017-02-03 14:22:08
+ *
+ * 瑙嗛鍥炲娑堟伅
  */
-public class VideoMessage extends BaseMessage {
+public class VideoMessage extends BaseRespMessage {
+	// 瑙嗛鍐呭
 	private Video Video;
 
 	public Video getVideo() {

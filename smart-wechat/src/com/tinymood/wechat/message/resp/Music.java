@@ -1,19 +1,20 @@
-package org.taoran.course.message.resp;
+package com.tinymood.wechat.message.resp;
 
 /**
- * ÒôÀÖÀà
- * 
- * @author ßØßØ
- * @date 2015-4-6
+ * @author nothankyou
+ * @date 2017-02-03 14:14:02
+ *
+ * éŸ³ä¹å®ä½“
+ *
  */
 public class Music {
-	// ÒôÀÖÃû
+	// æ ‡é¢˜
 	private String Title;
-	// ÃèÊö
+	// æè¿°
 	private String Description;
-	// ÒôÀÖÁ´½Ó
+	// éŸ³ä¹æ–‡ä»¶é“¾æ¥
 	private String MusicUrl;
-	// ¸ßÖÊÁ¿ÒôÀÖÁ´½Ó£¬wifi»·¾³ÓÅÏÈÊ¹ÓÃ¸ÃÁ´½Ó²¥·Å
+	// éŸ³ä¹æ–‡ä»¶é“¾æ¥ï¼ˆé«˜å“è´¨ï¼‰
 	private String HQMusicUrl;
 
 	public String getTitle() {

@@ -1,23 +1,23 @@
-package org.taoran.course.message.req;
+package com.tinymood.wechat.message.resp;
 
 /**
- * ÏûÏ¢»ùÀà(ÆÕÍ¨ÓÃ»§ -> ¹«ÖÚºÅ)
- * 
- * @author ßØßØ
- * @date 2015-4-6
+ * @author nothankyou
+ * @date 2017-02-03 14:07:56
  *
+ * åŸºç¡€å›å¤æ¶ˆæ¯ç±»
  */
-public class BaseMessage {
-	// ¿ª·¢ÕßÎ¢ĞÅºÅ
+public class BaseRespMessage {
+	// æ¥æ”¶æ–¹
 	private String ToUserName;
-	// ·¢ËÍ·½£¨ÓÃ»§£©ÕËºÅ OpenId
+	// å‘é€æ–¹
 	private String FromUserName;
-	// ÏûÏ¢´´½¨Ê±¼ä
+	// åˆ›å»ºæ—¶é—´
 	private long CreateTime;
-	// ÏûÏ¢ÀàĞÍ(text/image/location/link/voice)
+	// æ¶ˆæ¯ç±»å‹(text/image/music/voice/video)
+    // æ³¨æ„ï¼švoiceå’Œvideoæ¶ˆæ¯åªèƒ½åœ¨ç¼–è¾‘æ¨¡å¼ä¸‹ä½¿ç”¨
 	private String MsgType;
-	// ÏûÏ¢id 64Î»ÕûĞÍ
-	private long MsgId;
+	// æ ‡è¯†ç 
+	private int FuncFlag;
 
 	public String getToUserName() {
 		return ToUserName;
@@ -51,12 +51,12 @@ public class BaseMessage {
 		MsgType = msgType;
 	}
 
-	public long getMsgId() {
-		return MsgId;
+	public int getFuncFlag() {
+		return FuncFlag;
 	}
 
-	public void setMsgId(long msgId) {
-		MsgId = msgId;
+	public void setFuncFlag(int funcFlag) {
+		FuncFlag = funcFlag;
 	}
 
 }

@@ -1,13 +1,14 @@
-package org.taoran.course.message.resp;
+package com.tinymood.wechat.message.resp;
 
 /**
- * 响应消息 -> 音乐消息
- * 
- * @author 哓哓
- * @date 2015-4-6
+ * @author nothankyou
+ * @date 2017-02-03 14:16:36
+ *
+ * 鍥剧墖鍥炲娑堟伅
+ *
  */
-public class MusicMessage extends BaseMessage {
-	//音乐
+public class MusicMessage extends BaseRespMessage {
+	// 闊充箰鍐呭
 	private Music Music;
 
 	public Music getMusic() {

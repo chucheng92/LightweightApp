@@ -1,13 +1,12 @@
-package org.taoran.course.message.req;
+package com.tinymood.wechat.message.req;
 
 /**
- * Í¼Æ¬ÏûÏ¢
- * 
- * @author ßØßØ
- * @date 2015-4-6
+ * @author nothankyou
+ * @date 2017-02-03 14:01:37
+ *
  */
-public class ImageMessage extends BaseMessage {
-	//Í¼Æ¬Á´½Ó
+public class ImageMessage extends BaseReqMessage {
+	// å›¾ç‰‡url
 	private String PicUrl;
 
 	public String getPicUrl() {

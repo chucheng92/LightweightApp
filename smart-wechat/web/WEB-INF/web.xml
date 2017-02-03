@@ -6,13 +6,13 @@
     <servlet>
         <servlet-name>CoreServlet</servlet-name>
         <servlet-class>
-            org.taoran.course.servlet.CoreServlet
+            com.tinymood.wechat.servlet.CoreServlet
         </servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>CoreServlet</servlet-name>
-        <url-pattern>/CoreServlet</url-pattern>
+        <url-pattern>/wechat.do</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>

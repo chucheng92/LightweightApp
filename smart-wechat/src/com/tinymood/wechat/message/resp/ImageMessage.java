@@ -1,12 +1,13 @@
-package org.taoran.course.message.resp;
+package com.tinymood.wechat.message.resp;
 
 /**
- * 响应消息 -> 图片消息
- * 
- * @author 哓哓
- * @date 2015-4-7
+ * @author nothankyou
+ * @date 2017-02-03 14:12:20
+ *
+ * 鍥剧墖鍥炲娑堟伅
  */
-public class ImageMessage extends BaseMessage {
+public class ImageMessage extends BaseRespMessage {
+	// 鍥剧墖鍐呭
 	private Image Image;
 
 	public Image getImage() {

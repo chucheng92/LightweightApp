@@ -1,21 +1,21 @@
-package org.taoran.course.util;
+package com.tinymood.wechat.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 /**
- * ÇëÇóĞ£Ñé¹¤¾ßÀà
- * 
- * @author ßØßØ
- * @date 2015-4-6
+ * è¯·æ±‚æ£€éªŒå·¥å…·ç±»
  *
+ * @author nothankyou
+ * @date 2017-1-6
  */
 public class SignUtil {
-	private static String token = "lemon_time1921";
+    // ä¸æ¥å£é…ç½®ä¿¡æ¯ä¸­çš„tokenè¦ä¸€è‡´
+	private static String token = "smart-wechat";
 
 	/**
-	 * ÑéÖ¤Ç©Ãû
+	 * éªŒè¯ç­¾å
 	 * 
 	 * @param signature
 	 * @param timestamp
@@ -25,36 +25,37 @@ public class SignUtil {
 	public static boolean checkSignature(String signature, String timestamp,
 			String nonce) {
 		String[] arr = new String[] { token, timestamp, nonce };
-		// Èı¸ö²ÎÊıtoken,timestamp,nonce×ÖµäĞòÅÅĞò
+		// å°†token,timestamp,nonceå­—å…¸æ’åº
 		Arrays.sort(arr);
-		StringBuilder content = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < arr.length; ++i) {
-			content.append(arr[i]);
+			sb.append(arr[i]);
 		}
+
 		MessageDigest md = null;
-		String tmpStr = null;
+		String encryptionStr = null;
 
 		try {
 			md = MessageDigest.getInstance("SHA-1");
-			// ½«Èı¸ö²ÎÊı×Ö·û´®Æ´½Ó³ÉÒ»¸ö×Ö·û´®½øĞĞsha1¼ÓÃÜ
-			byte[] digest = md.digest(content.toString().getBytes());
-			tmpStr = byteToStr(digest);
+			// å°†ä¸‰ä¸ªå­—ç¬¦ä¸²æ‹¼æ¥æˆä¸€ä¸ªå­—ç¬¦ä¸²è¿›è¡Œsha-1åŠ å¯†
+			byte[] digest = md.digest(sb.toString().getBytes());
+			encryptionStr = byteArrayToStr(digest);
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
 
-		content = null;
-		// ½«sha1¼ÓÃÜºóµÄ×Ö·û´®¿ÉÓësignature¶Ô±È£¬±êÊ¶¸ÃÇëÇóÀ´Ô´ÓÚÎ¢ĞÅ
-		return tmpStr != null ? tmpStr.equals(signature.toUpperCase()) : false;
+		sb = null;
+		// å°†sha-1åŠ å¯†åçš„å­—ç¬¦ä¸²ä¸signatureå¯¹æ¯”ï¼Œè¡¨ç¤ºè¯·æ±‚æ¥æºäºå¾®ä¿¡
+		return encryptionStr != null ? encryptionStr.equals(signature.toUpperCase()) : false;
 	}
 
 	/**
-	 * ×Ö½ÚÊı×é×ªÊ®Áù½øÖÆ×Ö·û´®
+	 * å°†å­—èŠ‚æ•°ç»„è½¬åŒ–ä¸ºåå…­è¿›åˆ¶å­—ç¬¦ä¸²
 	 * 
 	 * @param byteArray
 	 * @return
 	 */
-	private static String byteToStr(byte[] byteArray) {
+	private static String byteArrayToStr(byte[] byteArray) {
 		String strDigest = "";
 		for (int i = 0; i < byteArray.length; ++i) {
 			strDigest += byteToHexStr(byteArray[i]);
@@ -63,8 +64,8 @@ public class SignUtil {
 	}
 
 	/**
-	 * ×Ö½Ú×ªÎªÊ®Áù½øÖÆ×Ö·û´®
-	 * 
+     * å°†å­—èŠ‚è½¬åŒ–ä¸ºåå…­è¿›åˆ¶å­—ç¬¦ä¸²
+     *
 	 * @param b
 	 * @return
 	 */

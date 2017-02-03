@@ -1,4 +1,4 @@
-package org.taoran.course.service;
+package com.tinymood.wechat.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,8 +7,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.taoran.course.message.resp.Article;
-import org.taoran.course.message.resp.Music;
+import com.tinymood.wechat.message.resp.Article;
+import com.tinymood.wechat.message.resp.Music;
 import org.taoran.course.message.resp.MusicMessage;
 import org.taoran.course.message.resp.NewsMessage;
 import org.taoran.course.message.resp.TextMessage;
@@ -20,55 +20,55 @@ import org.taoran.course.util.MySQLUtil;
 import org.taoran.course.util.Tools;
 
 /**
- * ºËÐÄ·þÎñÀà
+ * ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½
  * 
- * @author ßØßØ
+ * @author ï¿½ï¿½ï¿½ï¿½
  * @date 2015-4-9
  */
 public class CoreService {
 	/**
-	 * ´¦ÀíÎ¢ÐÅ·¢À´µÄÇëÇó
+	 * ï¿½ï¿½ï¿½ï¿½Î¢ï¿½Å·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param request
 	 * @return
 	 */
 	public static String processRequest(HttpServletRequest request) {
-		// ·µ»Ø¸øÎ¢ÐÅ·þÎñÆ÷µÄxmlÏûÏ¢
+		// ï¿½ï¿½ï¿½Ø¸ï¿½Î¢ï¿½Å·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xmlï¿½ï¿½Ï¢
 		String respXml = null;
-		// ÎÄ±¾ÏûÏ¢ÄÚÈÝ
+		// ï¿½Ä±ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
 		String respContent = null;
 		try {
-			// xmlÇëÇó½âÎö
+			// xmlï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			Map<String, String> requestMap = MessageUtil.parseXml(request);
-			// ·¢ËÍ·½ÕÊºÅ£¨open_id£©
+			// ï¿½ï¿½ï¿½Í·ï¿½ï¿½ÊºÅ£ï¿½open_idï¿½ï¿½
 			String fromUserName = requestMap.get("FromUserName");
-			// ¹«ÖÚÕÊºÅ
+			// ï¿½ï¿½ï¿½ï¿½ï¿½Êºï¿½
 			String toUserName = requestMap.get("ToUserName");
-			// ÏûÏ¢ÀàÐÍ
+			// ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
 			String msgType = requestMap.get("MsgType");
-			// ´´½¨Ê±¼ä
+			// ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 			String createTime = requestMap.get("CreateTime");
 
-			// »Ø¸´ÎÄ±¾ÏûÏ¢
+			// ï¿½Ø¸ï¿½ï¿½Ä±ï¿½ï¿½ï¿½Ï¢
 			TextMessage textMessage = new TextMessage();
 			textMessage.setToUserName(fromUserName);
 			textMessage.setFromUserName(toUserName);
 			textMessage.setCreateTime(new Date().getTime());
 			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
 
-			// ÎÄ±¾ÏûÏ¢
+			// ï¿½Ä±ï¿½ï¿½ï¿½Ï¢
 			if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
-				// ÎÄ±¾ÏûÏ¢ÄÚÈÝ
+				// ï¿½Ä±ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
 				String content = requestMap.get("Content").trim();
 
-				// ¹¦ÄÜ1 --> ÖÇÄÜ·­Òë
+				// ï¿½ï¿½ï¿½ï¿½1 --> ï¿½ï¿½ï¿½Ü·ï¿½ï¿½ï¿½
 				if (content.equals("1")) {
 					respContent = Tools.getTranslateUsage();
 				}
-				// ¹¦ÄÜ2-9
+				// ï¿½ï¿½ï¿½ï¿½2-9
 				else if (content.equals("2")) {
 					respContent = Tools.getMusicUsage();
-				} else if (content.equals("3") || content.equals("¸½½ü")) {
+				} else if (content.equals("3") || content.equals("ï¿½ï¿½ï¿½ï¿½")) {
 					respContent = Tools.getLocationUsage();
 				} else if (content.equals("4")) {
 					respContent = Tools.getChatUsage();
@@ -80,7 +80,7 @@ public class CoreService {
 					newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
 
 					Article article1 = new Article();
-					article1.setTitle("\ue335ÈËÁ³¼ì²âÊ¹ÓÃËµÃ÷");
+					article1.setTitle("\ue335ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½Ëµï¿½ï¿½");
 					article1.setDescription(Tools.getFaceUsage());
 					article1.setUrl("http://1.lemontime.sinaapp.com/face.jsp");
 					article1.setPicUrl("http://1.lemontime.sinaapp.com/images/facepp_inside.png");
@@ -95,13 +95,13 @@ public class CoreService {
 				} else if (content.equals("6")) {
 					respContent = Tools.getRecommendUsage();
 				} else if (content.equals("7")) {
-					respContent = "\ue32e»Ø¸´'Ð¦»°'»òÕß'½²¸ö½²»°'¡£";
+					respContent = "\ue32eï¿½Ø¸ï¿½'Ð¦ï¿½ï¿½'ï¿½ï¿½ï¿½ï¿½'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½'ï¿½ï¿½";
 				} else if (content.equals("8")) {
 					respContent = Tools.getYuluUsage();
 				} else if (content.equals("9")) {
 					respContent = Tools.getSuggestUsage();
-				} else if (content.equals("?") || content.equals("£¿")
-						|| content.equals("²Ëµ¥")) {
+				} else if (content.equals("?") || content.equals("ï¿½ï¿½")
+						|| content.equals("ï¿½Ëµï¿½")) {
 					respContent = Tools.defaultMenu;
 				} else if (content.equalsIgnoreCase("music")) {
 					respContent = Tools.recommendMusic();
@@ -114,19 +114,19 @@ public class CoreService {
 					List<Article> articleList = new ArrayList<Article>();
 
 					Article article1 = new Article();
-					article1.setTitle("Äã²»ÐèÒª»îÔÚ±ðÈËµÄÈÏ¿ÉÀï\n");
+					article1.setTitle("ï¿½ã²»ï¿½ï¿½Òªï¿½ï¿½ï¿½Ú±ï¿½ï¿½Ëµï¿½ï¿½Ï¿ï¿½ï¿½ï¿½\n");
 					article1.setDescription("");
 					article1.setPicUrl("http://1.lemontime.sinaapp.com/images/tinshuo.jpg");
 					article1.setUrl("http://mp.weixin.qq.com/s?__biz=MjM5MzE3NDE3Ng==&mid=204590224&idx=1&sn=90a6d7453c21ea6d3c4d5cc1e60f81fa&scene=1&from=singlemessage&isappinstalled=0#rd");
 
 					Article article2 = new Article();
-					article2.setTitle("ÒªÃ´±ðÏë£¬ÒªÃ´±ð·Å\n");
+					article2.setTitle("ÒªÃ´ï¿½ï¿½ï¿½ë£¬ÒªÃ´ï¿½ï¿½ï¿½\n");
 					article2.setDescription("");
 					article2.setPicUrl("http://1.lemontime.sinaapp.com/images/2.jpg");
 					article2.setUrl("http://mp.weixin.qq.com/s?__biz=MjM5MDMyMzg2MA==&mid=207775146&idx=1&sn=889555995ca6380ab1b1b839ad3e1ec3&scene=2&from=timeline&isappinstalled=0#rd");
 
 					Article article3 = new Article();
-					article3.setTitle("ÌýËµÄã»¹ÔÚ´òÌýÎÒµÄÏÂÂä\n");
+					article3.setTitle("ï¿½ï¿½Ëµï¿½ã»¹ï¿½Ú´ï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½\n");
 					article3.setDescription("");
 					article3.setPicUrl("http://1.lemontime.sinaapp.com/images/2.jpg");
 					article3.setUrl("http://mp.weixin.qq.com/s?__biz=MjM5MDMyMzg2MA==&mid=206602741&idx=7&sn=5ec66fd8f7ef8c728bc0ab4f0ca028eb&scene=1&key=2e5b2e802b7041cfb0e80de307be7ae446ddd501b4ef3a08507869759c5186bec413de73a5daa5c3a6f9ceba36acb8d5&ascene=1&uin=MTczNTcxMTc2MA%3D%3D&devicetype=Windows+8&version=61000721&pass_ticket=3EXOcuhxs40Wm%2BO1TrSTMxl6o%2BtwmgRIK%2BvCmFq%2B0YIfgL9wdNZzOLODMPLl5eqJ");
@@ -141,33 +141,33 @@ public class CoreService {
 					respContent = content;
 				}
 
-				// **********µã¸è·ÖÏí*************
-				// Èç¹ûÒÔ¡°¸èÇú¡±2¸ö×Ö¿ªÍ·
-				else if (content.startsWith("¸èÇú")) {
-					// ½«¸èÇú2¸ö×Ö¼°¸èÇúºóÃæµÄ+¡¢¿Õ¸ñ¡¢-µÈÌØÊâ·ûºÅÈ¥µô
-					String keyWord = content.replaceAll("^¸èÇú[\\+ ~!@#%^-_=]?",
+				// **********ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*************
+				// ï¿½ï¿½ï¿½ï¿½Ô¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½Ö¿ï¿½Í·
+				else if (content.startsWith("ï¿½ï¿½ï¿½ï¿½")) {
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½+ï¿½ï¿½ï¿½Õ¸ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½
+					String keyWord = content.replaceAll("^ï¿½ï¿½ï¿½ï¿½[\\+ ~!@#%^-_=]?",
 							"");
-					// Èç¹û¸èÇúÃû³ÆÎª¿Õ
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½
 					if ("".equals(keyWord)) {
 						respContent = Tools.getMusicUsage();
 					} else {
 						String[] kwArr = keyWord.split("@");
-						// ¸èÇúÃû³Æ
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						String musicTitle = kwArr[0];
-						// ÑÝ³ªÕßÄ¬ÈÏÎª¿Õ
+						// ï¿½Ý³ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Îªï¿½ï¿½
 						String musicAuthor = "";
 						if (2 == kwArr.length)
 							musicAuthor = kwArr[1];
 
-						// ËÑË÷ÒôÀÖ
+						// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						Music music = BaiduMusicService.searchMusic(musicTitle,
 								musicAuthor);
-						// Î´ËÑË÷µ½ÒôÀÖ
+						// Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						if (null == music) {
-							respContent = "ÎÒÒÑ¾­ºÜÅ¬Á¦ÁË£¬»¹ÊÇÃ»ÓÐÕÒµ½¸èÇú<" + musicTitle
-									+ ">\n" + "°¡£¬ÐÄÈûÈû/:8*/:8* ²»¼Ó¸èÊÖËÑË÷ÊÔÊÔ¿´";
+							respContent = "ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½Å¬ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½<" + musicTitle
+									+ ">\n" + "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/:8*/:8* ï¿½ï¿½ï¿½Ó¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½";
 						} else {
-							// ÒôÀÖÏûÏ¢
+							// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 							MusicMessage musicMessage = new MusicMessage();
 							musicMessage.setToUserName(fromUserName);
 							musicMessage.setFromUserName(toUserName);
@@ -178,38 +178,38 @@ public class CoreService {
 						}
 					}
 				}
-				// **********ÖÇÄÜ·­Òë*************
-				else if (content.startsWith("·­Òë")) {
-					String keyWord = content.replaceAll("^·­Òë", "").trim();
+				// **********ï¿½ï¿½ï¿½Ü·ï¿½ï¿½ï¿½*************
+				else if (content.startsWith("ï¿½ï¿½ï¿½ï¿½")) {
+					String keyWord = content.replaceAll("^ï¿½ï¿½ï¿½ï¿½", "").trim();
 					if ("".equals(keyWord)) {
 						respContent = Tools.getTranslateUsage();
 					} else
-						respContent = "\ue110½á¹û£º"+ BaiduTranslateService.translate(keyWord);
+						respContent = "\ue110ï¿½ï¿½ï¿½ï¿½ï¿½"+ BaiduTranslateService.translate(keyWord);
 				}
-				// **********ÖÜ±ßËÑË÷*************
-				else if (content.startsWith("¸½½ü")) {
-					String keyWord = content.replaceAll(" ¸½½ü ", "").trim();
-					// »ñÈ¡ÓÃ»§×îºóÒ»´Î·¢ËÍµÄµØÀíÎ»ÖÃ
+				// **********ï¿½Ü±ï¿½ï¿½ï¿½ï¿½ï¿½*************
+				else if (content.startsWith("ï¿½ï¿½ï¿½ï¿½")) {
+					String keyWord = content.replaceAll(" ï¿½ï¿½ï¿½ï¿½ ", "").trim();
+					// ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î·ï¿½ï¿½ÍµÄµï¿½ï¿½ï¿½Î»ï¿½ï¿½
 					UserLocation location = MySQLUtil.getLastLocation(request,
 							fromUserName);
-					// Î´»ñÈ¡µ½
+					// Î´ï¿½ï¿½È¡ï¿½ï¿½
 					if (null == location) {
 						respContent = Tools.getLocationUsage();
 					} else {
-						// ¸ù¾Ý×ª»»ºó£¨¾ÀÆ«£©µÄ×ø±êËÑË÷ÖÜ±ßPOI
+						// ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ó£¨¾ï¿½Æ«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü±ï¿½POI
 						List<BaiduPlace> placeList = BaiduMapUtil.searchPlace(
 								keyWord, location.getBd09Lng(),
 								location.getBd09Lat());
-						// Î´ËÑË÷µ½POI
+						// Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½POI
 						if (null == placeList || 0 == placeList.size()) {
 							respContent = String.format(
-									"/ÄÑ¹ý£¬Äú·¢ËÍµÄÎ»ÖÃ¸½½üÎ´ËÑË÷µ½¡°%s¡±ÐÅÏ¢£¡", keyWord);
+									"/ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½Î»ï¿½Ã¸ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½%sï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½", keyWord);
 						} else {
 							List<Article> articleList = BaiduMapUtil
 									.makeArticleList(placeList,
 											location.getBd09Lng(),
 											location.getBd09Lat());
-							// »Ø¸´Í¼ÎÄÏûÏ¢
+							// ï¿½Ø¸ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Ï¢
 							NewsMessage newsMessage = new NewsMessage();
 							newsMessage.setToUserName(fromUserName);
 							newsMessage.setFromUserName(toUserName);
@@ -228,23 +228,23 @@ public class CoreService {
 
 			// **********************************
 			if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {
-				// ÊÂ¼þÀàÐÍ
+				// ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
 				String eventType = requestMap.get("Event");
-				// ¹Ø×¢
+				// ï¿½ï¿½×¢
 				if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
 					respContent = Tools.welcome;
 				}
-				// È¡Ïû¹Ø×¢
+				// È¡ï¿½ï¿½ï¿½ï¿½×¢
 				else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
-					// TODO È¡Ïû¶©ÔÄºóÓÃ»§²»»áÔÙÊÕµ½¹«ÖÚÕËºÅ·¢ËÍµÄÏûÏ¢£¬Òò´Ë²»ÐèÒª»Ø¸´
+					// TODO È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ËºÅ·ï¿½ï¿½Íµï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½Òªï¿½Ø¸ï¿½
 				}
-				// É¨Ãè´ø²ÎÊý¶þÎ¬Âë
+				// É¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¬ï¿½ï¿½
 				else if (eventType.equals(MessageUtil.EVENT_TYPE_SCAN)) {
-					// TODO ´¦ÀíÉ¨Ãè´ø²ÎÊý¶þÎ¬ÂëÊÂ¼þ
+					// TODO ï¿½ï¿½ï¿½ï¿½É¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¬ï¿½ï¿½ï¿½Â¼ï¿½
 				}
-				// ×Ô¶¨Òå²Ëµ¥
+				// ï¿½Ô¶ï¿½ï¿½ï¿½Ëµï¿½
 				else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {
-					// TODO ´¦Àí²Ëµ¥µã»÷ÊÂ¼þ
+					// TODO ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 					String eventKey = requestMap.get("EventKey");
 
 					if (eventKey.equals("11")) {
@@ -261,7 +261,7 @@ public class CoreService {
 						newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
 
 						Article article1 = new Article();
-						article1.setTitle("\ue335ÈËÁ³¼ì²âÊ¹ÓÃËµÃ÷");
+						article1.setTitle("\ue335ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½Ëµï¿½ï¿½");
 						article1.setDescription(Tools.getFaceUsage());
 						article1.setUrl("http://1.lemontime.sinaapp.com/face.jsp");
 						article1.setPicUrl("http://1.lemontime.sinaapp.com/images/facepp_inside.png");
@@ -278,7 +278,7 @@ public class CoreService {
 					} else if (eventKey.equals("22")) {
 						respContent = Tools.getYuluUsage();
 					} else if (eventKey.equals("23")) {
-						respContent = "µã»÷ÓÒÉÏ½Ç²é¿´ÀúÊ·ÏûÏ¢¼´¿É¡£";
+						respContent = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï½Ç²é¿´ï¿½ï¿½Ê·ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½É¡ï¿½";
 					} else if (eventKey.equals("31")) {
 						respContent = Tools.getChatUsage();
 					} else if (eventKey.equals("32")) {
@@ -288,85 +288,85 @@ public class CoreService {
 					}
 				}
 			} else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_IMAGE)) {
-				// Í¼Æ¬ÏûÏ¢
-				// È¡µÃÍ¼Æ¬µØÖ·
+				// Í¼Æ¬ï¿½ï¿½Ï¢
+				// È¡ï¿½ï¿½Í¼Æ¬ï¿½ï¿½Ö·
 				String picUrl = requestMap.get("PicUrl");
-				// ÈËÁ³¼ì²â
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				String detectResult = FaceService.detect(picUrl);
 				respContent = detectResult;
 
 			} else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_VOICE)) {
-				// ÓïÒôÏûÏ¢
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 				int a = (int) (Math.random() * 10 + 1);
 				switch (a) {
 				case 1:
-					respContent = "ÍÛ ÄãµÄÉùÒôºÃºÃÌý/:rose";
+					respContent = "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½/:rose";
 					break;
 				case 2:
-					respContent = "°¥ßÏ ²»´íÅ¶/:strong";
+					respContent = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å¶/:strong";
 					break;
 				case 3:
-					respContent = "ÍÛ ÄãÊÇÃÈÃÃ×ÓÃ´" + Tools.emoji(0x1F618)
+					respContent = "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´" + Tools.emoji(0x1F618)
 							+ Tools.emoji(0x1F618);
 				case 4:
-					respContent = "×¨ÒµÆÀ·Ö ¸øÄã98,ÏàÐÅÎÒ,superstar¾ÍÊÇÄã£¡";
+					respContent = "×¨Òµï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½98,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,superstarï¿½ï¿½ï¿½ï¿½ï¿½ã£¡";
 					break;
 				case 5:
-					respContent = "¸Ï½ôÈ¥²Î¼ÓÄ³ÊÇ¸èÊÖ°Ñ" + Tools.emoji(0x1F631);
+					respContent = "ï¿½Ï½ï¿½È¥ï¿½Î¼ï¿½Ä³ï¿½Ç¸ï¿½ï¿½Ö°ï¿½" + Tools.emoji(0x1F631);
 					break;
 				default:
-					respContent = "¶¼ËµÎÞÍ¼ÎÞÕæÏà£¬ÖªµÀÕæÏàµÄÎÒÑÛÀá»©À²À²µÄµôÏÂÀ´"
+					respContent = "ï¿½ï¿½Ëµï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½à£¬Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á»©ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½"
 							+ Tools.emoji(0x1F494);
 					break;
 				}
 			} else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_VIDEO)) {
-				// ÊÓÆµÏûÏ¢
+				// ï¿½ï¿½Æµï¿½ï¿½Ï¢
 				int a = (int) (Math.random() * 10 + 1);
 				switch (a) {
 				case 1:
-					respContent = "ÍÛ ÅÄµÄ²»´íÅ¶/:rose";
+					respContent = "ï¿½ï¿½ ï¿½ÄµÄ²ï¿½ï¿½ï¿½Å¶/:rose";
 					break;
 				case 2:
-					respContent = "°¥ßÏ ²»´íÅ¶/:strong";
+					respContent = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å¶/:strong";
 					break;
 				case 3:
 					respContent = "DuangDuangDuang~" + Tools.emoji(0x1F618)
 							+ Tools.emoji(0x1F618);
 				case 4:
-					respContent = "ÏàÐÅÎÒ,ÏÂÒ»¸ö³Â¹ÚÏ£¾ÍÊÇÄã£¡";
+					respContent = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Â¹ï¿½Ï£ï¿½ï¿½ï¿½ï¿½ï¿½ã£¡";
 					break;
 				case 5:
-					respContent = "¸Ï½ôÈ¥²Î¼ÓÉãÓ°´óÈü°Ñ" + Tools.emoji(0x1F631);
+					respContent = "ï¿½Ï½ï¿½È¥ï¿½Î¼ï¿½ï¿½ï¿½Ó°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" + Tools.emoji(0x1F631);
 					break;
 				default:
-					respContent = "¶¼ËµÎÞÍ¼ÎÞÕæÏà£¬ÖªµÀÕæÏàµÄÎÒÑÛÀá»©À²À²µÄµôÏÂÀ´"+ Tools.emoji(0x1F494);
+					respContent = "ï¿½ï¿½Ëµï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½à£¬Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á»©ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½"+ Tools.emoji(0x1F494);
 					break;
 				}
 			} else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_LOCATION)) {
-				// µØÀíÎ»ÖÃÏûÏ¢
-				// ÓÃ»§·¢ËÍµÄ¾­Î³¶È
+				// ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½Ï¢
+				// ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ÍµÄ¾ï¿½Î³ï¿½ï¿½
 				String lng = requestMap.get("Location_Y");
 				String lat = requestMap.get("Location_X");
-				// ×ø±ê×ª»»ºóµÄ¾­Î³¶È
+				// ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ä¾ï¿½Î³ï¿½ï¿½
 				String bd09Lng = null;
 				String bd09Lat = null;
-				// µ÷ÓÃ½Ó¿Ú×ª»»×ø±ê
+				// ï¿½ï¿½ï¿½Ã½Ó¿ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				UserLocation userLocation = BaiduMapUtil.convertCoord(lng, lat);
 				if (null != userLocation) {
 					bd09Lng = userLocation.getBd09Lng();
 					bd09Lat = userLocation.getBd09Lat();
 				}
-				// ±£´æÓÃ»§µØÀíÎ»ÖÃ
+				// ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
 				MySQLUtil.saveUserLocation(request, fromUserName, lng, lat,
 						bd09Lng, bd09Lat);
 
 				StringBuffer buffer = new StringBuffer();
-				buffer.append("[Óä¿ì][Óä¿ì]").append("³É¹¦½ÓÊÕÄúµÄÎ»ÖÃ£¡").append("\n\n");
-				buffer.append("Äú¿ÉÒÔÊäÈëËÑË÷¹Ø¼ü´Ê»ñÈ¡ÖÜ±ßÐÅÏ¢ÁË£¬ÀýÈç£º").append("\n");
-				buffer.append("¸½½üÃÀÊ³").append("\n");
-				buffer.append("¸½½üKTV").append("\n");
-				buffer.append("¸½½ü¹«½»Õ¾").append("\n");
-				buffer.append("±ØÐëÒÔ¡°¸½½ü¡±Á½¸ö×Ö¿ªÍ·£¡");
+				buffer.append("[ï¿½ï¿½ï¿½][ï¿½ï¿½ï¿½]").append("ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½").append("\n\n");
+				buffer.append("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½Ê»ï¿½È¡ï¿½Ü±ï¿½ï¿½ï¿½Ï¢ï¿½Ë£ï¿½ï¿½ï¿½ï¿½ç£º").append("\n");
+				buffer.append("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê³").append("\n");
+				buffer.append("ï¿½ï¿½ï¿½ï¿½KTV").append("\n");
+				buffer.append("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¾").append("\n");
+				buffer.append("ï¿½ï¿½ï¿½ï¿½ï¿½Ô¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¿ï¿½Í·ï¿½ï¿½");
 				respContent = buffer.toString();
 			}
 
@@ -376,14 +376,14 @@ public class CoreService {
 			}
 
 			if (respContent == null && respXml==null) {
-				respContent = "·þÎñÆ÷³öÏÖ¹ÊÕÏ£¬ÉÔºóÔÙ³¢ÊÔ°Ñ£¡ÐÄÈûÈû~";
+				respContent = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½Ï£ï¿½ï¿½Ôºï¿½ï¿½Ù³ï¿½ï¿½Ô°Ñ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~";
 				textMessage.setContent(respContent);
 				respXml = MessageUtil.messageToXml(textMessage);
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "·þÎñÆ÷³öÏÖ¹ÊÕÏ£¬ÉÔºóÔÙ³¢ÊÔ°Ñ£¡ÐÄÈûÈû~";
+			return "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½Ï£ï¿½ï¿½Ôºï¿½ï¿½Ù³ï¿½ï¿½Ô°Ñ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~";
 		}
 
 		return respXml;

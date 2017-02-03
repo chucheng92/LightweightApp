@@ -1,15 +1,14 @@
-package org.taoran.course.message.req;
+package com.tinymood.wechat.message.req;
 
 /**
- * 视频消息
- * 
- * @author 哓哓
- * @date 2014-4-7
+ * @author nothankyou
+ * @date 2017-02-03 14:06:36
+ *
  */
-public class VideoMessage extends BaseMessage {
-	// 视频媒体Id
+public class VideoMessage extends BaseReqMessage {
+	// 濯掍綋鏂囦欢id
 	private String MediaId;
-	// 视频消息缩略图的媒体Id
+	// 缂╃暐鏂囦欢id
 	private String ThumbMediaId;
 
 	public String getMediaId() {

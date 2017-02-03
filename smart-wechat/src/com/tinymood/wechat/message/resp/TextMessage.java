@@ -1,13 +1,13 @@
-package org.taoran.course.message.resp;
+package com.tinymood.wechat.message.resp;
 
 /**
- * 响应消息 -> 文本消息
- * 
- * @author 哓哓
- * @date 2015-4-6
+ * @author nothankyou
+ * @date 2017-02-03 14:10:26
+ *
+ * 鏂囨湰鍥炲娑堟伅
  */
-public class TextMessage extends BaseMessage {
-	// 回复的消息内容
+public class TextMessage extends BaseRespMessage {
+	// 鏂囨湰鍐呭
 	private String Content;
 
 	public String getContent() {

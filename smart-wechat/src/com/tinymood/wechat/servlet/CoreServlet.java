@@ -1,4 +1,6 @@
-package org.taoran.course.servlet;
+package com.tinymood.wechat.servlet;
+
+import com.tinymood.wechat.util.SignUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,37 +11,34 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.taoran.course.service.ChatService;
-import org.taoran.course.service.CoreService;
-import org.taoran.course.util.SignUtil;
-
-
 /**
- * ºËĞÄÇëÇó´¦ÀíÀà
- * 
- * @author ßØßØ
- * @date 2015-2-6
+ * æ ¸å¿ƒè¯·æ±‚å¤„ç†ç±»
+ *
+ * @author nothankyou
+ * @date 2017-02-03
  */
-public class CoreServlet extends HttpServlet {
-	private static final long serialVersionUID = 13483644821986L;
 
-	/**
-	 * ÇëÇóĞ£Ñé(È·ÈÏÇëÇóÀ´×ÔÎ¢ĞÅ·şÎñÆ÷)
+public class CoreServlet extends HttpServlet {
+
+    private static final long serialVersionUID = -6819864684789992342L;
+
+    /**
+	 * ç¡®è®¤è¯·æ±‚æ¥è‡ªå¾®ä¿¡æœåŠ¡å™¨
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// Î¢ĞÅ¼ÓÃÜÇ©Ãû
+		// å¾®ä¿¡åŠ å¯†ç­¾å
 		String signature = request.getParameter("signature");
-		// Ê±¼ä´Á
+		// æ—¶é—´æˆ³
 		String timestamp = request.getParameter("timestamp");
-		// Ëæ»úÊı
+		// éšæœºæ ‘
 		String nonce = request.getParameter("nonce");
-		// Ëæ»ú×Ö·û´®
+		// éšæœºå­—ç¬¦ä¸²
 		String echostr = request.getParameter("echostr");
 
 		PrintWriter out = response.getWriter();
 
-		// Í¨¹ı¼ìÑésignature¶ÔÇëÇó½øĞĞĞ£Ñé£¬ÈôĞ£Ñé³É¹¦ÔòÔ­Ñù·µ»Øechostr£¬±íÊ¾½ÓÈë³É¹¦£¬·ñÔò½ÓÈëÊ§°Ü
+		// é€šè¿‡æ£€éªŒsignatureå¯¹è¯·æ±‚è¿›è¡Œæ£€éªŒï¼Œè‹¥æ£€éªŒæˆåŠŸåˆ™åŸæ ·è¿”å›echostrï¼Œè¡¨ç¤ºæ¥å…¥æˆåŠŸï¼Œå¦åˆ™æ¥å…¥å¤±è´¥
 		if (SignUtil.checkSignature(signature, timestamp, nonce)) {
 			out.print(echostr);
 		}
@@ -47,36 +46,36 @@ public class CoreServlet extends HttpServlet {
 		out = null;
 	}
 
-	/**
-	 * ÇëÇóĞ£ÑéÓë´¦ÀíÎ¢ĞÅ·şÎñÆ÷·¢À´µÄÏûÏ¢
-	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// ½«ÇëÇó¡¢ÏìÓ¦µÄ±àÂë¾ùÉèÖÃÎªUTF-8
-		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");
-
-		// ½ÓÊÕ²ÎÊı Î¢ĞÅ¼ÓÃÜÇ©Ãû¡¢Ê±¼ä´Á¡¢Ëæ»úÊı
-		String signature = request.getParameter("signature");
-		String timestamp = request.getParameter("timestamp");
-		String nonce = request.getParameter("nonce");
-
-		PrintWriter out = response.getWriter();
-		// ÇëÇóĞ£Ñé
-		if (SignUtil.checkSignature(signature, timestamp, nonce)) {
-			// µ÷ÓÃºËĞÄÒµÎñÀà½ÓÊÕ´¦ÀíÇëÇó
-			String respXml = CoreService.processRequest(request);
-			out.print(respXml);
-		}
-		out.close();
-		out = null;
-	}
-	
-	@Override
-	public void init() {
-		File indexDir = new java.io.File(ChatService.getIndexDir());
-		//ÈôË÷ÒıÄ¿Â¼²»´æÔÚÔò´´½¨Ë÷Òı
-		if (!indexDir.exists())
-			ChatService.createIndex();
-	}
+//	/**
+//	 * ï¿½ï¿½ï¿½ï¿½Ğ£ï¿½ï¿½ï¿½ë´¦ï¿½ï¿½Î¢ï¿½Å·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+//	 */
+//	public void doPost(HttpServletRequest request, HttpServletResponse response)
+//			throws ServletException, IOException {
+//		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªUTF-8
+//		request.setCharacterEncoding("UTF-8");
+//		response.setCharacterEncoding("UTF-8");
+//
+//		// ï¿½ï¿½ï¿½Õ²ï¿½ï¿½ï¿½ Î¢ï¿½Å¼ï¿½ï¿½ï¿½Ç©ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//		String signature = request.getParameter("signature");
+//		String timestamp = request.getParameter("timestamp");
+//		String nonce = request.getParameter("nonce");
+//
+//		PrintWriter out = response.getWriter();
+//		// ï¿½ï¿½ï¿½ï¿½Ğ£ï¿½ï¿½
+//		if (SignUtil.checkSignature(signature, timestamp, nonce)) {
+//			// ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//			String respXml = CoreService.processRequest(request);
+//			out.print(respXml);
+//		}
+//		out.close();
+//		out = null;
+//	}
+//
+//	@Override
+//	public void init() {
+//		File indexDir = new java.io.File(ChatService.getIndexDir());
+//		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò´´½ï¿½ï¿½ï¿½ï¿½ï¿½
+//		if (!indexDir.exists())
+//			ChatService.createIndex();
+//	}
 }

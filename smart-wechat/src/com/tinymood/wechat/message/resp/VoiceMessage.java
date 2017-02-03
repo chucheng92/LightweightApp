@@ -1,12 +1,11 @@
-package org.taoran.course.message.resp;
+package com.tinymood.wechat.message.resp;
 
 /**
- * 响应消息 -> 语音消息
- * 
- * @author 哓哓
- * @date 2015-4-7
+ * @author nothankyou
+ * @date 2017-02-03 14:24:18
  */
-public class VoiceMessage extends BaseMessage {
+public class VoiceMessage extends BaseRespMessage {
+	// 璇煶鍐呭
 	private Voice Voice;
 
 	public Voice getVoice() {

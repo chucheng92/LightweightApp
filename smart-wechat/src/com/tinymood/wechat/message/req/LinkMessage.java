@@ -1,17 +1,16 @@
-package org.taoran.course.message.req;
+package com.tinymood.wechat.message.req;
 
 /**
- * 链接消息
- * 
- * @author 哓哓
- * @date 2015-4-6
+ * @author nothankyou
+ * @date 2017-02-03 14:03:44
+ *
  */
-public class LinkMessage extends BaseMessage {
-	// 消息标题
+public class LinkMessage extends BaseReqMessage {
+	// 鏍囬
 	private String Title;
-	// 消息描述
+	// 鎻忚堪
 	private String Description;
-	// 消息链接
+	// 閾炬帴url
 	private String Url;
 
 	public String getTitle() {

@@ -1,15 +1,17 @@
-package org.taoran.course.message.resp;
+package com.tinymood.wechat.message.resp;
 
 /**
- * 视频类
- * 
- * @author 哓哓
- * @date 2015-4-6
+ * @author nothankyou
+ * @date 2017-02-03 14:20:47
+ *
+ * 瑙嗛瀹炰綋
+ *
  */
 public class Video {
-	// 媒体文件id
+	// 濯掍綋鏂囦欢id
 	private String MediaId;
-	// 缩略图的媒体id
+
+	// 缂╃暐鏂囦欢id
 	private String ThumbMediaId;
 
 	public String getMediaId() {

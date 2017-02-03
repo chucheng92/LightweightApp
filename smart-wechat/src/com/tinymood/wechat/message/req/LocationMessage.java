@@ -1,19 +1,18 @@
-package org.taoran.course.message.req;
+package com.tinymood.wechat.message.req;
 
 /**
- * 地理位置消息
- * 
- * @author 哓哓
- * @date 2014-4-6
+ * @author nothankyou
+ * @date 2017-02-03 14:02:39
+ *
  */
-public class LocationMessage extends BaseMessage {
-	// 地理位置纬度
+public class LocationMessage extends BaseReqMessage {
+	// 缁忓害
 	private String Location_X;
-	// 地理位置经度
+	// 绾害
 	private String Location_Y;
-	// 地图缩放大小
+	// 鑼冨洿
 	private String Scale;
-	// 地理位置信息
+	// 鏍囩
 	private String Label;
 
 	public String getLocation_X() {

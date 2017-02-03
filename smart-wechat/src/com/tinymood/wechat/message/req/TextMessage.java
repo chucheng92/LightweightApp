@@ -1,13 +1,12 @@
-package org.taoran.course.message.req;
+package com.tinymood.wechat.message.req;
 
 /**
- * 文本消息
- * 
- * @author 哓哓
- * @date 2015-4-6
+ * @author nothankyou
+ * @date 2017-02-03 14:00:46
+ *
  */
-public class TextMessage extends BaseMessage {
-	//消息内容
+public class TextMessage extends BaseReqMessage {
+	//娑堟伅鍐呭
 	private String Content;
 
 	public String getContent() {

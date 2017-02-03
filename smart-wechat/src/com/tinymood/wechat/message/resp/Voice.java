@@ -1,13 +1,11 @@
-package org.taoran.course.message.resp;
+package com.tinymood.wechat.message.resp;
 
 /**
- * 语音类
- * 
- * @author 哓哓
- * @date 2014-4-8
+ * @author nothankyou
+ * @date 2017-02-03 14:22:58
  */
 public class Voice {
-	// 媒体文件id
+	// 濯掍綋鏂囦欢id
 	private String MediaId;
 
 	public String getMediaId() {

@@ -1,17 +1,18 @@
-package org.taoran.course.message.req;
+package com.tinymood.wechat.message.req;
 
 /**
- * 语音消息
- * 
- * @author 哓哓
- * @date 2015-4-6
+ * @author nothankyou
+ * @date 2017-02-03 14:04:30
+ *
  */
-public class VoiceMessage extends BaseMessage {
-	// 媒体Id
+public class VoiceMessage extends BaseReqMessage {
+	// 濯掍綋鏂囦欢id
 	private String MediaId;
-	// 语音格式
+
+	// 濯掍綋鏂囦欢鏍煎紡
 	private String Format;
-	// 语音识别结果 UTF-8编码
+
+	// 濯掍綋鏂囦欢缂栫爜
 	private String Recognition;
 
 	public String getMediaId() {

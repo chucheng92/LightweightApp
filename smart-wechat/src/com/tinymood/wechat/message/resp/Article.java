@@ -1,20 +1,22 @@
-package org.taoran.course.message.resp;
+package com.tinymood.wechat.message.resp;
 
 /**
- * Í¼ÎÄÀà
- * 
- * @author ßØßØ
- * @date 2015-4-7
+ * @author nothankyou
+ * @date 2017-02-03 13:56:37
+ *
  */
 public class Article {
-	// Í¼ÎÄÏûÏ¢Ãû³Æ
+	// æ ‡é¢˜
 	private String Title;
-	// ÃèÊö
+
+	// æè¿°
 	private String Description;
-	// Í¼Æ¬Á´½Ó£¬Ö§³ÖJPG¡¢PNG¸ñÊ½£¬½ÏºÃµÄĞ§¹ûÎª´óÍ¼640*320
-	// Ğ¡Í¼80*80,ÏŞÖÆÍ¼Æ¬Á´½ÓµÄÓòÃûĞèÒªÓë¿ª·¢ÕßÌîĞ´µÄ»ù±¾×ÊÁÏÖĞµÄUrlÒ»ÖÂ
+
+	// å°é¢å›¾ 640*320
+	// å°å›¾ 80*80
 	private String PicUrl;
-	// µã»÷Í¼ÎÄÏûÏ¢Ìø×ªÁ´½Ó
+
+	// æ–‡ç« url
 	private String Url;
 
 	public String getTitle() {

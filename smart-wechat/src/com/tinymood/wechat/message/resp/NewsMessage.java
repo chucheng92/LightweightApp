@@ -1,17 +1,19 @@
-package org.taoran.course.message.resp;
+package com.tinymood.wechat.message.resp;
 
 import java.util.List;
 
 /**
- * 响应消息 -> 图文消息
- * 
- * @author 哓哓
- * @date 2015-4-7
+ * @author nothankyou
+ * @date 2017-02-03 14:18:30
+ *
+ * 鍥炬枃娑堟伅
+ *
  */
-public class NewsMessage extends BaseMessage {
-	// 图文消息个数 限制为1条以内
+public class NewsMessage extends BaseRespMessage {
+	// 鍥炬枃鏁伴噺
 	private int ArticleCount;
-	// 多条图文消息 默认第一个item为大图
+
+	// 鍥炬枃闆嗗悎
 	private List<Article> Articles;
 
 	public int getArticleCount() {
