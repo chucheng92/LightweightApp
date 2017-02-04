@@ -8,14 +8,13 @@ package com.tinymood.wechat.message.resp;
  */
 public class ImageMessage extends BaseRespMessage {
 	// 图片内容
-	private Image Image;
+	private Image image;
 
 	public Image getImage() {
-		return Image;
+		return image;
 	}
 
 	public void setImage(Image image) {
-		Image = image;
+		this.image = image;
 	}
-	
 }

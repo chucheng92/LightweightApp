@@ -8,13 +8,13 @@ package com.tinymood.wechat.message.resp;
  */
 public class Image {
 	// 媒体文件id
-	private String MediaId;
+	private String mediaId;
 
-	public String getMediaId() {
-		return MediaId;
-	}
+    public String getMediaId() {
+        return mediaId;
+    }
 
-	public void setMediaId(String mediaId) {
-		MediaId = mediaId;
-	}
+    public void setMediaId(String mediaId) {
+        this.mediaId = mediaId;
+    }
 }

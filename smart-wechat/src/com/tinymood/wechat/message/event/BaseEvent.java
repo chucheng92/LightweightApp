@@ -1,61 +1,64 @@
-package org.taoran.course.message.event;
+package com.tinymood.wechat.message.event;
 
 /**
- * ÊÂ¼ş»ùÀà
+ * äº‹ä»¶åŸºç±»
  * 
- * @author ßØßØ
- * @date 2015-4-8
+ * @author nothankyou
+ * @date 2017-02-03 20:16:24
  */
 public class BaseEvent {
-	// ¿ª·¢ÕßÎ¢ĞÅºÅ
-	private String ToUserName;
-	// ·¢ËÍ·½£¨ÓÃ»§£©ÕÊºÅ OpenId
-	private String FromUserName;
-	// ÏûÏ¢´´½¨Ê±¼ä ÕûĞÍ
-	private long CreateTime;
-	// ÏûÏ¢ÀàĞÍ
-	private String MsgType;
-	// ÊÂ¼ş
-	private String Event;
+	// å¼€å‘è€…
+	private String toUserName;
 
-	public String getToUserName() {
-		return ToUserName;
-	}
+	// å‘é€æ–¹ï¼ˆç”¨æˆ·ï¼‰å¸å· OpenId
+	private String fromUserName;
 
-	public void setToUserName(String toUserName) {
-		ToUserName = toUserName;
-	}
+	// æ¶ˆæ¯åˆ›å»ºæ—¶é—´ æ•´å‹
+	private long createTime;
 
-	public String getFromUserName() {
-		return FromUserName;
-	}
+	// æ¶ˆæ¯ç±»å‹ï¼ˆeventï¼‰
+	private String msgType;
 
-	public void setFromUserName(String fromUserName) {
-		FromUserName = fromUserName;
-	}
+	// äº‹ä»¶ç±»å‹ï¼ˆsubscribeã€unsubscribeã€æ‰«æå¸¦å‚äºŒç»´ç ï¼ˆsubscribeå’ŒSCANï¼‰ã€LOCATIONã€è‡ªå®šä¹‰èœå•(CLICKå’ŒVIEW)ï¼‰
+	private String event;
 
-	public long getCreateTime() {
-		return CreateTime;
-	}
+    public String getToUserName() {
+        return toUserName;
+    }
 
-	public void setCreateTime(long createTime) {
-		CreateTime = createTime;
-	}
+    public void setToUserName(String toUserName) {
+        this.toUserName = toUserName;
+    }
 
-	public String getMsgType() {
-		return MsgType;
-	}
+    public String getFromUserName() {
+        return fromUserName;
+    }
 
-	public void setMsgType(String msgType) {
-		MsgType = msgType;
-	}
+    public void setFromUserName(String fromUserName) {
+        this.fromUserName = fromUserName;
+    }
 
-	public String getEvent() {
-		return Event;
-	}
+    public long getCreateTime() {
+        return createTime;
+    }
 
-	public void setEvent(String event) {
-		Event = event;
-	}
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
 
+    public String getMsgType() {
+        return msgType;
+    }
+
+    public void setMsgType(String msgType) {
+        this.msgType = msgType;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
+    }
 }

@@ -1,12 +1,14 @@
 package com.tinymood.wechat.message.req;
 
 /**
+ * 小视屏消息
+ *
  * @author nothankyou
  * @date 2017-02-03 14:06:36
  *
  */
-public class VideoMessage extends BaseReqMessage {
-	// 视频消息媒体id
+public class ShortVideoMessage extends BaseReqMessage {
+	// 小视频消息媒体id
 	private String mediaId;
 
 	// 视频消息缩略图的媒体id

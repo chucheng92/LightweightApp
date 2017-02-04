@@ -7,14 +7,24 @@ package com.tinymood.wechat.message.req;
  */
 public class ImageMessage extends BaseReqMessage {
 	// 图片url
-	private String PicUrl;
+	private String picUrl;
+
+	// 图片消息媒体id
+	private String mediaId;
 
 	public String getPicUrl() {
-		return PicUrl;
+		return picUrl;
 	}
 
 	public void setPicUrl(String picUrl) {
-		PicUrl = picUrl;
+		this.picUrl = picUrl;
 	}
 
+	public String getMediaId() {
+		return mediaId;
+	}
+
+	public void setMediaId(String mediaId) {
+		this.mediaId = mediaId;
+	}
 }

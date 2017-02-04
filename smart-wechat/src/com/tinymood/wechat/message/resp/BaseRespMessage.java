@@ -7,56 +7,59 @@ package com.tinymood.wechat.message.resp;
  * 基础回复消息类
  */
 public class BaseRespMessage {
-	// 接收方
-	private String ToUserName;
-	// 发送方
-	private String FromUserName;
+	// 接收方（用户 openId）
+	private String toUserName;
+
+	// 发送方（开发者）
+	private String fromUserName;
+
 	// 创建时间
-	private long CreateTime;
-	// 消息类型(text/image/music/voice/video)
+	private long createTime;
+
+	// 消息类型(text/image/music/voice/video/news)
     // 注意：voice和video消息只能在编辑模式下使用
-	private String MsgType;
-	// 标识码
-	private int FuncFlag;
+	private String msgType;
 
-	public String getToUserName() {
-		return ToUserName;
-	}
+	// 星标标识
+	private int starFlag;
 
-	public void setToUserName(String toUserName) {
-		ToUserName = toUserName;
-	}
+    public String getToUserName() {
+        return toUserName;
+    }
 
-	public String getFromUserName() {
-		return FromUserName;
-	}
+    public void setToUserName(String toUserName) {
+        this.toUserName = toUserName;
+    }
 
-	public void setFromUserName(String fromUserName) {
-		FromUserName = fromUserName;
-	}
+    public String getFromUserName() {
+        return fromUserName;
+    }
 
-	public long getCreateTime() {
-		return CreateTime;
-	}
+    public void setFromUserName(String fromUserName) {
+        this.fromUserName = fromUserName;
+    }
 
-	public void setCreateTime(long createTime) {
-		CreateTime = createTime;
-	}
+    public long getCreateTime() {
+        return createTime;
+    }
 
-	public String getMsgType() {
-		return MsgType;
-	}
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
 
-	public void setMsgType(String msgType) {
-		MsgType = msgType;
-	}
+    public String getMsgType() {
+        return msgType;
+    }
 
-	public int getFuncFlag() {
-		return FuncFlag;
-	}
+    public void setMsgType(String msgType) {
+        this.msgType = msgType;
+    }
 
-	public void setFuncFlag(int funcFlag) {
-		FuncFlag = funcFlag;
-	}
+    public int getStarFlag() {
+        return starFlag;
+    }
 
+    public void setStarFlag(int starFlag) {
+        this.starFlag = starFlag;
+    }
 }

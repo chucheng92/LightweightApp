@@ -9,14 +9,13 @@ package com.tinymood.wechat.message.resp;
  */
 public class MusicMessage extends BaseRespMessage {
 	// 音乐内容
-	private Music Music;
+	private Music music;
 
 	public Music getMusic() {
-		return Music;
+		return music;
 	}
 
 	public void setMusic(Music music) {
-		Music = music;
+		this.music = music;
 	}
-
 }

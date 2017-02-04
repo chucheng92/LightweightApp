@@ -1,4 +1,4 @@
-package org.taoran.course.service;
+package com.tinymood.wechat.service;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -10,51 +10,51 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import org.taoran.course.message.resp.Music;
+import com.tinymood.wechat.message.resp.Music;
 
 /**
- * °Ù¶ÈÒôÀÖËÑË÷API²Ù×÷Àà
- * 
- * @author ßØßØ
- * @date 2015-4-9
+ * ç™¾åº¦éŸ³ä¹æœç´¢APIæ“ä½œç±»
+ *
+ * @author nothankyou
+ * @date 2017-02-03 23:44:16
  */
 public class BaiduMusicService {
 	/**
-	 * ¸ù¾İÃû³ÆºÍ×÷ÕßËÑË÷ÒôÀÖ
-	 * 
-	 * @param musicTitle ÒôÀÖÃû³Æ
-	 * @param musicAuthor ÒôÀÖ×÷Õß
+	 * æ ¹æ®åç§°å’Œä½œè€…æœç´¢éŸ³ä¹
+	 *
+	 * @param musicTitle éŸ³ä¹åç§°
+	 * @param musicAuthor éŸ³ä¹ä½œè€…
 	 * @return Music
 	 */
 	public static Music searchMusic(String musicTitle, String musicAuthor) {
-		// °Ù¶ÈÒôÀÖËÑË÷µØÖ·
+		// ç™¾åº¦éŸ³ä¹æœç´¢åœ°å€
 		String requestUrl = "http://box.zhangmen.baidu.com/x?op=12&count=1&title={TITLE}$${AUTHOR}$$$$";
-		// ¶ÔÒôÀÖÃû³Æ¡¢×÷ÕßURL±àÂë
+		// å¯¹éŸ³ä¹åç§°ã€ä½œè€…URLç¼–ç 
 		requestUrl = requestUrl.replace("{TITLE}", urlEncodeUTF8(musicTitle));
 		requestUrl = requestUrl.replace("{AUTHOR}", urlEncodeUTF8(musicAuthor));
-		// ´¦ÀíÃû³Æ¡¢×÷ÕßÖĞ¼äµÄ¿Õ¸ñ
+		// å¤„ç†åç§°ã€ä½œè€…ä¸­é—´çš„ç©ºæ ¼
 		requestUrl = requestUrl.replaceAll("\\+", "%20");
 
-		// ²éÑ¯²¢»ñÈ¡·µ»Ø½á¹û
+		// æŸ¥è¯¢å¹¶è·å–è¿”å›ç»“æœ
 		InputStream inputStream = httpRequest(requestUrl);
-		// ´Ó·µ»Ø½á¹ûÖĞ½âÎö³öMusic
+		// ä»è¿”å›ç»“æœä¸­è§£æå‡ºMusic
 		Music music = parseMusic(inputStream);
 
-		// Èç¹ûmusic²»Îªnull£¬ÉèÖÃ±êÌâºÍÃèÊö
+		// å¦‚æœmusicä¸ä¸ºnullï¼Œè®¾ç½®æ ‡é¢˜å’Œæè¿°
 		if (null != music) {
 			music.setTitle(musicTitle);
-			// Èç¹û×÷Õß²»Îª""£¬½«ÃèÊöÉèÖÃÎª×÷Õß
+			// å¦‚æœä½œè€…ä¸ä¸º""ï¼Œå°†æè¿°è®¾ç½®ä¸ºä½œè€…
 			if (!"".equals(musicAuthor))
 				music.setDescription(musicAuthor);
 			else
-				music.setDescription("°Ù¶ÈÒôÀÖ¸ßÆ·ÖÊ");
+				music.setDescription("ç™¾åº¦éŸ³ä¹é«˜å“è´¨");
 		}
 		return music;
 	}
 
 	/**
-	 * UTF-8±àÂë
-	 * 
+	 * UTF-8ç¼–ç 
+	 *
 	 * @param source
 	 * @return
 	 */
@@ -69,9 +69,9 @@ public class BaiduMusicService {
 	}
 
 	/**
-	 * ·¢ËÍhttpÇëÇóÈ¡µÃ·µ»ØµÄÊäÈëÁ÷
-	 * 
-	 * @param requestUrl ÇëÇóµØÖ·
+	 * å‘é€httpè¯·æ±‚å–å¾—è¿”å›çš„è¾“å…¥æµ
+	 *
+	 * @param requestUrl è¯·æ±‚åœ°å€
 	 * @return InputStream
 	 */
 	private static InputStream httpRequest(String requestUrl) {
@@ -82,7 +82,7 @@ public class BaiduMusicService {
 			httpUrlConn.setDoInput(true);
 			httpUrlConn.setRequestMethod("GET");
 			httpUrlConn.connect();
-			// »ñµÃ·µ»ØµÄÊäÈëÁ÷
+			// è·å¾—è¿”å›çš„è¾“å…¥æµ
 			inputStream = httpUrlConn.getInputStream();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,56 +91,56 @@ public class BaiduMusicService {
 	}
 
 	/**
-	 * ½âÎöÒôÀÖ²ÎÊı
-	 * 
-	 * @param inputStream °Ù¶ÈÒôÀÖËÑË÷API·µ»ØµÄÊäÈëÁ÷
+	 * è§£æéŸ³ä¹å‚æ•°
+	 *
+	 * @param inputStream ç™¾åº¦éŸ³ä¹æœç´¢APIè¿”å›çš„è¾“å…¥æµ
 	 * @return Music
 	 */
 	@SuppressWarnings("unchecked")
 	private static Music parseMusic(InputStream inputStream) {
 		Music music = null;
 		try {
-			// Ê¹ÓÃdom4j½âÎöxml×Ö·û´®
+			// ä½¿ç”¨dom4jè§£æxmlå­—ç¬¦ä¸²
 			SAXReader reader = new SAXReader();
 			Document document = reader.read(inputStream);
-			// µÃµ½xml¸ùÔªËØ
+			// å¾—åˆ°xmlæ ¹å…ƒç´ 
 			Element root = document.getRootElement();
-			// count±íÊ¾ËÑË÷µ½µÄ¸èÇúÊı
+			// countè¡¨ç¤ºæœç´¢åˆ°çš„æ­Œæ›²æ•°
 			String count = root.element("count").getText();
-			// µ±ËÑË÷µ½µÄ¸èÇúÊı´óÓÚ0Ê±
+			// å½“æœç´¢åˆ°çš„æ­Œæ›²æ•°å¤§äº0æ—¶
 			if (!"0".equals(count)) {
-				// ÆÕÍ¨Æ·ÖÊ
+				// æ™®é€šå“è´¨
 				List<Element> urlList = root.elements("url");
-				// ¸ßÆ·ÖÊ
+				// é«˜å“è´¨
 				List<Element> durlList = root.elements("durl");
 
-				// ÆÕÍ¨Æ·ÖÊµÄencode¡¢decode
+				// æ™®é€šå“è´¨çš„encodeã€decode
 				String urlEncode = urlList.get(0).element("encode").getText();
 				String urlDecode = urlList.get(0).element("decode").getText();
-				// ÆÕÍ¨Æ·ÖÊÒôÀÖµÄURL
+				// æ™®é€šå“è´¨éŸ³ä¹çš„URL
 				String url = urlEncode.substring(0, urlEncode.lastIndexOf("/") + 1) + urlDecode;
 				if (-1 != urlDecode.lastIndexOf("&"))
 					url = urlEncode.substring(0, urlEncode.lastIndexOf("/") + 1) + urlDecode.substring(0, urlDecode.lastIndexOf("&"));
 
-				// Ä¬ÈÏÇé¿öÏÂ£¬¸ßÒôÖÊÒôÀÖµÄURL µÈÓÚ ÆÕÍ¨Æ·ÖÊÒôÀÖµÄURL
+				// é»˜è®¤æƒ…å†µä¸‹ï¼Œé«˜éŸ³è´¨éŸ³ä¹çš„URL ç­‰äº æ™®é€šå“è´¨éŸ³ä¹çš„URL
 				String durl = url;
 
-				// ÅĞ¶Ï¸ßÆ·ÖÊ½ÚµãÊÇ·ñ´æÔÚ
+				// åˆ¤æ–­é«˜å“è´¨èŠ‚ç‚¹æ˜¯å¦å­˜åœ¨
 				Element durlElement = durlList.get(0).element("encode");
 				if (null != durlElement) {
-					// ¸ßÆ·ÖÊµÄencode¡¢decode
+					// é«˜å“è´¨çš„encodeã€decode
 					String durlEncode = durlList.get(0).element("encode").getText();
 					String durlDecode = durlList.get(0).element("decode").getText();
-					// ¸ßÆ·ÖÊÒôÀÖµÄURL
+					// é«˜å“è´¨éŸ³ä¹çš„URL
 					durl = durlEncode.substring(0, durlEncode.lastIndexOf("/") + 1) + durlDecode;
 					if (-1 != durlDecode.lastIndexOf("&"))
 						durl = durlEncode.substring(0, durlEncode.lastIndexOf("/") + 1) + durlDecode.substring(0, durlDecode.lastIndexOf("&"));
 				}
 				music = new Music();
-				// ÉèÖÃÆÕÍ¨Æ·ÖÊÒôÀÖÁ´½Ó
+				// è®¾ç½®æ™®é€šå“è´¨éŸ³ä¹é“¾æ¥
 				music.setMusicUrl(url);
-				// ÉèÖÃ¸ßÆ·ÖÊÒôÀÖÁ´½Ó
-				music.setHQMusicUrl(durl);
+				// è®¾ç½®é«˜å“è´¨éŸ³ä¹é“¾æ¥
+				music.setHqMusicUrl(durl);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -148,12 +148,12 @@ public class BaiduMusicService {
 		return music;
 	}
 
-	// ²âÊÔ·½·¨
+	// æµ‹è¯•æ–¹æ³•
 	public static void main(String[] args) {
-		Music music = searchMusic("ÅİÄ­", "µË×ÏÆå");
-		System.out.println("ÒôÀÖÃû³Æ£º" + music.getTitle());
-		System.out.println("ÒôÀÖÃèÊö£º" + music.getDescription());
-		System.out.println("ÆÕÍ¨Æ·ÖÊÁ´½Ó£º" + music.getMusicUrl());
-		System.out.println("¸ßÆ·ÖÊÁ´½Ó£º" + music.getHQMusicUrl());
+		Music music = searchMusic("æ³¡æ²«", "é‚“ç´«æ£‹");
+		System.out.println("éŸ³ä¹åç§°ï¼š" + music.getTitle());
+		System.out.println("éŸ³ä¹æè¿°ï¼š" + music.getDescription());
+		System.out.println("æ™®é€šå“è´¨é“¾æ¥ï¼š" + music.getMusicUrl());
+		System.out.println("é«˜å“è´¨é“¾æ¥ï¼š" + music.getHqMusicUrl());
 	}
 }

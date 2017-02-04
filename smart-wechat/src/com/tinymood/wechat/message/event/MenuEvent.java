@@ -1,21 +1,31 @@
-package org.taoran.course.message.event;
+package com.tinymood.wechat.message.event;
 
 /**
- * ×Ô¶¨Òå²Ëµ¥ÊÂ¼ş
+ * è‡ªå®šä¹‰èœå•äº‹ä»¶
  * 
- * @author ßØßØ
- * @date 2015-4-9
+ * @author nothankyou
+ * @date 2017-02-03 20:37:50
  */
 public class MenuEvent extends BaseEvent {
-	// ÊÂ¼şkeyÖµ,Óë×Ô¶¨Òå²Ëµ¥½Ó¿ÚÖĞkeyÖµ¶ÔÓ¦
-	private String EventKey;
+	// äº‹ä»¶ä¸ºCLICKï¼šäº‹ä»¶keyå€¼,ä¸è‡ªå®šä¹‰èœå•æ¥å£ä¸­keyå€¼å¯¹åº”
+	private String eventKey1;
 
-	public String getEventKey() {
-		return EventKey;
+	// äº‹ä»¶ä¸ºVIEWï¼šäº‹ä»¶keyå€¼ï¼Œè·³è½¬çš„url
+	private String eventKey2;
+
+	public String getEventKey1() {
+		return eventKey1;
 	}
 
-	public void setEventKey(String eventKey) {
-		EventKey = eventKey;
+	public void setEventKey1(String eventKey1) {
+		this.eventKey1 = eventKey1;
 	}
 
+	public String getEventKey2() {
+		return eventKey2;
+	}
+
+	public void setEventKey2(String eventKey2) {
+		this.eventKey2 = eventKey2;
+	}
 }

@@ -1,23 +1,28 @@
-package org.taoran.course.pojo;
+package com.tinymood.wechat.pojo;
 
 /**
- * Baidu地址信息
- * 
- * @author 哓哓
- * @date 2015-4-8
+ * Baidu鍦板潃淇℃伅
+ *
+ * @author nothankyou
+ * @date 2017-02-03 22:12:38
  */
 public class BaiduPlace implements Comparable<BaiduPlace> {
-	// 名称
+	// 鍚嶇О
 	private String name;
-	// 详细地址
+
+	// 璇︾粏鍦板潃
 	private String address;
-	// 经度
-	private String lng;
-	// 纬度
+
+	// 绾害
 	private String lat;
-	// 联系电话
+
+	// 缁忓害
+	private String lng;
+
+	// 鑱旂郴鐢佃瘽
 	private String telephone;
-	// 距离
+
+	// 璺濈
 	private int distance;
 
 	public String getName() {

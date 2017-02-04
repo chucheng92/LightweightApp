@@ -1,29 +1,37 @@
-package org.taoran.course.pojo;
+package com.tinymood.wechat.pojo;
 
 /**
  * Face Model
- * 
- * @author ßØßØ
- * @date 2015-4-15
+ *
+ * @author nothankyou
+ * @date 2017-02-03 22:24:51
  */
 public class Face implements Comparable<Face> {
-	// ±»¼ì²â³öµÄÃ¿Ò»ÕÅÈËÁ³¶¼ÔÚFace++ÏµÍ³ÖĞµÄ±êÊ¶·û
+	// è¢«æ£€æµ‹å‡ºçš„æ¯ä¸€å¼ äººè„¸éƒ½åœ¨Face++ç³»ç»Ÿä¸­çš„æ ‡è¯†ç¬¦
 	private String faceId;
-	// ÄêÁä¹À¼ÆÖµ
+
+	// å¹´é¾„ä¼°è®¡å€¼
 	private int ageValue;
-	// ÄêÁä¹À¼ÆÖµµÄÕı¸ºÇø¼ä
+
+	// å¹´é¾„ä¼°è®¡å€¼çš„æ­£è´ŸåŒºé—´
 	private int ageRange;
-	// ĞÔ±ğ£ºMale/Female
+
+	// æ€§åˆ«ï¼šMale/Female
 	private String genderValue;
-	// ĞÔ±ğ·ÖÎöµÄ¿ÉĞÅ¶È
+
+	// æ€§åˆ«åˆ†æçš„å¯ä¿¡åº¦
 	private double genderConfidence;
-	// ÈËÖÖ£ºAsian/White/Black
+
+	// äººç§ï¼šAsian/White/Black
 	private String raceValue;
-	// ÈËÖÖ·ÖÎöµÄ¿ÉĞÅ¶È
+
+	// äººç§åˆ†æçš„å¯ä¿¡åº¦
 	private double raceConfidence;
-	// Î¢Ğ¦³Ì¶È
+
+	// å¾®ç¬‘ç¨‹åº¦
 	private double smilingValue;
-	// ÈËÁ³¿òµÄÖĞĞÄµã×ø±ê
+
+	// äººè„¸æ¡†çš„ä¸­å¿ƒç‚¹åæ ‡
 	private double centerX;
 	private double centerY;
 
@@ -107,7 +115,7 @@ public class Face implements Comparable<Face> {
 		this.centerY = centerY;
 	}
 
-	// ¸ù¾İÈËÁ³ÖĞĞÄµã×ø±ê´Ó×óÖÁÓÒÅÅĞò
+	// æ ¹æ®äººè„¸ä¸­å¿ƒç‚¹åæ ‡ä»å·¦è‡³å³æ’åº
 	@Override
 	public int compareTo(Face face) {
 		int result = 0;

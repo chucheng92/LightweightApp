@@ -7,13 +7,13 @@ package com.tinymood.wechat.message.req;
  */
 public class TextMessage extends BaseReqMessage {
 	//消息内容
-	private String Content;
+	private String content;
 
 	public String getContent() {
-		return Content;
+		return content;
 	}
 
 	public void setContent(String content) {
-		Content = content;
+		this.content = content;
 	}
 }

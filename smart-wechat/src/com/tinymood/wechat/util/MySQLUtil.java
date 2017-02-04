@@ -1,4 +1,7 @@
-package org.taoran.course.util;
+package com.tinymood.wechat.util;
+
+import com.tinymood.wechat.pojo.Knowledge;
+import com.tinymood.wechat.pojo.UserLocation;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,19 +13,17 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.taoran.course.pojo.Knowledge;
-import org.taoran.course.pojo.UserLocation;
 
 /**
- * MysqlÊı¾İ¿â²Ù×÷Àà
- * 
- * @author ßØßØ
- * @date 2015-4-10
+ * Mysqlæ•°æ®åº“æ“ä½œç±»
+ *
+ * @author nothankyou
+ * @date 2017-02-03 22:08:13
  */
 public class MySQLUtil {
 	/**
-	 * »ñÈ¡MysqlÊı¾İ¿âÁ¬½Ó
-	 * 
+	 * è·å–Mysqlæ•°æ®åº“è¿æ¥
+	 *
 	 * @return Connection
 	 */
 	private Connection getConn(HttpServletRequest request) {
@@ -33,24 +34,24 @@ public class MySQLUtil {
 		String port = "3307";
 		String username = "2l0jj5xw1k";
 		String password = "hiwil13w0lw5iil1x41zy02235hx24mylyx555jy";
-																
+
 		String driverName = "com.mysql.jdbc.Driver";
 		String dbUrl = "jdbc:mysql://";
 		String serverName = host + ":" + port + "/";
 		String connName = dbUrl + serverName + dbName;
 
 		try {
-			// ¼ÓÔØMySQLÇı¶¯
+			// åŠ è½½MySQLé©±åŠ¨
 			Class.forName(driverName);
-			// »ñÈ¡Êı¾İ¿âÁ¬½Ó
-			System.out.println("ÕÒ²»µ½Çı¶¯³ÌĞòÀà £¬¼ÓÔØÇı¶¯Ê§°Ü£¡");
+			// è·å–æ•°æ®åº“è¿æ¥
+			System.out.println("æ‰¾ä¸åˆ°é©±åŠ¨ç¨‹åºç±» ï¼ŒåŠ è½½é©±åŠ¨å¤±è´¥ï¼");
 			conn = DriverManager.getConnection(connName, username, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return conn;
 	}
-	
+
 	private Connection getConn() {
 		Connection conn = null;
 
@@ -59,27 +60,27 @@ public class MySQLUtil {
 		String port = "3307";
 		String username = "2l0jj5xw1k";
 		String password = "hiwil13w0lw5iil1x41zy02235hx24mylyx555jy";
-																
+
 		String driverName = "com.mysql.jdbc.Driver";
 		String dbUrl = "jdbc:mysql://";
 		String serverName = host + ":" + port + "/";
 		String connName = dbUrl + serverName + dbName;
 
 		try {
-			// ¼ÓÔØMySQLÇı¶¯
+			// åŠ è½½MySQLé©±åŠ¨
 			Class.forName(driverName);
-			// »ñÈ¡Êı¾İ¿âÁ¬½Ó
-			System.out.println("ÕÒ²»µ½Çı¶¯³ÌĞòÀà £¬¼ÓÔØÇı¶¯Ê§°Ü£¡");
+			// è·å–æ•°æ®åº“è¿æ¥
+			System.out.println("æ‰¾ä¸åˆ°é©±åŠ¨ç¨‹åºç±» ï¼ŒåŠ è½½é©±åŠ¨å¤±è´¥ï¼");
 			conn = DriverManager.getConnection(connName, username, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return conn;
 	}
-	
+
 	/**
-	 * ÊÍ·ÅJDBC×ÊÔ´
-	 * 
+	 * é‡Šæ”¾JDBCèµ„æº
+	 *
 	 */
 	private void releaseResources(Connection conn, PreparedStatement ps, ResultSet rs) {
 		try {
@@ -93,16 +94,16 @@ public class MySQLUtil {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * ±£´æÓÃ»§µØÀíÎ»ÖÃ
-	 * 
-	 * @param request ÇëÇó¶ÔÏó
-	 * @param openId ÓÃ»§µÄOpenID
-	 * @param lng ÓÃ»§·¢ËÍµÄ¾­¶È
-	 * @param lat ÓÃ»§·¢ËÍµÄÎ³¶È
-	 * @param bd09_lng ¾­¹ı°Ù¶È×ø±ê×ª»»ºóµÄ¾­¶È
-	 * @param bd09_lat ¾­¹ı°Ù¶È×ø±ê×ª»»ºóµÄÎ³¶È
+	 * ä¿å­˜ç”¨æˆ·åœ°ç†ä½ç½®
+	 *
+	 * @param request è¯·æ±‚å¯¹è±¡
+	 * @param openId ç”¨æˆ·çš„OpenID
+	 * @param lng ç”¨æˆ·å‘é€çš„ç»åº¦
+	 * @param lat ç”¨æˆ·å‘é€çš„çº¬åº¦
+	 * @param bd09_lng ç»è¿‡ç™¾åº¦åæ ‡è½¬æ¢åçš„ç»åº¦
+	 * @param bd09_lat ç»è¿‡ç™¾åº¦åæ ‡è½¬æ¢åçš„çº¬åº¦
 	 */
 	public static void saveUserLocation(HttpServletRequest request, String openId, String lng, String lat, String bd09_lng, String bd09_lat) {
 		String sql = "insert into user_location(open_id, lng, lat, bd09_lng, bd09_lat) values (?, ?, ?, ?, ?)";
@@ -115,7 +116,7 @@ public class MySQLUtil {
 			ps.setString(4, bd09_lng);
 			ps.setString(5, bd09_lat);
 			ps.executeUpdate();
-			// ÊÍ·Å×ÊÔ´
+			// é‡Šæ”¾èµ„æº
 			ps.close();
 			conn.close();
 		} catch (Exception e) {
@@ -124,10 +125,10 @@ public class MySQLUtil {
 	}
 
 	/**
-	 * »ñÈ¡ÓÃ»§×îºóÒ»´Î·¢ËÍµÄµØÀíÎ»ÖÃ
-	 * 
-	 * @param request ÇëÇó¶ÔÏó
-	 * @param openId ÓÃ»§µÄOpenID
+	 * è·å–ç”¨æˆ·æœ€åä¸€æ¬¡å‘é€çš„åœ°ç†ä½ç½®
+	 *
+	 * @param request è¯·æ±‚å¯¹è±¡
+	 * @param openId ç”¨æˆ·çš„OpenID
 	 * @return UserLocation
 	 */
 	public static UserLocation getLastLocation(HttpServletRequest request, String openId) {
@@ -146,7 +147,7 @@ public class MySQLUtil {
 				userLocation.setBd09Lng(rs.getString("bd09_lng"));
 				userLocation.setBd09Lat(rs.getString("bd09_lat"));
 			}
-			// ÊÍ·Å×ÊÔ´
+			// é‡Šæ”¾èµ„æº
 			rs.close();
 			ps.close();
 			conn.close();
@@ -155,10 +156,10 @@ public class MySQLUtil {
 		}
 		return userLocation;
 	}
-	
+
 	/**
-	 * »ñÈ¡ÎÊ´ğÖªÊ¶±íÖĞËùÓĞ¼ÇÂ¼
-	 * 
+	 * è·å–é—®ç­”çŸ¥è¯†è¡¨ä¸­æ‰€æœ‰è®°å½•
+	 *
 	 * @return List<Knowledge>
 	 */
 	public static List<Knowledge> findAllKnowledge() {
@@ -183,16 +184,16 @@ public class MySQLUtil {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// ÊÍ·Å×ÊÔ´
+			// é‡Šæ”¾èµ„æº
 			mysqlUtil.releaseResources(conn, ps, rs);
 		}
 		return knowledgeList;
 	}
 
 	/**
-	 * »ñÈ¡ÉÏÒ»´ÎµÄÁÄÌìÀà±ğ
-	 * 
-	 * @param openId ÓÃ»§µÄOpenID
+	 * è·å–ä¸Šä¸€æ¬¡çš„èŠå¤©ç±»åˆ«
+	 *
+	 * @param openId ç”¨æˆ·çš„OpenID
 	 * @return chatCategory
 	 */
 	public static int getLastCategory(String openId) {
@@ -214,16 +215,16 @@ public class MySQLUtil {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// ÊÍ·Å×ÊÔ´
+			// é‡Šæ”¾èµ„æº
 			mysqlUtil.releaseResources(conn, ps, rs);
 		}
 		return chatCategory;
 	}
 
 	/**
-	 * ¸ù¾İÖªÊ¶idËæ»ú»ñÈ¡Ò»¸ö´ğ°¸
-	 * 
-	 * @param knowledgeId ÎÊ´ğÖªÊ¶id
+	 * æ ¹æ®çŸ¥è¯†idéšæœºè·å–ä¸€ä¸ªç­”æ¡ˆ
+	 *
+	 * @param knowledgeId é—®ç­”çŸ¥è¯†id
 	 * @return
 	 */
 	public static String getKnowledSub(int knowledgeId) {
@@ -245,15 +246,15 @@ public class MySQLUtil {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// ÊÍ·Å×ÊÔ´
+			// é‡Šæ”¾èµ„æº
 			mysqlUtil.releaseResources(conn, ps, rs);
 		}
 		return knowledgeAnswer;
 	}
 
 	/**
-	 * Ëæ»ú»ñÈ¡Ò»ÌõĞ¦»°
-	 * 
+	 * éšæœºè·å–ä¸€æ¡ç¬‘è¯
+	 *
 	 * @return String
 	 */
 	public static String getJoke() {
@@ -274,16 +275,16 @@ public class MySQLUtil {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// ÊÍ·Å×ÊÔ´
+			// é‡Šæ”¾èµ„æº
 			mysqlUtil.releaseResources(conn, ps, rs);
 		}
 		return jokeContent;
 	}
 
-	
+
 	/**
-	 * Ëæ»ú»ñÈ¡Ò»ÌõÓïÂ¼
-	 * 
+	 * éšæœºè·å–ä¸€æ¡è¯­å½•
+	 *
 	 * @return String
 	 */
 	public static String getYulu() {
@@ -304,20 +305,20 @@ public class MySQLUtil {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// ÊÍ·Å×ÊÔ´
+			// é‡Šæ”¾èµ„æº
 			mysqlUtil.releaseResources(conn, ps, rs);
 		}
 		return yuluContent;
 	}
 
 	/**
-	 * ±£´æÁÄÌì¼ÇÂ¼
-	 * 
-	 * @param openId ÓÃ»§µÄOpenID
-	 * @param createTime ÏûÏ¢´´½¨Ê±¼ä
-	 * @param reqMsg ÓÃ»§ÉÏĞĞµÄÏûÏ¢
-	 * @param respMsg ¹«ÖÚÕËºÅ»Ø¸´µÄÏûÏ¢
-	 * @param chatCategory ÁÄÌìÀà±ğ
+	 * ä¿å­˜èŠå¤©è®°å½•
+	 *
+	 * @param openId ç”¨æˆ·çš„OpenID
+	 * @param createTime æ¶ˆæ¯åˆ›å»ºæ—¶é—´
+	 * @param reqMsg ç”¨æˆ·ä¸Šè¡Œçš„æ¶ˆæ¯
+	 * @param respMsg å…¬ä¼—è´¦å·å›å¤çš„æ¶ˆæ¯
+	 * @param chatCategory èŠå¤©ç±»åˆ«
 	 */
 	public static void saveChatLog(String openId, String createTime, String reqMsg, String respMsg, int chatCategory) {
 		String sql = "insert into chat_log(open_id, create_time, req_msg, resp_msg, chat_category) values(?, ?, ?, ?, ?)";
@@ -338,7 +339,7 @@ public class MySQLUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			// ÊÍ·Å×ÊÔ´
+			// é‡Šæ”¾èµ„æº
 			mysqlUtil.releaseResources(conn, ps, rs);
 		}
 	}

@@ -5,14 +5,14 @@ package com.tinymood.wechat.message.resp;
  * @date 2017-02-03 14:22:58
  */
 public class Voice {
-	// 媒体文件id
-	private String MediaId;
+	// 语音文件id
+	private String mediaId;
 
 	public String getMediaId() {
-		return MediaId;
+		return mediaId;
 	}
 
 	public void setMediaId(String mediaId) {
-		MediaId = mediaId;
+		this.mediaId = mediaId;
 	}
 }

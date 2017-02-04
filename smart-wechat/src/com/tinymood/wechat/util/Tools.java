@@ -1,257 +1,223 @@
-package org.taoran.course.util;
+package com.tinymood.wechat.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Tools {
-	public static final String defaultMenu = "------------------------\n" + "ÍÆ¼ö: ÖÜ±ßËÑË÷\n"
-			+ "------------------------\n" + "1 ÖÇÄÜ·­Òë 2 µã¸è·ÖÏí\ue03e\n"
-			+ "3 ÖÜ±ßËÑË÷ 4 ÎÒÊÇLemon\n" + "5 ÑÕÖµ¼ì²â Ç¿ÊÆÀ´Ï®" + Tools.emoji(0x1F525)
-			+ "\n" + "6 ±¾ÖÜÍÆ¼ö 7 ½²¸öĞ¦»°\n" + "8 ¾­µäÓïÂ¼ 9 ·´À¡½¨Òé\n"+"¸ü¶àÊµÓÃ¹¦ÄÜÕıÔÚ¿ª·¢£¬ÇëÆÚ´ı¡£\n\n"
-			+ "»òÖ±½Óµã»÷²Ëµ¥ÌåÑé";
-	public static String welcome = "Ç×£¬ÔõÃ´ÏÖÔÚ²ÅÀ´ÄØ£¿\ue11b\n\nÎÒÊÇÄãÉú»îÓéÀÖµÄºÃ°ïÊÖ£¬¿ì¿ìÌåÑé°É£¡Ã´Ã´ßÕ~";
+    public static final String menu = "ã€Œæ¢¦å›å°‘å¹´ã€é£Ÿç”¨æŒ‡å—\n"
+            + "------------------------\n" + "1 ç‚¹æ­Œåˆ†äº«\ue03e\n"
+            + "2 å‘¨è¾¹æœç´¢\n" + "3 é¢œå€¼æ£€æµ‹" + Tools.emoji(0x1F525)
+            + "\n" + "4 éŸ³ä¹èšåˆ\n" + "5 å†å²æ–‡ç« \n" + "6 å¤©å¯æ™ºèƒ½æœºå™¨äºº\n" + "7 å¿«æ·å›å¤\n" + "8 åé¦ˆå»ºè®®\n" + "æ›´å¤šå®ç”¨åŠŸèƒ½æ­£åœ¨å¼€å‘ï¼Œè¯·æœŸå¾…ã€‚\n"
+            + "å›å¤â€œ?â€æ˜¾ç¤ºä¸»èœå•";
 
-	/**
-	 * ¸èÇúµã²¥Ê¹ÓÃÖ¸ÄÏ
-	 * 
-	 * @return
-	 */
-	public static String getMusicUsage() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("\ue03e").append("µã¸è·ÖÏí²Ù×÷Ö¸ÄÏ").append("\n\n");
-		buffer.append("»Ø¸´£º¸èÇú+¸èÃû").append("\n");
-		buffer.append("ÀıÈç£º¸èÇúÅİÄ­").append("\n");
-		buffer.append("»òÕß£º¸èÇúÅİÄ­@µË×ÏÆå(ÓÃÀ´Ö¸¶¨¸èÊÖÅ¶)").append("\n");
-		buffer.append("ËÑË÷µ½¸èÇúºó ÊÔÌıÒ»ÏÂßÂ È»ºó¾Í¿ÉÒÔ×ª·¢¸øºÃÓÑÀ²").append("\n\n");
-		buffer.append("»Ø¸´¡°?¡±ÏÔÊ¾Ö÷²Ëµ¥");
-		return buffer.toString();
-	}
+    public static String welcome = "\uD83D\uDE0BHello~å¾ˆé«˜å…´é‡è§ä½ ï¼æˆ‘ä¸æ˜¯æ‡’ï¼Œåªæ˜¯æœ‰æ—¶å€™æ›´æ–°çš„æ¯”è¾ƒæ…¢ã€‚";
 
-	/**
-	 * »ñµÃÖ÷½çÃæ
-	 * 
-	 * @return
-	 */
-	public static String getJoke() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("/::D").append("Ğ¦»°Ê¹ÓÃÖ¸ÄÏ").append("\n\n");
-		buffer.append("»Ø¸´¡®Ğ¦»°¡¯¼´¿É¡£").append("\n\n");
-		buffer.append("»Ø¸´¡°?¡±ÏÔÊ¾Ö÷²Ëµ¥");
+    /**
+     * å…³æ³¨æç¤ºè¯­
+     *
+     * @return
+     */
+    public static String getSubscribeMsg() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(welcome).append("\n\n");
+        buffer.append("ç¥ä½ ç©å¾—é«˜å…´ï¼Œå¿«å¿«å‘æ˜æˆ‘çš„æ›´å¤šåŠŸèƒ½~\n\n");
+        buffer.append("å›å¤â€œ?â€æ˜¾ç¤ºä¸»èœå•");
 
-		return buffer.toString();
-	}
+        return buffer.toString();
+    }
 
-	/**
-	 * ÌìÆøÔ¤±¨Ê¹ÓÃÖ¸ÄÏ
-	 * 
-	 * @return
-	 */
-	public static String getWeatherUsage() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("ÌìÆø²éÑ¯Ö¸ÄÏ").append("\n\n");
-		buffer.append("»Ø¸´£ºÌìÆø+³ÇÊĞ").append("\n");
-		buffer.append("ÀıÈç£ºÌìÆøÏÃÃÅ").append("\n");
-		buffer.append("»Ø¸´¡°?¡±ÏÔÊ¾Ö÷²Ëµ¥");
-		return buffer.toString();
-	}
+    // Debug
+    public static void main(String[] args) {
+        System.out.println(getSubscribeMsg());
+        System.out.println(menu);
+        System.out.println(getMusicUsage());
+        System.out.println(getLocationUsage());
+        System.out.println(getFaceUsage());
+        System.out.println(getMusicAggregation());
+        System.out.println(getHistoryArticles());
+        System.out.println(getRobotUsage());
+        System.out.println(getShortcutKeyword());
+        System.out.println(getSuggestUsage());
+    }
 
-	/**
-	 * emoji±íÇé×ª»»(hex -> utf-16)
-	 * 
-	 * @param hexEmoji
-	 * @return
-	 */
-	public static String emoji(int hexEmoji) {
-		return String.valueOf(Character.toChars(hexEmoji));
-	}
+    /**
+     * 1ã€æ­Œæ›²ç‚¹æ’­æŒ‡å—
+     *
+     * @return
+     */
+    public static String getMusicUsage() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("\ue03e").append("ç‚¹æ­ŒæŒ‡å—").append("\n\n");
+        buffer.append("å›å¤ï¼šæ­Œæ›²+æ­Œå").append("\n");
+        buffer.append("ä¾‹å¦‚ï¼šæ­Œæ›²æ³¡æ²«").append("\n");
+        buffer.append("æˆ–è€…ï¼šæ­Œæ›²æ³¡æ²«@é‚“ç´«æ£‹(ç”¨æ¥æŒ‡å®šæ­Œæ‰‹å“¦)").append("\n");
+        buffer.append("æœç´¢åˆ°æ­Œæ›²å è¯•å¬ä¸€ä¸‹å‘— ç„¶åå°±å¯ä»¥è½¬å‘ç»™å¥½å‹å•¦").append("\n\n");
+        buffer.append("å›å¤â€œ?â€æ˜¾ç¤ºä¸»èœå•");
+        return buffer.toString();
+    }
 
-	/**
-	 * ¹Ø×¢ÌáÊ¾Óï
-	 * 
-	 * @return
-	 */
-	public static String getSubscribeMsg() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("ÄúÊÇ·ñÓĞ¹ı³öÃÅÔÚÍâËÄ´¦ÕÒATM¡¢¹«½»³µ£¬KTV»ò¹«²ŞµÄ¾­Àú£¿").append("\n\n");
-		buffer.append("ÄúÊÇ·ñÓĞ¹ı³ö²îÔÚÍâËÑÑ°ÃÀÊ³»òÓéÀÖ³¡ËùµÄ¾­Àú£¿").append("\n\n");
-		buffer.append("ÖÜ±ßËÑË÷ÎªÄúµÄ³öĞĞ±£¼İ»¤º½£¬ÎªÄúÌá¹©×¨ÒµµÄÖÜ±ßÉú»îÖ¸ÄÏ£¬»Ø¸´¡°¸½½ü¡±¿ªÊ¼ÌåÑé°É£¡");
-		return buffer.toString();
-	}
+    /**
+     * 2ã€å‘¨è¾¹æœç´¢æŒ‡å—
+     *
+     * @return
+     */
+    public static String getLocationUsage() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("\ue138").append("å‘¨è¾¹æœç´¢æŒ‡å—").append("\n\n");
+        buffer.append("å¿…é¡»å…ˆå‘é€åœ°ç†ä½ç½®å“¦").append("\n");
+        buffer.append("ç‚¹å‡»çª—å£åº•éƒ¨çš„â€œ+â€æŒ‰é’®ï¼Œå‘é€ä½ç½®").append("\n");
+        buffer.append("ç„¶åæŒ‡å®šå…³é”®è¯æœç´¢").append("\n");
+        buffer.append("æ ¼å¼ï¼šé™„è¿‘+å…³é”®è¯\nä¾‹å¦‚ï¼šé™„è¿‘ç¾é£Ÿã€é™„è¿‘å…¬äº¤ç«™ã€é™„è¿‘å•æ‰€").append("\n");
+        buffer.append(Tools.emoji(0x1F525) + "å°æç¤ºï¼šæœ‰å¯¼èˆªåœ°å›¾å“¦ï¼Œå†ä¹Ÿä¸æ€•è·¯ç—´äº†ã€‚"
+                + Tools.emoji(0x1F525) + "\n");
+        buffer.append("å›å¤â€œ?â€æ˜¾ç¤ºä¸»èœå•");
 
-	/**
-	 * ÖÜ±ßËÑË÷Ö¸ÄÏ
-	 * 
-	 * @return
-	 */
-	public static String getLocationUsage() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("\ue138").append("ÖÜ±ßËÑË÷Ê¹ÓÃËµÃ÷").append("\n\n");
-		buffer.append("±ØĞëÏÈ·¢ËÍµØÀíÎ»ÖÃÅ¶").append("\n");
-		buffer.append("µã»÷´°¿Úµ×²¿µÄ¡°+¡±°´Å¥£¬·¢ËÍÎ»ÖÃ").append("\n");
-		buffer.append("È»ºóÖ¸¶¨¹Ø¼ü´ÊËÑË÷").append("\n");
-		buffer.append("¸ñÊ½£º¸½½ü+¹Ø¼ü´Ê\nÀıÈç£º¸½½üÃÀÊ³¡¢¸½½ü¹«½»Õ¾¡¢¸½½ü²ŞËù").append("\n");
-		buffer.append(Tools.emoji(0x1F525) + "Ğ¡ÌáÊ¾£ºÓĞµ¼º½µØÍ¼Å¶£¬ÔÙÒ²²»ÅÂÂ·³ÕÁË¡£"
-				+ Tools.emoji(0x1F525));
-		return buffer.toString();
-	}
+        return buffer.toString();
+    }
 
-	/**
-	 * ·­ÒëÊ¹ÓÃÖ¸ÄÏ
-	 * 
-	 * @return
-	 */
-	public static String getTranslateUsage() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(emoji(0xe148)).append("ÖÇÄÜ·­ÒëÊ¹ÓÃÖ¸ÄÏ").append("\n\n");
-		buffer.append("Ö§³ÖÒÔÏÂ·­Òë·½Ïò£º").append("\n");
-		buffer.append("    ÖĞ -> Ó¢").append("\n");
-		buffer.append("    Ó¢ -> ÖĞ").append("\n");
-		buffer.append("    ÈÕ -> ÖĞ").append("\n\n");
-		buffer.append("Ê¹ÓÃÊ¾Àı£º").append("\n");
-		buffer.append("    ·­ÒëÎÒÊÇÖĞ¹úÈË").append("\n");
-		buffer.append("    ·­Òëdream").append("\n");
-		buffer.append("    ·­Òë¤µ¤è¤¦¤Ê¤é").append("\n\n");
-		buffer.append("°Ù¶È·­Òë ¼¼ÊõÖ§³Ö");
-		return buffer.toString();
-	}
+    /**
+     * 3ã€é¢œå€¼æ£€æµ‹ä½¿ç”¨æŒ‡å—
+     *
+     * @return
+     */
+    public static String getFaceUsage() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("\n");
+        buffer.append("æ–¹æ³•ï¼‰ä¸Šä¼ å•äººæˆ–å¤šäººäººè„¸ç…§ç‰‡").append("\n");
+        buffer.append("ç‚¹å‡»çª—å£åº•éƒ¨çš„â€œ+â€æŒ‰é’®ï¼Œå‘é€å›¾ç‰‡ã€‚\n");
+        buffer.append("å›å¤â€œ?â€æ˜¾ç¤ºä¸»èœå•");
 
-	/**
-	 * ¹«½»²éÑ¯Ê¹ÓÃÖ¸ÄÏ
-	 * 
-	 * @return
-	 */
-	public static String getBusUsage() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("¹«½»²éÑ¯Ê¹ÓÃËµÃ÷").append("\n\n");
-		buffer.append("·½·¨1£©·¢ËÍ³ÇÊĞÏßÂ·").append("\n");
-		buffer.append("·½·¨2£©Ö¸¶¨¹Ø¼ü´ÊËÑË÷").append("\n");
-		buffer.append("¸ñÊ½£º³ÇÊĞ¹Ø¼ü´Ê\nÀıÈç£ºÏÃÃÅ135Â·").append("\n");
-		buffer.append("×¢£º¹¦ÄÜÉĞÎ´¿ª·ÅÆÚ¼ä£¬ÊäÈë¡±¸½½ü¹«½»Õ¾¡°0.0").append("\n");
-		return buffer.toString();
-	}
+        return buffer.toString();
+    }
 
-	/**
-	 * ÓÎÏ·Ê¹ÓÃÖ¸ÄÏ
-	 * 
-	 * @return
-	 */
-	public static String getGameUsage() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("ÍæÓÎÏ·Ê¹ÓÃËµÃ÷").append("\n\n");
-		buffer.append("·½·¨1£©·¢ËÍ·­ÒëÓï¾ä").append("\n");
-		buffer.append("µã»÷´°¿Úµ×²¿µÄ¡°+¡±°´Å¥£¬Ñ¡Ôñ¡°·­Òë¡±£¬µã¡°·¢ËÍ¡±").append("\n\n");
-		buffer.append("·½·¨2£©Ö¸¶¨¹Ø¼ü´ÊËÑË÷").append("\n");
-		return buffer.toString();
-	}
+    /**
+     * 4ã€éŸ³ä¹èšåˆ
+     *
+     * @return
+     */
+    public static String getMusicAggregation() {
+        String respContent = null;
+        respContent = "\ue110 éŸ³ä¹èšåˆ\n"
+                + "1 <a href=\"http://v.yinyuetai.com/video/2268593\">brave shine(UBW op2) - Aimer</a>\n\n"
+                + "2 <a href=\"http://music.163.com/#/song?id=29550217\">ideal white - ä¿±é‡ã¾ã—ã‚</a>\n"
+                + "3 <a href=\"http://music.163.com/#/song?id=29736027\">believe - Kalafina</a>\n"
+                + "4 <a href=\"http://music.163.com/#/song?id=560108\">MEMORIA - ä»–äº•ã‚¨ã‚¤ãƒ«</a>\n"
+                + "5 <a href=\"http://music.163.com/#/song?id=608404\">oath sign - LISA</a>\n"
+                + "6 <a href=\"http://music.163.com/#/song?id=756338\">to the beginning - Kalafina</a>\n\n"
+                + "7 <a href=\"http://music.163.com/#/song?id=30953009\">see you again-Wiz Khalifa/Charlie Puth</a>\n\n"
+                + "8 <a href=\"http://music.163.com/#/song?id=579954\">æ‹çˆ±ã‚µâ”¼ã‚­ãƒ¥ãƒ¬â”¼ã‚·ãƒ§ãƒ³ - èŠ±æ³½é¦™èœ</a>\n"
+                + "9 <a href=\"http://music.qq.com/qqmusic.html?id=5034876\">You Are Beautiful - James Blunt </a>\n"
+                + "10 <a href=\"http://music.qq.com/qqmusic.html?id=4825889\">æ—¶é—´ç…®é›¨ - éƒå¯å”¯</a>\n"
+                + "11 <a href=\"http://music.qq.com/qqmusic.html?id=442823\">Live Like You're Dying - Lenka</a>\n"
+                + "12 <a href=\"http://music.163.com/#/song?id=27674128\">æ‹ã™ã‚‹ãƒ•ã‚©â”¼ãƒãƒ¥ãƒ³ã‚¯ãƒƒã‚­â”¼ - AKB48</a>\n\n"
+                + "åå°å›å¤æ­Œæ›²åæˆ–ç§èŠå°‘å¹´ï¼Œæ¨èä½ å–œæ¬¢çš„æ­Œæ›²ã€‚\n"
+                + "å°‘å¹´ä¼šå°†å„ä½æ¨èçš„éŸ³ä¹ï¼Œæ¯å‘¨è¿›è¡Œèšåˆï¼Œå°†ä½ çš„åˆ†äº«æ¨èç»™æ›´å¤šäºº~\næ„Ÿè°¢ä½ çš„åˆ†äº«å’Œé¼“åŠ±ã€‚\n\n"
+                + "å›å¤â€œ?â€æ˜¾ç¤ºä¸»èœå•";
 
-	/**
-	 * ÈËÁ³¼ì²âÊ¹ÓÃÖ¸ÄÏ
-	 * 
-	 * @return
-	 */
-	public static String getFaceUsage() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("\n");
-		buffer.append("·½·¨£©ÉÏ´«µ¥ÈË»ò¶àÈËÈËÁ³ÕÕÆ¬").append("\n");
-		buffer.append("µã»÷´°¿Úµ×²¿µÄ¡°+¡±°´Å¥£¬·¢ËÍÍ¼Æ¬¡£");
-		return buffer.toString();
-	}
+        return respContent;
+    }
 
-	/**
-	 * ÁÄÌìÊ¹ÓÃÖ¸ÄÏ
-	 * 
-	 * @return
-	 */
-	public static String getChatUsage() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("\ue307").append("LemonÖÇÄÜÁÄÌì").append("\n\n");
-		buffer.append("LuceneÒıÇæ¼¼ÊõÖ§³Ö").append("\n");
-		buffer.append("¸Ï½ôÊÔÊÔ°É(>^¦Ø^<)").append("\n");
-		buffer.append("·½·¨£©·¢ËÍÈÎÒâÎÄ×Ö").append("\n");
+    /**
+     * 5ã€å†å²æ–‡ç« 
+     *
+     * @return
+     */
+    public static String getHistoryArticles() {
+        String respContent = null;
+        respContent = "\ue110 å†å²æ–‡ç« \n"
+                + "1 <a href=\"http://v.yinyuetai.com/video/2268593\">brave shine(UBW op2) - Aimer</a>\n\n"
+                + "2 <a href=\"http://music.163.com/#/song?id=29550217\">ideal white - ä¿±é‡ã¾ã—ã‚</a>\n"
+                + "3 <a href=\"http://music.163.com/#/song?id=29736027\">believe - Kalafina</a>\n"
+                + "4 <a href=\"http://music.163.com/#/song?id=560108\">MEMORIA - ä»–äº•ã‚¨ã‚¤ãƒ«</a>\n"
+                + "5 <a href=\"http://music.163.com/#/song?id=608404\">oath sign - LISA</a>\n"
+                + "6 <a href=\"http://music.163.com/#/song?id=756338\">to the beginning - Kalafina</a>\n\n"
+                + "7 <a href=\"http://music.163.com/#/song?id=30953009\">see you again-Wiz Khalifa/Charlie Puth</a>\n\n"
+                + "8 <a href=\"http://music.163.com/#/song?id=579954\">æ‹çˆ±ã‚µâ”¼ã‚­ãƒ¥ãƒ¬â”¼ã‚·ãƒ§ãƒ³ - èŠ±æ³½é¦™èœ</a>\n"
+                + "9 <a href=\"http://music.qq.com/qqmusic.html?id=5034876\">You Are Beautiful - James Blunt </a>\n"
+                + "10 <a href=\"http://music.qq.com/qqmusic.html?id=4825889\">æ—¶é—´ç…®é›¨ - éƒå¯å”¯</a>\n"
+                + "11 <a href=\"http://music.qq.com/qqmusic.html?id=442823\">Live Like You're Dying - Lenka</a>\n"
+                + "12 <a href=\"http://music.163.com/#/song?id=27674128\">æ‹ã™ã‚‹ãƒ•ã‚©â”¼ãƒãƒ¥ãƒ³ã‚¯ãƒƒã‚­â”¼ - AKB48</a>\n\n"
+                + "å›å¤â€œ?â€æ˜¾ç¤ºä¸»èœå•";
 
-		return buffer.toString();
-	}
+        return respContent;
+    }
 
-	/**
-	 * ·´À¡½¨Òé²Ù×÷
-	 * 
-	 * @return
-	 */
-	public static String getSuggestUsage() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("ÁªÏµ½¨Òé").append("\n\n");
-		buffer.append("·½·¨1£©ÇëÖ±½ÓÁôÑÔ").append("\n");
-		buffer.append("·½·¨2£©ÁªÏµ¹ÜÀíÔ±").append("\n");
-		buffer.append("Email:932191671@qq.com\nQQ:932191671").append("\n");
-		return buffer.toString();
-	}
+    /**
+     * 6ã€å¤©å¯æ™ºèƒ½æœºå™¨äºº
+     *
+     * @return
+     */
+    public static String getRobotUsage() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("\ue307").append("å¤©å¯æ™ºèƒ½æœºå™¨äººé£Ÿç”¨æ‰‹å†Œ").append("\n\n");
+        buffer.append("æ–¹æ³•ï¼‰å‘é€ä»»æ„æ–‡å­—").append("\n");
+        buffer.append("å¦‚'æŸ¥å¿«é€’''å¤©æ°”æ€ä¹ˆæ ·''ç¿»è¯‘ å°è‹¹æœ''è®²ä¸ªç¬‘è¯'").append("\n");
+        buffer.append("å‘è¯­éŸ³ä¹Ÿå¯ä»¥å“¦ï¼Œæ›´å¤šç²¾å½©ç­‰ä½ å‘æ˜(>^Ï‰^<)").append("\n");
+        buffer.append("å›¾çµAPIæŠ€æœ¯æ”¯æŒ").append("\n");
 
-	public static String recommendMusic() {
-		String respContent = null;
-		respContent = "\ue110 ±¾ÖÜÍÆ¼ö1 ¸èµ¥FATE\n"
-				+ "Ö÷´ò <a href=\"http://v.yinyuetai.com/video/2268593\">brave shine(UBW op2) - Aimer</a>\n\n"
-				+ "1 <a href=\"http://music.163.com/#/song?id=29550217\">ideal white - ¾cÒ°¤Ş¤·¤í</a>\n"
-				+ "2 <a href=\"http://music.163.com/#/song?id=29736027\">believe - Kalafina</a>\n"
-				+ "3 <a href=\"http://music.163.com/#/song?id=560108\">MEMORIA - Ë{¾®¥¨¥¤¥ë</a>\n"
-				+ "4 <a href=\"http://music.163.com/#/song?id=608404\">oath sign - LISA</a>\n"
-				+ "5 <a href=\"http://music.163.com/#/song?id=756338\">to the beginning - Kalafina</a>\n\n"
-				+ "\ue110 ±¾ÖÜÍÆ¼ö2 ¹ØÓÚÒôÀÖ\n"
-				+ "Ö÷´ò <a href=\"http://music.163.com/#/song?id=30953009\">see you again-Wiz Khalifa/Charlie Puth</a>\n\n"
-				+ "1 <a href=\"http://music.163.com/#/song?id=579954\">Áµ°®¥µ©`¥­¥å¥ì©`¥·¥ç¥ó - »¨ÔóÏã²Ë</a>\n"
-				+ "2 <a href=\"http://music.qq.com/qqmusic.html?id=5034876\">You Are Beautiful - James Blunt </a>\n"
-				+ "3 <a href=\"http://music.qq.com/qqmusic.html?id=4825889\">Ê±¼äÖóÓê - Óô¿ÉÎ¨</a>\n"
-				+ "4 <a href=\"http://music.qq.com/qqmusic.html?id=442823\">Live Like You're Dying - Lenka</a>\n"
-				+ "5 <a href=\"http://music.163.com/#/song?id=27674128\">Áµ¤¹¤ë¥Õ¥©©`¥Á¥å¥ó¥¯¥Ã¥­©` - AKB48</a>\n"
-				+ "\n»Ø¸´music»òbook»ñÈ¡Ö¸¶¨ÄÚÈİÍÆ¼öMua~";
-		return respContent;
-	}
+        return buffer.toString();
+    }
 
-	public static String getRecommendUsage() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("\ue126").append("ÍÆ¼ö¹¦ÄÜÊ¹ÓÃËµÃ÷").append("\n\n");
-		buffer.append("»Ø¸´MusicÍÆ¼öÒôÀÖ").append("\n");
-		buffer.append("»Ø¸´BookÍÆ¼öÎÄÕÂ").append("\n");
-		return buffer.toString();
-	}
+    /**
+     * 7ã€å¿«æ·å…³é”®å­—
+     *
+     * @return
+     */
+    public static String getShortcutKeyword() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("\ue126").append("å¿«æ·å…³é”®å­—åˆ—è¡¨").append("\n\n");
+        buffer.append("ä½¿ç”¨èœå•æˆ–å›å¤musicæŸ¥çœ‹éŸ³ä¹èšåˆ").append("\n");
+        buffer.append("ä½¿ç”¨èœå•æˆ–å›å¤bookæŸ¥çœ‹å†å²æ–‡ç« èšåˆ").append("\n");
+        buffer.append("å›å¤â€œ?â€æ˜¾ç¤ºä¸»èœå•");
+        buffer.append("å›å¤â€œç¬‘è¯â€è¯•è¯•");
+        buffer.append("å›å¤â€œå¤©æ°”â€è¯•è¯•");
+        buffer.append("å›å¤â€œæŸ¥å¿«é€’â€è¯•è¯•");
+        buffer.append("å›å¤â€œç¿»è¯‘ æˆ‘çˆ±ä½ â€è¯•è¯•");
+        buffer.append("å›å¤â€œ?â€æ˜¾ç¤ºä¸»èœå•");
 
-	public static boolean isQQFace(String content) {
-		boolean result = false;
+        return buffer.toString();
+    }
 
-		// ÅĞ¶ÏQQ±íÇéµÄÕıÔò±í´ïÊ½
-		String qqfaceRegex = "/::\\)|/::~|/::B|/::\\||/:8-\\)|/::<|/::$|/::X|/::Z|/::'\\(|/::-\\||/::@|/::P|/::D|/::O|/::\\(|/::\\+|/:--b|/::Q|/::T|/:,@P|/:,@-D|/::d|/:,@o|/::g|/:\\|-\\)|/::!|/::L|/::>|/::,@|/:,@f|/::-S|/:\\?|/:,@x|/:,@@|/::8|/:,@!|/:!!!|/:xx|/:bye|/:wipe|/:dig|/:handclap|/:&-\\(|/:B-\\)|/:<@|/:@>|/::-O|/:>-\\||/:P-\\(|/::'\\||/:X-\\)|/::\\*|/:@x|/:8\\*|/:pd|/:<W>|/:beer|/:basketb|/:oo|/:coffee|/:eat|/:pig|/:rose|/:fade|/:showlove|/:heart|/:break|/:cake|/:li|/:bome|/:kn|/:footb|/:ladybug|/:shit|/:moon|/:sun|/:gift|/:hug|/:strong|/:weak|/:share|/:v|/:@\\)|/:jj|/:@@|/:bad|/:lvu|/:no|/:ok|/:love|/:<L>|/:jump|/:shake|/:<O>|/:circle|/:kotow|/:turn|/:skip|/:oY|/:#-0|/:hiphot|/:kiss|/:<&|/:&>";
+    /**
+     * 8ã€åé¦ˆå»ºè®®æ“ä½œ
+     *
+     * @return
+     */
+    public static String getSuggestUsage() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("è”ç³»å»ºè®®").append("\n\n");
+        buffer.append("æ–¹æ³•1ï¼‰è¯·ç›´æ¥ç•™è¨€").append("\n");
+        buffer.append("æ–¹æ³•2ï¼‰è”ç³»ç®¡ç†å‘˜").append("\n");
+        buffer.append("Email:xmusaber@163.com\nQQ:932191671").append("\n");
+        buffer.append("å›å¤â€œ?â€æ˜¾ç¤ºä¸»èœå•");
 
-		Pattern p = Pattern.compile(qqfaceRegex);
-		Matcher m = p.matcher(content);
-		if (m.matches()) {
-			result = true;
-		}
-		return result;
-	}
+        return buffer.toString();
+    }
 
-	public static String getYuluUsage() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("ÈÃ×Ô¼º×öÒ»¸öÃÀºÃµÄÈË£¬´Ó¶ÁÊé¿ªÊ¼°É").append("\n\n");
-		buffer.append("»Ø¸´¡¯Ï¯Ä½Èİ¡®»òÕß¡®ÓïÂ¼¡®").append("\n");
-		buffer.append("Tip£º»Ø¸´next¿ÉÊÕÈ¡ÏÂÒ»Ìõ").append("\n");
-		return buffer.toString();
-	}
+    /**
+     * åˆ¤æ–­qqè¡¨æƒ…
+     */
+    public static boolean isQQFace(String content) {
+        boolean result = false;
 
-	public static String getTuijian() {
-		String respContent = null;
-		respContent = "\ue110 ±¾ÖÜÍÆ¼ö1 ¸èµ¥FATE\n"
-				+ "Ö÷´ò <a href=\"http://v.yinyuetai.com/video/2268593\">brave shine(UBW op2) - Aimer</a>\n\n"
-				+ "1 <a href=\"http://music.163.com/#/song?id=29550217\">ideal white - ¾cÒ°¤Ş¤·¤í</a>\n"
-				+ "2 <a href=\"http://music.163.com/#/song?id=29736027\">believe - Kalafina</a>\n"
-				+ "3 <a href=\"http://music.163.com/#/song?id=560108\">MEMORIA - Ë{¾®¥¨¥¤¥ë</a>\n"
-				+ "4 <a href=\"http://music.163.com/#/song?id=608404\">oath sign - LISA</a>\n"
-				+ "5 <a href=\"http://music.163.com/#/song?id=756338\">to the beginning - Kalafina</a>\n\n"
-				+ "\ue110 ±¾ÖÜÍÆ¼ö2 ¹ØÓÚÒôÀÖ\n"
-				+ "Ö÷´ò <a href=\"http://music.163.com/#/song?id=30953009\">see you again-Wiz Khalifa/Charlie Puth</a>\n\n"
-				+ "1 <a href=\"http://music.163.com/#/song?id=579954\">Áµ°®¥µ©`¥­¥å¥ì©`¥·¥ç¥ó - »¨ÔóÏã²Ë</a>\n"
-				+ "2 <a href=\"http://music.qq.com/qqmusic.html?id=5034876\">You Are Beautiful - James Blunt </a>\n"
-				+ "3 <a href=\"http://music.qq.com/qqmusic.html?id=4825889\">Ê±¼äÖóÓê - Óô¿ÉÎ¨</a>\n"
-				+ "4 <a href=\"http://music.qq.com/qqmusic.html?id=442823\">Live Like You're Dying - Lenka</a>\n"
-				+ "5 <a href=\"http://music.163.com/#/song?id=27674128\">Áµ¤¹¤ë¥Õ¥©©`¥Á¥å¥ó¥¯¥Ã¥­©` - AKB48</a>\n";
-		return respContent;
-	}
+        // åˆ¤æ–­QQè¡¨æƒ…çš„æ­£åˆ™è¡¨è¾¾å¼
+        String qqfaceRegex = "/::\\)|/::~|/::B|/::\\||/:8-\\)|/::<|/::$|/::X|/::Z|/::'\\(|/::-\\||/::@|/::P|/::D|/::O|/::\\(|/::\\+|/:--b|/::Q|/::T|/:,@P|/:,@-D|/::d|/:,@o|/::g|/:\\|-\\)|/::!|/::L|/::>|/::,@|/:,@f|/::-S|/:\\?|/:,@x|/:,@@|/::8|/:,@!|/:!!!|/:xx|/:bye|/:wipe|/:dig|/:handclap|/:&-\\(|/:B-\\)|/:<@|/:@>|/::-O|/:>-\\||/:P-\\(|/::'\\||/:X-\\)|/::\\*|/:@x|/:8\\*|/:pd|/:<W>|/:beer|/:basketb|/:oo|/:coffee|/:eat|/:pig|/:rose|/:fade|/:showlove|/:heart|/:break|/:cake|/:li|/:bome|/:kn|/:footb|/:ladybug|/:shit|/:moon|/:sun|/:gift|/:hug|/:strong|/:weak|/:share|/:v|/:@\\)|/:jj|/:@@|/:bad|/:lvu|/:no|/:ok|/:love|/:<L>|/:jump|/:shake|/:<O>|/:circle|/:kotow|/:turn|/:skip|/:oY|/:#-0|/:hiphot|/:kiss|/:<&|/:&>";
+
+        Pattern p = Pattern.compile(qqfaceRegex);
+        Matcher m = p.matcher(content);
+        if (m.matches()) {
+            result = true;
+        }
+        return result;
+    }
+
+    /**
+     * emojiè¡¨æƒ…è½¬æ¢(hex -> utf-16)
+     *
+     * @param hexEmoji
+     * @return
+     */
+    public static String emoji(int hexEmoji) {
+        return String.valueOf(Character.toChars(hexEmoji));
+    }
 }

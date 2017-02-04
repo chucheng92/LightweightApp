@@ -8,13 +8,13 @@ package com.tinymood.wechat.message.resp;
  */
 public class TextMessage extends BaseRespMessage {
 	// 文本内容
-	private String Content;
+	private String content;
 
 	public String getContent() {
-		return Content;
+		return content;
 	}
 
 	public void setContent(String content) {
-		Content = content;
+		this.content = content;
 	}
 }

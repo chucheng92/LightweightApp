@@ -1,4 +1,4 @@
-package org.taoran.course.service;
+package com.tinymood.wechat.service;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -10,23 +10,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.taoran.course.pojo.Face;
+import com.tinymood.wechat.pojo.Face;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
- * ÈËÁ³¼ì²â·şÎñ
- * 
- * @author ßØßØ
+ * äººè„¸æ£€æµ‹æœåŠ¡
+ *
+ * @author å““å““
  * @date 2015-4-15
  */
 public class FaceService {
 	/**
-	 * ·¢ËÍhttpÇëÇó
-	 * 
+	 * å‘é€httpè¯·æ±‚
+	 *
 	 * @param requestUrl
-	 *            ÇëÇóµØÖ·
+	 *            è¯·æ±‚åœ°å€
 	 * @return String
 	 */
 	private static String httpRequest(String requestUrl) {
@@ -38,7 +38,7 @@ public class FaceService {
 			httpUrlConn.setDoInput(true);
 			httpUrlConn.setRequestMethod("GET");
 			httpUrlConn.connect();
-			// ½«·µ»ØµÄÊäÈëÁ÷×ª»»³É×Ö·û´®
+			// å°†è¿”å›çš„è¾“å…¥æµè½¬æ¢æˆå­—ç¬¦ä¸²
 			InputStream inputStream = httpUrlConn.getInputStream();
 			InputStreamReader inputStreamReader = new InputStreamReader(
 					inputStream, "utf-8");
@@ -51,7 +51,7 @@ public class FaceService {
 			}
 			bufferedReader.close();
 			inputStreamReader.close();
-			// ÊÍ·Å×ÊÔ´
+			// é‡Šæ”¾èµ„æº
 			inputStream.close();
 			inputStream = null;
 			httpUrlConn.disconnect();
@@ -63,30 +63,30 @@ public class FaceService {
 	}
 
 	/**
-	 * µ÷ÓÃFace++ APIÊµÏÖÈËÁ³¼ì²â
-	 * 
+	 * è°ƒç”¨Face++ APIå®ç°äººè„¸æ£€æµ‹
+	 *
 	 * @param picUrl
-	 *            ´ı¼ì²âÍ¼Æ¬µÄ·ÃÎÊµØÖ·
-	 * @return List<Face> ÈËÁ³ÁĞ±í
+	 *            å¾…æ£€æµ‹å›¾ç‰‡çš„è®¿é—®åœ°å€
+	 * @return List<Face> äººè„¸åˆ—è¡¨
 	 */
 	private static List<Face> faceDetect(String picUrl) {
 		List<Face> faceList = new ArrayList<Face>();
 		try {
-			// Æ´½ÓFace++ÈËÁ³¼ì²âµÄÇëÇóµØÖ·
+			// æ‹¼æ¥Face++äººè„¸æ£€æµ‹çš„è¯·æ±‚åœ°å€
 			String queryUrl = "http://apicn.faceplusplus.com/v2/detection/detect?url=URL&api_secret=API_SECRET&api_key=API_KEY";
-			// ¶ÔURL½øĞĞ±àÂë
+			// å¯¹URLè¿›è¡Œç¼–ç 
 			queryUrl = queryUrl.replace("URL",
 					java.net.URLEncoder.encode(picUrl, "UTF-8"));
 			queryUrl = queryUrl.replace("API_KEY",
 					"0bcb1a3096ae11c9d69d3fa6dcc80f7a");
 			queryUrl = queryUrl.replace("API_SECRET",
 					"HAHLEIlYu-F4vCzotuvV3nVuMwJCT7-5");
-			// µ÷ÓÃÈËÁ³¼ì²â½Ó¿Ú
+			// è°ƒç”¨äººè„¸æ£€æµ‹æ¥å£
 			String json = httpRequest(queryUrl);
-			// ½âÎö·µ»ØjsonÖĞµÄFaceÁĞ±í
+			// è§£æè¿”å›jsonä¸­çš„Faceåˆ—è¡¨
 			JSONArray jsonArray = JSONObject.fromObject(json).getJSONArray(
 					"face");
-			// ±éÀú¼ì²âµ½µÄÈËÁ³
+			// éå†æ£€æµ‹åˆ°çš„äººè„¸
 			for (int i = 0; i < jsonArray.size(); i++) {
 				// face
 				JSONObject faceObject = (JSONObject) jsonArray.get(i);
@@ -116,7 +116,7 @@ public class FaceService {
 						.getDouble("y"));
 				faceList.add(face);
 			}
-			// ½«¼ì²â³öµÄFace°´´Ó×óÖÁÓÒµÄË³ĞòÅÅĞò
+			// å°†æ£€æµ‹å‡ºçš„FaceæŒ‰ä»å·¦è‡³å³çš„é¡ºåºæ’åº
 			Collections.sort(faceList);
 		} catch (Exception e) {
 			faceList = null;
@@ -126,172 +126,172 @@ public class FaceService {
 	}
 
 	/**
-	 * ĞÔ±ğ×ª»»£¨Ó¢ÎÄ->ÖĞÎÄ£©
-	 * 
+	 * æ€§åˆ«è½¬æ¢ï¼ˆè‹±æ–‡->ä¸­æ–‡ï¼‰
+	 *
 	 * @param gender
 	 * @return
 	 */
 	private static String genderConvert(String gender) {
-		String result = "ÄĞĞÔ";
+		String result = "ç”·æ€§";
 		if ("Male".equals(gender))
-			result = "Male(ÄĞĞÔ)";
+			result = "Male(ç”·æ€§)";
 		else if ("Female".equals(gender))
-			result = "Female(Å®ĞÔ)";
+			result = "Female(å¥³æ€§)";
 
 		return result;
 	}
 
 	/**
-	 * ÈËÖÖ×ª»»£¨Ó¢ÎÄ->ÖĞÎÄ£©
-	 * 
+	 * äººç§è½¬æ¢ï¼ˆè‹±æ–‡->ä¸­æ–‡ï¼‰
+	 *
 	 * @param race
 	 * @return
 	 */
 	private static String raceConvert(String race) {
-		String result = "»ÆÉ«";
+		String result = "é»„è‰²";
 		if ("Asian".equals(race))
-			result = "Yellow£¨»ÆÉ«£©";
+			result = "Yellowï¼ˆé»„è‰²ï¼‰";
 		else if ("White".equals(race))
-			result = "White£¨°×É«£©";
+			result = "Whiteï¼ˆç™½è‰²ï¼‰";
 		else if ("Black".equals(race))
-			result = "Black£¨ºÚÉ«£©";
+			result = "Blackï¼ˆé»‘è‰²ï¼‰";
 		return result;
 	}
 
 	/**
-	 * ¸ù¾İÈËÁ³Ê¶±ğ½á¹û×é×°ÏûÏ¢
-	 * 
+	 * æ ¹æ®äººè„¸è¯†åˆ«ç»“æœç»„è£…æ¶ˆæ¯
+	 *
 	 * @param faceList
-	 *            ÈËÁ³ÁĞ±í
+	 *            äººè„¸åˆ—è¡¨
 	 * @return
 	 */
 	private static String makeMessage(List<Face> faceList) {
 		DecimalFormat df = new DecimalFormat("0.00");
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("***************************\nResult:\n");
-		// ¼ì²âµ½1ÕÅÁ³
+		// æ£€æµ‹åˆ°1å¼ è„¸
 		if (1 == faceList.size()) {
-//			buffer.append("¹²¼ì²âµ½").append(faceList.size()).append("ÕÅÈËÁ³")
+//			buffer.append("å…±æ£€æµ‹åˆ°").append(faceList.size()).append("å¼ äººè„¸")
 //					.append("\n");
 			buffer.append("total of ").append(faceList.size()).append(" face detected.")
-			.append("\n");
+					.append("\n");
 			for (Face face : faceList) {
 				buffer.append("\ue307");
-				buffer.append(face.getRaceValue()).append(" race(ÈËÖÖ), ");
+				buffer.append(face.getRaceValue()).append(" race(äººç§), ");
 				buffer.append(face.getGenderValue()).append(", ");
 				buffer.append(face.getAgeValue()).append(" years old.\n");
 				buffer.append("Race Confidence:").append(df.format(face.getRaceConfidence())).append("%\n");
 				buffer.append("Smiling Value:").append(df.format(face.getSmilingValue()));
 //				if (face.getAgeValue() <= 15)
-//					buffer.append("\ue307ÃèÊö£ºÕæÏÛÄ½Äã£¬Ğ¡ÆÆº¢£¬ºÃºÃÍæË£°É\ue40d\n");
-//				else if (face.getAgeValue() > 15 && face.getAgeValue() <= 22 && face.getGenderValue() == "Å®ĞÔ") {
-//					buffer.append("\ue307ÃèÊö£ºÄã¾ÍÊÇº¬°ú´ı·ÅµÄ»¨ÀÙ£¬ÄêÇáÕæÊÇÈÎĞÔ°¡\ue40d\n").append(
-//							"ÄãºÍÃ÷ĞÇÌÆæÌ´ïµ½ÁË¾ªÈËµÄ"
+//					buffer.append("\ue307æè¿°ï¼šçœŸç¾¡æ…•ä½ ï¼Œå°ç ´å­©ï¼Œå¥½å¥½ç©è€å§\ue40d\n");
+//				else if (face.getAgeValue() > 15 && face.getAgeValue() <= 22 && face.getGenderValue() == "å¥³æ€§") {
+//					buffer.append("\ue307æè¿°ï¼šä½ å°±æ˜¯å«è‹å¾…æ”¾çš„èŠ±è•¾ï¼Œå¹´è½»çœŸæ˜¯ä»»æ€§å•Š\ue40d\n").append(
+//							"ä½ å’Œæ˜æ˜Ÿå”å«£è¾¾åˆ°äº†æƒŠäººçš„"
 //									+ String.format("%.2f",
 //											90.0 + Math.random() * 10)
-//									+ "ÏàËÆ¶È£¬Ì«ÄæÌìÁË°Ñ£¡\n");
+//									+ "ç›¸ä¼¼åº¦ï¼Œå¤ªé€†å¤©äº†æŠŠï¼\n");
 //				} else if (face.getAgeValue() > 15 && face.getAgeValue() <= 22
-//						&& face.getGenderValue() == "ÄĞĞÔ") {
-//					buffer.append("\ue307ÃèÊö£ºÄã¾ÍÊÇº¬°ú´ı·ÅµÄ»¨ÀÙ£¬ÄêÇáÕæÊÇÈÎĞÔ°¡\ue40d\n").append(
-//							"ÄãºÍÄĞÉñÎâÑå×æ´ïµ½ÁË¾ªÈËµÄ"
+//						&& face.getGenderValue() == "ç”·æ€§") {
+//					buffer.append("\ue307æè¿°ï¼šä½ å°±æ˜¯å«è‹å¾…æ”¾çš„èŠ±è•¾ï¼Œå¹´è½»çœŸæ˜¯ä»»æ€§å•Š\ue40d\n").append(
+//							"ä½ å’Œç”·ç¥å´å½¦ç¥–è¾¾åˆ°äº†æƒŠäººçš„"
 //									+ String.format("%.2f",
 //											90.0 + Math.random() * 10)
-//									+ "ÏàËÆ¶È£¬¼òÖ±Ä¤°İ£¡\n");
+//									+ "ç›¸ä¼¼åº¦ï¼Œç®€ç›´è†œæ‹œï¼\n");
 //				} else if (face.getAgeValue() > 22 && face.getAgeValue() <= 28
-//						&& face.getGenderValue() == "Å®ĞÔ") {
-//					buffer.append("\ue307ÃèÊö£ºÕıÊÇÇà´ºÄêÉÙÊ±£¬Çà´ºÈçÃÎ£¬ËêÔÂÈç¸è£¬ÇÒĞĞÇÒÕäÏ§¡£").append(
-//							"ÄãºÍÅ®Éñ³ÂåûÏ£´ïµ½ÁË¾ªÈËµÄ"
+//						&& face.getGenderValue() == "å¥³æ€§") {
+//					buffer.append("\ue307æè¿°ï¼šæ­£æ˜¯é’æ˜¥å¹´å°‘æ—¶ï¼Œé’æ˜¥å¦‚æ¢¦ï¼Œå²æœˆå¦‚æ­Œï¼Œä¸”è¡Œä¸”çæƒœã€‚").append(
+//							"ä½ å’Œå¥³ç¥é™ˆå¦å¸Œè¾¾åˆ°äº†æƒŠäººçš„"
 //									+ String.format("%.2f",
 //											80.0 + Math.random() * 10)
-//									+ "°ô¼«ÁË£¡\n");
+//									+ "æ£’æäº†ï¼\n");
 //				} else if (face.getAgeValue() > 22 && face.getAgeValue() <= 28
-//						&& face.getGenderValue() == "ÄĞĞÔ") {
-//					buffer.append("\ue307ÃèÊö£ºÕıÊÇÇà´ºÄêÉÙÊ±£¬Çà´ºÈçÃÎ£¬ËêÔÂÈç¸è£¬ÇÒĞĞÇÒÕäÏ§¡£").append(
-//							"ÄãºÍÃ÷ĞÇĞ»öª·æ´ïµ½ÁË¾ªÈËµÄ"
+//						&& face.getGenderValue() == "ç”·æ€§") {
+//					buffer.append("\ue307æè¿°ï¼šæ­£æ˜¯é’æ˜¥å¹´å°‘æ—¶ï¼Œé’æ˜¥å¦‚æ¢¦ï¼Œå²æœˆå¦‚æ­Œï¼Œä¸”è¡Œä¸”çæƒœã€‚").append(
+//							"ä½ å’Œæ˜æ˜Ÿè°¢éœ†é”‹è¾¾åˆ°äº†æƒŠäººçš„"
 //									+ String.format("%.2f",
 //											80.0 + Math.random() * 10)
-//									+ "\nµÄÏàËÆ¶È£¬ºÃÀ÷º¦£¡");
-//				} else if (face.getGenderValue() == "ÄĞĞÔ")
-//					buffer.append("\ue307ÃèÊö£º°¥Ñ½,ÈËÁ³¿´×ÅÓĞĞ©Ğí²×É££¬²»¹ıÒ²ÓĞÒ»ÖÖ³ÉÊìµÄ÷ÈÁ¦¡£\n").append(
-//							"ÄãºÍÄĞÉñÁõµÂ»ª´ïµ½ÁË"
+//									+ "\nçš„ç›¸ä¼¼åº¦ï¼Œå¥½å‰å®³ï¼");
+//				} else if (face.getGenderValue() == "ç”·æ€§")
+//					buffer.append("\ue307æè¿°ï¼šå“å‘€,äººè„¸çœ‹ç€æœ‰äº›è®¸æ²§æ¡‘ï¼Œä¸è¿‡ä¹Ÿæœ‰ä¸€ç§æˆç†Ÿçš„é­…åŠ›ã€‚\n").append(
+//							"ä½ å’Œç”·ç¥åˆ˜å¾·åè¾¾åˆ°äº†"
 //									+ String.format("%.2f",
 //											70.0 + Math.random() * 10)
-//									+ "µÄÏàËÆ¶È£¬ºÃÀ÷º¦£¡\n");
+//									+ "çš„ç›¸ä¼¼åº¦ï¼Œå¥½å‰å®³ï¼\n");
 //				else {
-//					buffer.append("\ue307ÃèÊö£º°¥Ñ½,ÈËÁ³¿´×ÅËäÈ»ÒÑ²»ÔÚÄêÇá£¬µ«ÄãµÄÆøÖÊ»¹ÊÇ×ÔÈ»É¢·¢¡£\n").append(
-//							"ºÍ¹ú¼ÊÕÂµÄÁ³Ïà´ïµ½ÁË"
+//					buffer.append("\ue307æè¿°ï¼šå“å‘€,äººè„¸çœ‹ç€è™½ç„¶å·²ä¸åœ¨å¹´è½»ï¼Œä½†ä½ çš„æ°”è´¨è¿˜æ˜¯è‡ªç„¶æ•£å‘ã€‚\n").append(
+//							"å’Œå›½é™…ç« çš„è„¸ç›¸è¾¾åˆ°äº†"
 //									+ String.format("%.2f",
 //											70.0 + Math.random() * 10)
-//									+ "µÄÏàËÆ¶È£¬»¹²»´íÅ¶£¡\n");
+//									+ "çš„ç›¸ä¼¼åº¦ï¼Œè¿˜ä¸é”™å“¦ï¼\n");
 //				}
 
 				buffer.append("\n***************************\n");
 			}
 		}
-		// ¼ì²âµ½2-10ÕÅÁ³
+		// æ£€æµ‹åˆ°2-10å¼ è„¸
 		else if (faceList.size() > 1 && faceList.size() <= 10) {
-//			buffer.append("¹²¼ì²âµ½ ").append(faceList.size())
-//					.append(" ÈË£¬°´Á³²¿ÖĞĞÄ´Ó×óÖÁÓÒÎª£º").append("\n");
+//			buffer.append("å…±æ£€æµ‹åˆ° ").append(faceList.size())
+//					.append(" äººï¼ŒæŒ‰è„¸éƒ¨ä¸­å¿ƒä»å·¦è‡³å³ä¸ºï¼š").append("\n");
 			buffer.append("total of ").append(faceList.size())
-			.append(" faces detected.\nAccording to the center of the face from left to right:").append("\n");
+					.append(" faces detected.\nAccording to the center of the face from left to right:").append("\n");
 			for (Face face : faceList) {
 				buffer.append("\ue307");
-				buffer.append(face.getRaceValue()).append("race(ÈËÖÖ), ");
+				buffer.append(face.getRaceValue()).append("race(äººç§), ");
 				buffer.append(face.getGenderValue()).append(", ");
 				buffer.append(face.getAgeValue()).append(" years old.\n");
 				buffer.append("Race Confidence:").append(df.format(face.getRaceConfidence())).append("%\n");
 				buffer.append("Smiling Value:").append(df.format(face.getSmilingValue()));
 //				if (face.getAgeValue() <= 15)
-//					buffer.append("\ue307ÃèÊö£ºÕæÏÛÄ½Äã£¬Ğ¡ÆÆº¢£¬ºÃºÃÍæË£°É\ue40d\n");
-//				else if (face.getAgeValue() > 15 && face.getAgeValue() <= 22 && face.getGenderValue() == "Å®ĞÔ") {
-//					buffer.append("\ue307ÃèÊö£ºÄã¾ÍÊÇº¬°ú´ı·ÅµÄ»¨ÀÙ£¬ÄêÇáÕæÊÇÈÎĞÔ°¡\ue40d\n").append(
-//							"ÄãºÍÃ÷ĞÇÌÆæÌ´ïµ½ÁË¾ªÈËµÄ"
+//					buffer.append("\ue307æè¿°ï¼šçœŸç¾¡æ…•ä½ ï¼Œå°ç ´å­©ï¼Œå¥½å¥½ç©è€å§\ue40d\n");
+//				else if (face.getAgeValue() > 15 && face.getAgeValue() <= 22 && face.getGenderValue() == "å¥³æ€§") {
+//					buffer.append("\ue307æè¿°ï¼šä½ å°±æ˜¯å«è‹å¾…æ”¾çš„èŠ±è•¾ï¼Œå¹´è½»çœŸæ˜¯ä»»æ€§å•Š\ue40d\n").append(
+//							"ä½ å’Œæ˜æ˜Ÿå”å«£è¾¾åˆ°äº†æƒŠäººçš„"
 //									+ String.format("%.2f",
 //											90.0 + Math.random() * 10)
-//									+ "ÏàËÆ¶È£¬Ì«ÄæÌìÁË°Ñ£¡\n");
+//									+ "ç›¸ä¼¼åº¦ï¼Œå¤ªé€†å¤©äº†æŠŠï¼\n");
 //				} else if (face.getAgeValue() > 15 && face.getAgeValue() <= 22
-//						&& face.getGenderValue() == "ÄĞĞÔ") {
-//					buffer.append("\ue307ÃèÊö£ºÄã¾ÍÊÇº¬°ú´ı·ÅµÄ»¨ÀÙ£¬ÄêÇáÕæÊÇÈÎĞÔ°¡\ue40d\n").append(
-//							"ÄãºÍÄĞÉñÎâÑå×æ´ïµ½ÁË¾ªÈËµÄ"
+//						&& face.getGenderValue() == "ç”·æ€§") {
+//					buffer.append("\ue307æè¿°ï¼šä½ å°±æ˜¯å«è‹å¾…æ”¾çš„èŠ±è•¾ï¼Œå¹´è½»çœŸæ˜¯ä»»æ€§å•Š\ue40d\n").append(
+//							"ä½ å’Œç”·ç¥å´å½¦ç¥–è¾¾åˆ°äº†æƒŠäººçš„"
 //									+ String.format("%.2f",
 //											90.0 + Math.random() * 10)
-//									+ "ÏàËÆ¶È£¬¼òÖ±Ä¤°İ£¡\n");
+//									+ "ç›¸ä¼¼åº¦ï¼Œç®€ç›´è†œæ‹œï¼\n");
 //				} else if (face.getAgeValue() > 22 && face.getAgeValue() <= 28
-//						&& face.getGenderValue() == "Å®ĞÔ") {
-//					buffer.append("\ue307ÃèÊö£ºÕıÊÇÇà´ºÄêÉÙÊ±£¬Çà´ºÈçÃÎ£¬ËêÔÂÈç¸è£¬ÇÒĞĞÇÒÕäÏ§¡£").append(
-//							"ÄãºÍÅ®Éñ³ÂåûÏ£´ïµ½ÁË¾ªÈËµÄ"
+//						&& face.getGenderValue() == "å¥³æ€§") {
+//					buffer.append("\ue307æè¿°ï¼šæ­£æ˜¯é’æ˜¥å¹´å°‘æ—¶ï¼Œé’æ˜¥å¦‚æ¢¦ï¼Œå²æœˆå¦‚æ­Œï¼Œä¸”è¡Œä¸”çæƒœã€‚").append(
+//							"ä½ å’Œå¥³ç¥é™ˆå¦å¸Œè¾¾åˆ°äº†æƒŠäººçš„"
 //									+ String.format("%.2f",
 //											80.0 + Math.random() * 10)
-//									+ "°ô¼«ÁË£¡\n");
+//									+ "æ£’æäº†ï¼\n");
 //				} else if (face.getAgeValue() > 22 && face.getAgeValue() <= 28
-//						&& face.getGenderValue() == "ÄĞĞÔ") {
-//					buffer.append("\ue307ÃèÊö£ºÕıÊÇÇà´ºÄêÉÙÊ±£¬Çà´ºÈçÃÎ£¬ËêÔÂÈç¸è£¬ÇÒĞĞÇÒÕäÏ§¡£").append(
-//							"ÄãºÍÃ÷ĞÇĞ»öª·æ´ïµ½ÁË¾ªÈËµÄ"
+//						&& face.getGenderValue() == "ç”·æ€§") {
+//					buffer.append("\ue307æè¿°ï¼šæ­£æ˜¯é’æ˜¥å¹´å°‘æ—¶ï¼Œé’æ˜¥å¦‚æ¢¦ï¼Œå²æœˆå¦‚æ­Œï¼Œä¸”è¡Œä¸”çæƒœã€‚").append(
+//							"ä½ å’Œæ˜æ˜Ÿè°¢éœ†é”‹è¾¾åˆ°äº†æƒŠäººçš„"
 //									+ String.format("%.2f",
 //											80.0 + Math.random() * 10)
-//									+ "\nµÄÏàËÆ¶È£¬ºÃÀ÷º¦£¡");
-//				} else if (face.getGenderValue() == "ÄĞĞÔ")
-//					buffer.append("\ue307ÃèÊö£º°¥Ñ½,ÈËÁ³¿´×ÅÓĞĞ©Ğí²×É££¬²»¹ıÒ²ÓĞÒ»ÖÖ³ÉÊìµÄ÷ÈÁ¦¡£\n").append(
-//							"ÄãºÍÄĞÉñÁõµÂ»ª´ïµ½ÁË"
+//									+ "\nçš„ç›¸ä¼¼åº¦ï¼Œå¥½å‰å®³ï¼");
+//				} else if (face.getGenderValue() == "ç”·æ€§")
+//					buffer.append("\ue307æè¿°ï¼šå“å‘€,äººè„¸çœ‹ç€æœ‰äº›è®¸æ²§æ¡‘ï¼Œä¸è¿‡ä¹Ÿæœ‰ä¸€ç§æˆç†Ÿçš„é­…åŠ›ã€‚\n").append(
+//							"ä½ å’Œç”·ç¥åˆ˜å¾·åè¾¾åˆ°äº†"
 //									+ String.format("%.2f",
 //											70.0 + Math.random() * 10)
-//									+ "µÄÏàËÆ¶È£¬ºÃÀ÷º¦£¡\n");
+//									+ "çš„ç›¸ä¼¼åº¦ï¼Œå¥½å‰å®³ï¼\n");
 //				else {
-//					buffer.append("\ue307ÃèÊö£º°¥Ñ½,ÈËÁ³¿´×ÅËäÈ»ÒÑ²»ÔÚÄêÇá£¬µ«ÄãµÄÆøÖÊ»¹ÊÇ×ÔÈ»É¢·¢¡£\n").append(
-//							"ºÍ¹ú¼ÊÕÂµÄÁ³Ïà´ïµ½ÁË"
+//					buffer.append("\ue307æè¿°ï¼šå“å‘€,äººè„¸çœ‹ç€è™½ç„¶å·²ä¸åœ¨å¹´è½»ï¼Œä½†ä½ çš„æ°”è´¨è¿˜æ˜¯è‡ªç„¶æ•£å‘ã€‚\n").append(
+//							"å’Œå›½é™…ç« çš„è„¸ç›¸è¾¾åˆ°äº†"
 //									+ String.format("%.2f",
 //											70.0 + Math.random() * 10)
-//									+ "µÄÏàËÆ¶È£¬»¹²»´íÅ¶£¡\n");
+//									+ "çš„ç›¸ä¼¼åº¦ï¼Œè¿˜ä¸é”™å“¦ï¼\n");
 //				}
 
 				buffer.append("\n**************************\n");
 			}
 		}
-		// ¼ì²âµ½10ÕÅÁ³ÒÔÉÏ
+		// æ£€æµ‹åˆ°10å¼ è„¸ä»¥ä¸Š
 		else if (faceList.size() > 10) {
-			buffer.append("¹²¼ì²âµ½ ").append(faceList.size()).append(" ÕÅÈËÁ³")
+			buffer.append("å…±æ£€æµ‹åˆ° ").append(faceList.size()).append(" å¼ äººè„¸")
 					.append("\n");
-			// Í³¼Æ¸÷ÈËÖÖ¡¢ĞÔ±ğµÄÈËÊı
+			// ç»Ÿè®¡å„äººç§ã€æ€§åˆ«çš„äººæ•°
 			int asiaMale = 0;
 			int asiaFemale = 0;
 			int whiteMale = 0;
@@ -299,56 +299,56 @@ public class FaceService {
 			int blackMale = 0;
 			int blackFemale = 0;
 			for (Face face : faceList) {
-				if ("»ÆÉ«".equals(face.getRaceValue()))
-					if ("ÄĞĞÔ".equals(face.getGenderValue()))
+				if ("é»„è‰²".equals(face.getRaceValue()))
+					if ("ç”·æ€§".equals(face.getGenderValue()))
 						asiaMale++;
 					else
 						asiaFemale++;
-				else if ("°×É«".equals(face.getRaceValue()))
-					if ("ÄĞĞÔ".equals(face.getGenderValue()))
+				else if ("ç™½è‰²".equals(face.getRaceValue()))
+					if ("ç”·æ€§".equals(face.getGenderValue()))
 						whiteMale++;
 					else
 						whiteFemale++;
-				else if ("ºÚÉ«".equals(face.getRaceValue()))
-					if ("ÄĞĞÔ".equals(face.getGenderValue()))
+				else if ("é»‘è‰²".equals(face.getRaceValue()))
+					if ("ç”·æ€§".equals(face.getGenderValue()))
 						blackMale++;
 					else
 						blackFemale++;
 			}
 			if (0 != asiaMale || 0 != asiaFemale)
-				buffer.append("»ÆÉ«ÈËÖÖ£º").append(asiaMale).append("ÄĞ")
-						.append(asiaFemale).append("Å®").append("\n");
+				buffer.append("é»„è‰²äººç§ï¼š").append(asiaMale).append("ç”·")
+						.append(asiaFemale).append("å¥³").append("\n");
 			if (0 != whiteMale || 0 != whiteFemale)
-				buffer.append("°×É«ÈËÖÖ£º").append(whiteMale).append("ÄĞ")
-						.append(whiteFemale).append("Å®").append("\n");
+				buffer.append("ç™½è‰²äººç§ï¼š").append(whiteMale).append("ç”·")
+						.append(whiteFemale).append("å¥³").append("\n");
 			if (0 != blackMale || 0 != blackFemale)
-				buffer.append("ºÚÉ«ÈËÖÖ£º").append(blackMale).append("ÄĞ")
-						.append(blackFemale).append("Å®").append("\n");
+				buffer.append("é»‘è‰²äººç§ï¼š").append(blackMale).append("ç”·")
+						.append(blackFemale).append("å¥³").append("\n");
 
 		}
 
-		// ÒÆ³ıÄ©Î²¿Õ¸ñ
+		// ç§»é™¤æœ«å°¾ç©ºæ ¼
 		buffer = new StringBuffer(buffer.substring(0, buffer.lastIndexOf("\n")));
 		return buffer.toString();
 	}
 
 	/**
-	 * Ìá¹©¸øÍâ²¿µ÷ÓÃµÄÈËÁ³¼ì²â·½·¨
-	 * 
+	 * æä¾›ç»™å¤–éƒ¨è°ƒç”¨çš„äººè„¸æ£€æµ‹æ–¹æ³•
+	 *
 	 * @param picUrl
-	 *            ´ı¼ì²âÍ¼Æ¬µÄ·ÃÎÊµØÖ·
+	 *            å¾…æ£€æµ‹å›¾ç‰‡çš„è®¿é—®åœ°å€
 	 * @return String
 	 */
 	public static String detect(String picUrl) {
-		// Ä¬ÈÏ»Ø¸´ĞÅÏ¢
-		String result = "ÎÒµÄËã·¨»¹Ã»ÓĞó{µ½´¦ÀíÎ´ÖªµÄÍ¼Æ¬Å¶£¬ÉÏ´«ÇåÎúµÄÈËÁ³ÊÔÊÔ°Ñ\ue059";
+		// é»˜è®¤å›å¤ä¿¡æ¯
+		String result = "æˆ‘çš„ç®—æ³•è¿˜æ²¡æœ‰ç¯¼åˆ°å¤„ç†æœªçŸ¥çš„å›¾ç‰‡å“¦ï¼Œä¸Šä¼ æ¸…æ™°çš„äººè„¸è¯•è¯•æŠŠ\ue059";
 		List<Face> faceList = faceDetect(picUrl);
 		if (!faceList.isEmpty()) {
 			result = makeMessage(faceList);
 		}
-		
+
 		return result;
-	
+
 	}
 
 	public static void main(String[] args) {

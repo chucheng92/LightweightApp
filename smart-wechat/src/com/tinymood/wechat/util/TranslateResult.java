@@ -1,19 +1,21 @@
-package org.taoran.course.util;
+package com.tinymood.wechat.util;
 
 import java.util.List;
 
 /**
- * µ÷ÓÃ°Ù¶È·­Òëapi²éÑ¯½á¹û
+ * è°ƒç”¨ç™¾åº¦ç¿»è¯‘apiæŸ¥è¯¢ç»“æœ
  * 
- * @author ßØßØ
- * @date 2015-4-13
+ * @author nothankyou
+ * @date 2017-02-03 22:03:34
  */
 public class TranslateResult {
-	// Êµ¼Ê²ÉÓÃµÄÔ´ÓïÑÔ
+	// å®é™…é‡‡ç”¨çš„æºè¯­è¨€
 	private String from;
-	// Êµ¼Ê²ÉÓÃµÄÄ¿±êÓïÑÔ
+
+	// å®é™…é‡‡ç”¨çš„ç›®æ ‡è¯­è¨€
 	private String to;
-	// ½á¹ûÌå
+
+	// ç»“æœä½“
 	private List<ResultPair> trans_result;
 
 	public String getFrom() {

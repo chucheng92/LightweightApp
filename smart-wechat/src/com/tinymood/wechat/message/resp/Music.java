@@ -8,45 +8,58 @@ package com.tinymood.wechat.message.resp;
  *
  */
 public class Music {
-	// 标题
-	private String Title;
-	// 描述
-	private String Description;
+	// 音乐名称
+	private String title;
+
+	// 音乐描述
+	private String description;
+
 	// 音乐文件链接
-	private String MusicUrl;
-	// 音乐文件链接（高品质）
-	private String HQMusicUrl;
+	private String musicUrl;
 
-	public String getTitle() {
-		return Title;
-	}
+	// 音乐文件链接（高品质）,WIFI下播放此链接
+	private String hqMusicUrl;
 
-	public void setTitle(String title) {
-		Title = title;
-	}
+	// 缩略图的媒体id
+	private String thumbMediaId;
 
-	public String getDescription() {
-		return Description;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setDescription(String description) {
-		Description = description;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getMusicUrl() {
-		return MusicUrl;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setMusicUrl(String musicUrl) {
-		MusicUrl = musicUrl;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public String getHQMusicUrl() {
-		return HQMusicUrl;
-	}
+    public String getMusicUrl() {
+        return musicUrl;
+    }
 
-	public void setHQMusicUrl(String hQMusicUrl) {
-		HQMusicUrl = hQMusicUrl;
-	}
+    public void setMusicUrl(String musicUrl) {
+        this.musicUrl = musicUrl;
+    }
 
+    public String getHqMusicUrl() {
+        return hqMusicUrl;
+    }
+
+    public void setHqMusicUrl(String hqMusicUrl) {
+        this.hqMusicUrl = hqMusicUrl;
+    }
+
+    public String getThumbMediaId() {
+        return thumbMediaId;
+    }
+
+    public void setThumbMediaId(String thumbMediaId) {
+        this.thumbMediaId = thumbMediaId;
+    }
 }

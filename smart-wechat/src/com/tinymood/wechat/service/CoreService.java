@@ -1,5 +1,13 @@
 package com.tinymood.wechat.service;
 
+import com.tinymood.wechat.message.resp.*;
+import com.tinymood.wechat.pojo.BaiduPlace;
+import com.tinymood.wechat.pojo.UserLocation;
+import com.tinymood.wechat.util.BaiduMapUtil;
+import com.tinymood.wechat.util.MessageUtil;
+import com.tinymood.wechat.util.MySQLUtil;
+import com.tinymood.wechat.util.Tools;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,385 +15,355 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.tinymood.wechat.message.resp.Article;
-import com.tinymood.wechat.message.resp.Music;
-import org.taoran.course.message.resp.MusicMessage;
-import org.taoran.course.message.resp.NewsMessage;
-import org.taoran.course.message.resp.TextMessage;
-import org.taoran.course.pojo.BaiduPlace;
-import org.taoran.course.pojo.UserLocation;
-import org.taoran.course.util.BaiduMapUtil;
-import org.taoran.course.util.MessageUtil;
-import org.taoran.course.util.MySQLUtil;
-import org.taoran.course.util.Tools;
 
 /**
- * ���ķ�����
- * 
- * @author ����
+ * 核心服务类
+ *
+ * @author 哓哓
  * @date 2015-4-9
  */
 public class CoreService {
-	/**
-	 * ����΢�ŷ���������
-	 * 
-	 * @param request
-	 * @return
-	 */
-	public static String processRequest(HttpServletRequest request) {
-		// ���ظ�΢�ŷ�������xml��Ϣ
-		String respXml = null;
-		// �ı���Ϣ����
-		String respContent = null;
-		try {
-			// xml�������
-			Map<String, String> requestMap = MessageUtil.parseXml(request);
-			// ���ͷ��ʺţ�open_id��
-			String fromUserName = requestMap.get("FromUserName");
-			// �����ʺ�
-			String toUserName = requestMap.get("ToUserName");
-			// ��Ϣ����
-			String msgType = requestMap.get("MsgType");
-			// ����ʱ��
-			String createTime = requestMap.get("CreateTime");
+    // 返回给微信服务器的xml消息
+    private static String respXml;
+    // 文本消息内容
+    private static String respContent;
 
-			// �ظ��ı���Ϣ
-			TextMessage textMessage = new TextMessage();
-			textMessage.setToUserName(fromUserName);
-			textMessage.setFromUserName(toUserName);
-			textMessage.setCreateTime(new Date().getTime());
-			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+    /**
+     * 处理微信发来的请求
+     *
+     * @param request
+     * @return
+     */
+    public static String processRequest(HttpServletRequest request) {
+        try {
+            // xml请求解析
+            Map<String, String> requestMap = MessageUtil.parseXml(request);
+            // 发送方帐号（open_id）
+            String fromUserName = requestMap.get("FromUserName");
+            // 公众帐号
+            String toUserName = requestMap.get("ToUserName");
+            // 消息类型
+            String msgType = requestMap.get("MsgType");
+            // 创建时间
+            String createTime = requestMap.get("CreateTime");
 
-			// �ı���Ϣ
-			if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
-				// �ı���Ϣ����
-				String content = requestMap.get("Content").trim();
+            // 回复文本消息
+            TextMessage textMessage = new TextMessage();
+            textMessage.setToUserName(fromUserName);
+            textMessage.setFromUserName(toUserName);
+            textMessage.setCreateTime(new Date().getTime());
+            textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
 
-				// ����1 --> ���ܷ���
-				if (content.equals("1")) {
-					respContent = Tools.getTranslateUsage();
-				}
-				// ����2-9
-				else if (content.equals("2")) {
-					respContent = Tools.getMusicUsage();
-				} else if (content.equals("3") || content.equals("����")) {
-					respContent = Tools.getLocationUsage();
-				} else if (content.equals("4")) {
-					respContent = Tools.getChatUsage();
-				} else if (content.equals("5")) {
-					NewsMessage newsMessage = new NewsMessage();
-					newsMessage.setToUserName(fromUserName);
-					newsMessage.setFromUserName(toUserName);
-					newsMessage.setCreateTime(new Date().getTime());
-					newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+            // 文本消息
+            if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
+                // 文本消息内容
+                String content = requestMap.get("Content").trim();
 
-					Article article1 = new Article();
-					article1.setTitle("\ue335�������ʹ��˵��");
-					article1.setDescription(Tools.getFaceUsage());
-					article1.setUrl("http://1.lemontime.sinaapp.com/face.jsp");
-					article1.setPicUrl("http://1.lemontime.sinaapp.com/images/facepp_inside.png");
+                if (content.startsWith("歌曲")) {
+                    respXml = musicFuntion(content, fromUserName, toUserName);
+                    if (respXml == null) {
+                        respXml = "";
+                    }
+                    return respXml;
+                } else if (content.startsWith("附近")) {
+                    respXml = locationFunction(request, content, fromUserName, toUserName);
+                    if (respXml == null) {
+                        respXml = "";
+                    }
+                    return respXml;
+                } else if (content.equalsIgnoreCase("music")) {
+                    respContent = Tools.getMusicAggregation();
+                } else if (content.equalsIgnoreCase("book")) {
+                    respContent = Tools.getHistoryArticles();
+                } else {
+                    switch (content) {
+                        case "1":
+                            respContent = Tools.getMusicUsage();
+                            break;
+                        case "2":
+                            respContent = Tools.getLocationUsage();
+                            break;
+                        case "3":
+                            respXml = getFaceUsageWithArticle(fromUserName, toUserName);
+                            if (respXml == null) {
+                                respXml = "";
+                            }
+                            return respXml;
+                        case "4":
+                            respContent = Tools.getMusicAggregation();
+                            break;
+                        case "5":
+                            respContent = Tools.getHistoryArticles();
+                            break;
+                        case "6":
+                            respContent = Tools.getRobotUsage();
+                            break;
+                        case "7":
+                            respContent = Tools.getShortcutKeyword();
+                            break;
+                        case "8":
+                            respContent = Tools.getSuggestUsage();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            } else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {
+                // 事件类型
+                String eventType = requestMap.get("Event");
 
-					List<Article> articleList = new ArrayList<Article>();
-					articleList.add(article1);
+                // 关注
+                if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
+                    respContent = Tools.welcome;
+                }
+                // 取消关注
+                else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
+                    // TODO 取消订阅后用户不会再收到公众账号发送的消息，因此不需要回复
+                }
+                // 扫描带参数二维码，未关注
+                else if (eventType.equals(MessageUtil.EVENT_TYPE_QRCODEWITHPARAMS_NOT_FOLLOW)) {
+                    String qrscene = requestMap.get("EventKey");
+                    respContent = Tools.welcome + "其中EventKey为二维码参数值，即qrscene_" + qrscene;
+                }
+                // 扫描带参数二维码，已关注
+                else if (eventType.equals(MessageUtil.EVENT_TYPE_QRCODEWITHPARAMS_FOLLOW)) {
+                    String scene_id = requestMap.get("EventKey");
+                    respContent = "二维码场景值scene_id=" + scene_id;
+                }
+                // 自定义菜单CLICK事件
+                else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {
+                    // TODO 处理菜单点击事件
+                    String eventKey = requestMap.get("EventKey");
 
-					newsMessage.setArticleCount(articleList.size());
-					newsMessage.setArticles(articleList);
+                    if (eventKey.equals("11")) {
+                        respContent = Tools.getMusicUsage();
+                    } else if (eventKey.equals("12")) {
+                        respContent = Tools.getLocationUsage();
+                    } else if (eventKey.equals("13")) {
+                        NewsMessage newsMessage = new NewsMessage();
+                        newsMessage.setToUserName(fromUserName);
+                        newsMessage.setFromUserName(toUserName);
+                        newsMessage.setCreateTime(new Date().getTime());
+                        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
 
-					respXml = MessageUtil.messageToXml(newsMessage);
-				} else if (content.equals("6")) {
-					respContent = Tools.getRecommendUsage();
-				} else if (content.equals("7")) {
-					respContent = "\ue32e�ظ�'Ц��'����'��������'��";
-				} else if (content.equals("8")) {
-					respContent = Tools.getYuluUsage();
-				} else if (content.equals("9")) {
-					respContent = Tools.getSuggestUsage();
-				} else if (content.equals("?") || content.equals("��")
-						|| content.equals("�˵�")) {
-					respContent = Tools.defaultMenu;
-				} else if (content.equalsIgnoreCase("music")) {
-					respContent = Tools.recommendMusic();
-				} else if (content.equalsIgnoreCase("book")) {
-					NewsMessage newsMessage = new NewsMessage();
-					newsMessage.setToUserName(fromUserName);
-					newsMessage.setFromUserName(toUserName);
-					newsMessage.setCreateTime(new Date().getTime());
-					newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-					List<Article> articleList = new ArrayList<Article>();
+                        Article article1 = new Article();
+                        article1.setTitle("\ue335人脸检测使用说明");
+                        article1.setDescription(Tools.getFaceUsage());
+                        article1.setUrl("http://1.lemontime.sinaapp.com/face.jsp");
+                        article1.setPicUrl("http://1.lemontime.sinaapp.com/images/facepp_inside.png");
 
-					Article article1 = new Article();
-					article1.setTitle("�㲻��Ҫ���ڱ��˵��Ͽ���\n");
-					article1.setDescription("");
-					article1.setPicUrl("http://1.lemontime.sinaapp.com/images/tinshuo.jpg");
-					article1.setUrl("http://mp.weixin.qq.com/s?__biz=MjM5MzE3NDE3Ng==&mid=204590224&idx=1&sn=90a6d7453c21ea6d3c4d5cc1e60f81fa&scene=1&from=singlemessage&isappinstalled=0#rd");
+                        List<Article> articleList = new ArrayList<Article>();
+                        articleList.add(article1);
 
-					Article article2 = new Article();
-					article2.setTitle("Ҫô���룬Ҫô���\n");
-					article2.setDescription("");
-					article2.setPicUrl("http://1.lemontime.sinaapp.com/images/2.jpg");
-					article2.setUrl("http://mp.weixin.qq.com/s?__biz=MjM5MDMyMzg2MA==&mid=207775146&idx=1&sn=889555995ca6380ab1b1b839ad3e1ec3&scene=2&from=timeline&isappinstalled=0#rd");
+                        newsMessage.setArticleCount(articleList.size());
+                        newsMessage.setArticles(articleList);
 
-					Article article3 = new Article();
-					article3.setTitle("��˵�㻹�ڴ����ҵ�����\n");
-					article3.setDescription("");
-					article3.setPicUrl("http://1.lemontime.sinaapp.com/images/2.jpg");
-					article3.setUrl("http://mp.weixin.qq.com/s?__biz=MjM5MDMyMzg2MA==&mid=206602741&idx=7&sn=5ec66fd8f7ef8c728bc0ab4f0ca028eb&scene=1&key=2e5b2e802b7041cfb0e80de307be7ae446ddd501b4ef3a08507869759c5186bec413de73a5daa5c3a6f9ceba36acb8d5&ascene=1&uin=MTczNTcxMTc2MA%3D%3D&devicetype=Windows+8&version=61000721&pass_ticket=3EXOcuhxs40Wm%2BO1TrSTMxl6o%2BtwmgRIK%2BvCmFq%2B0YIfgL9wdNZzOLODMPLl5eqJ");
+                        respXml = MessageUtil.messageToXml(newsMessage);
+                    } else if (eventKey.equals("21")) {
+                        respContent = Tools.getMusicAggregation();
+                    } else if (eventKey.equals("22")) {
+                        respContent = Tools.getHistoryArticles();
+                    } else if (eventKey.equals("31")) {
+                        respContent = "关于 梦回少年";
+                    } else if (eventKey.equals("32")) {
+                        respContent = Tools.getSuggestUsage();
+                    }
+                }
+            } else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_IMAGE)) {
+                // 图片消息
+                // 取得图片地址
+                String picUrl = requestMap.get("PicUrl");
+                // 人脸检测
+                String detectResult = FaceService.detect(picUrl);
+                respContent = detectResult;
 
-					articleList.add(article1);
-					articleList.add(article2);
-					articleList.add(article3);
-					newsMessage.setArticleCount(articleList.size());
-					newsMessage.setArticles(articleList);
-					respXml = MessageUtil.messageToXml(newsMessage);
-				} else if (Tools.isQQFace(content)) {
-					respContent = content;
-				}
+            } else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_VIDEO) || msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_SHORTVIDEO)) {
+                // 视频消息
+                int a = (int) (Math.random() * 10 + 1);
+                switch (a) {
+                    case 1:
+                        respContent = "哇 拍的不错哦/:rose";
+                        break;
+                    case 2:
+                        respContent = "哎呦 不错哦/:strong";
+                        break;
+                    case 3:
+                        respContent = "DuangDuangDuang~" + Tools.emoji(0x1F618)
+                                + Tools.emoji(0x1F618);
+                    case 4:
+                        respContent = "相信我,下一个陈冠希就是你！";
+                        break;
+                    case 5:
+                        respContent = "赶紧去参加摄影大赛把" + Tools.emoji(0x1F631);
+                        break;
+                    default:
+                        respContent = "都说无图无真相，知道真相的我眼泪哗啦啦的掉下来" + Tools.emoji(0x1F494);
+                        break;
+                }
+            } else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_LOCATION)) {
+                // 地理位置消息
+                // 用户发送的经纬度
+                String lng = requestMap.get("Location_Y"); // 经度
+                String lat = requestMap.get("Location_X"); // 纬度
 
-				// **********������*************
-				// ����ԡ�������2���ֿ�ͷ
-				else if (content.startsWith("����")) {
-					// ������2���ּ����������+���ո�-���������ȥ��
-					String keyWord = content.replaceAll("^����[\\+ ~!@#%^-_=]?",
-							"");
-					// �����������Ϊ��
-					if ("".equals(keyWord)) {
-						respContent = Tools.getMusicUsage();
-					} else {
-						String[] kwArr = keyWord.split("@");
-						// ��������
-						String musicTitle = kwArr[0];
-						// �ݳ���Ĭ��Ϊ��
-						String musicAuthor = "";
-						if (2 == kwArr.length)
-							musicAuthor = kwArr[1];
+                // 坐标转换后的经纬度
+                String bd09Lng = null;
+                String bd09Lat = null;
 
-						// ��������
-						Music music = BaiduMusicService.searchMusic(musicTitle,
-								musicAuthor);
-						// δ����������
-						if (null == music) {
-							respContent = "���Ѿ���Ŭ���ˣ�����û���ҵ�����<" + musicTitle
-									+ ">\n" + "����������/:8*/:8* ���Ӹ����������Կ�";
-						} else {
-							// ������Ϣ
-							MusicMessage musicMessage = new MusicMessage();
-							musicMessage.setToUserName(fromUserName);
-							musicMessage.setFromUserName(toUserName);
-							musicMessage.setCreateTime(new Date().getTime());
-							musicMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_MUSIC);
-							musicMessage.setMusic(music);
-							respXml = MessageUtil.messageToXml(musicMessage);
-						}
-					}
-				}
-				// **********���ܷ���*************
-				else if (content.startsWith("����")) {
-					String keyWord = content.replaceAll("^����", "").trim();
-					if ("".equals(keyWord)) {
-						respContent = Tools.getTranslateUsage();
-					} else
-						respContent = "\ue110�����"+ BaiduTranslateService.translate(keyWord);
-				}
-				// **********�ܱ�����*************
-				else if (content.startsWith("����")) {
-					String keyWord = content.replaceAll(" ���� ", "").trim();
-					// ��ȡ�û����һ�η��͵ĵ���λ��
-					UserLocation location = MySQLUtil.getLastLocation(request,
-							fromUserName);
-					// δ��ȡ��
-					if (null == location) {
-						respContent = Tools.getLocationUsage();
-					} else {
-						// ����ת���󣨾�ƫ�������������ܱ�POI
-						List<BaiduPlace> placeList = BaiduMapUtil.searchPlace(
-								keyWord, location.getBd09Lng(),
-								location.getBd09Lat());
-						// δ������POI
-						if (null == placeList || 0 == placeList.size()) {
-							respContent = String.format(
-									"/�ѹ��������͵�λ�ø���δ��������%s����Ϣ��", keyWord);
-						} else {
-							List<Article> articleList = BaiduMapUtil
-									.makeArticleList(placeList,
-											location.getBd09Lng(),
-											location.getBd09Lat());
-							// �ظ�ͼ����Ϣ
-							NewsMessage newsMessage = new NewsMessage();
-							newsMessage.setToUserName(fromUserName);
-							newsMessage.setFromUserName(toUserName);
-							newsMessage.setCreateTime(new Date().getTime());
-							newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-							newsMessage.setArticles(articleList);
-							newsMessage.setArticleCount(articleList.size());
+                // 调用接口转换坐标
+                UserLocation userLocation = BaiduMapUtil.convertCoord(lng, lat);
+                if (null != userLocation) {
+                    bd09Lng = userLocation.getBd09Lng();
+                    bd09Lat = userLocation.getBd09Lat();
+                }
+                // 保存用户地理位置
+                MySQLUtil.saveUserLocation(request, fromUserName, lng, lat,
+                        bd09Lng, bd09Lat);
 
-							respXml = MessageUtil.messageToXml(newsMessage);
-						}
-					}
-				} else {
-					respContent = ChatService.chat(fromUserName, createTime, content);
-				}
-			}
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("[愉快][愉快]").append("成功接收您的位置！").append("\n\n");
+                buffer.append("您可以输入搜索关键词获取周边信息了，例如：").append("\n");
+                buffer.append("附近美食").append("\n");
+                buffer.append("附近KTV").append("\n");
+                buffer.append("附近公交站").append("\n");
+                buffer.append("必须以“附近”两个字开头！");
+                respContent = buffer.toString();
+            }
 
-			// **********************************
-			if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {
-				// �¼�����
-				String eventType = requestMap.get("Event");
-				// ��ע
-				if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
-					respContent = Tools.welcome;
-				}
-				// ȡ����ע
-				else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
-					// TODO ȡ�����ĺ��û��������յ������˺ŷ��͵���Ϣ����˲���Ҫ�ظ�
-				}
-				// ɨ���������ά��
-				else if (eventType.equals(MessageUtil.EVENT_TYPE_SCAN)) {
-					// TODO ����ɨ���������ά���¼�
-				}
-				// �Զ���˵�
-				else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {
-					// TODO ����˵�����¼�
-					String eventKey = requestMap.get("EventKey");
+            respContent += "";
+            textMessage.setContent(respContent);
+            respXml = MessageUtil.messageToXml(textMessage);
 
-					if (eventKey.equals("11")) {
-						respContent = Tools.getTranslateUsage();
-					} else if (eventKey.equals("12")) {
-						respContent = Tools.getMusicUsage();
-					} else if (eventKey.equals("13")) {
-						respContent = Tools.getLocationUsage();
-					} else if (eventKey.equals("14")) {
-						NewsMessage newsMessage = new NewsMessage();
-						newsMessage.setToUserName(fromUserName);
-						newsMessage.setFromUserName(toUserName);
-						newsMessage.setCreateTime(new Date().getTime());
-						newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "服务器出现故障，稍后再尝试把！心塞塞~";
+        }
 
-						Article article1 = new Article();
-						article1.setTitle("\ue335�������ʹ��˵��");
-						article1.setDescription(Tools.getFaceUsage());
-						article1.setUrl("http://1.lemontime.sinaapp.com/face.jsp");
-						article1.setPicUrl("http://1.lemontime.sinaapp.com/images/facepp_inside.png");
+        return respXml;
+    }
 
-						List<Article> articleList = new ArrayList<Article>();
-						articleList.add(article1);
+    /**
+     * 1、点歌分享
+     *
+     * @param content
+     * @param fromUserName
+     * @param toUserName
+     * @return 音乐消息
+     */
+    private static String musicFuntion(String content, String fromUserName, String toUserName) {
+        // 如果以“歌曲”2个字开头
+        // 将歌曲2个字及歌曲后面的+、空格、-等特殊符号去掉
+        String keyWord = content.replaceAll("^歌曲[\\+ ~!@#%^-_=]?",
+                "");
+        // 如果歌曲名称为空
+        if ("".equals(keyWord)) {
+            respContent = Tools.getMusicUsage();
+        } else {
+            String[] kwArr = keyWord.split("@");
+            // 歌曲名称
+            String musicTitle = kwArr[0];
+            // 演唱者默认为空
+            String musicAuthor = "";
+            if (2 == kwArr.length)
+                musicAuthor = kwArr[1];
 
-						newsMessage.setArticleCount(articleList.size());
-						newsMessage.setArticles(articleList);
+            // 搜索音乐
+            Music music = BaiduMusicService.searchMusic(musicTitle,
+                    musicAuthor);
+            // 未搜索到音乐
+            if (null == music) {
+                respContent = "我已经很努力了，还是没有找到歌曲<" + musicTitle
+                        + ">\n" + "啊，心塞塞/:8*/:8* 不加歌手搜索试试看";
+            } else {
+                // 音乐消息
+                MusicMessage musicMessage = new MusicMessage();
+                musicMessage.setToUserName(fromUserName);
+                musicMessage.setFromUserName(toUserName);
+                musicMessage.setCreateTime(new Date().getTime());
+                musicMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_MUSIC);
+                musicMessage.setMusic(music);
+                respXml = MessageUtil.messageToXml(musicMessage);
+            }
+        }
+        return respXml;
+    }
 
-						respXml = MessageUtil.messageToXml(newsMessage);
-					} else if (eventKey.equals("21")) {
-						respContent = Tools.getTuijian();
-					} else if (eventKey.equals("22")) {
-						respContent = Tools.getYuluUsage();
-					} else if (eventKey.equals("23")) {
-						respContent = "������Ͻǲ鿴��ʷ��Ϣ���ɡ�";
-					} else if (eventKey.equals("31")) {
-						respContent = Tools.getChatUsage();
-					} else if (eventKey.equals("32")) {
-						respContent = Tools.getJoke();
-					} else if (eventKey.equals("33")) {
-						respContent = Tools.getSuggestUsage();
-					}
-				}
-			} else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_IMAGE)) {
-				// ͼƬ��Ϣ
-				// ȡ��ͼƬ��ַ
-				String picUrl = requestMap.get("PicUrl");
-				// �������
-				String detectResult = FaceService.detect(picUrl);
-				respContent = detectResult;
+    /**
+     * 2、周边搜索
+     *
+     * @param request
+     * @param content
+     * @param fromUserName
+     * @param toUserName
+     * @return news图文
+     */
+    private static String locationFunction(HttpServletRequest request, String content, String fromUserName, String toUserName) {
+        String keyWord = content.replaceAll("附近", "").trim();
+        // 获取用户最后一次发送的地理位置
+        UserLocation location = MySQLUtil.getLastLocation(request,
+                fromUserName);
+        // 未获取到
+        if (null == location) {
+            respContent = Tools.getLocationUsage();
+        } else {
+            // 根据转换后（纠偏）的坐标搜索周边POI
+            List<BaiduPlace> placeList = null;
+            try {
+                placeList = BaiduMapUtil.searchPlace(
+                        keyWord, location.getBd09Lng(),
+                        location.getBd09Lat());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // 未搜索到POI
+            if (null == placeList || 0 == placeList.size()) {
+                respContent = String.format(
+                        "/难过，您发送的位置附近未搜索到“%s”信息！", keyWord);
+            } else {
+                List<Article> articleList = BaiduMapUtil.makeArticleList(placeList, location.getBd09Lng()
+                        , location.getBd09Lat());
+                // 回复图文消息
+                NewsMessage newsMessage = new NewsMessage();
+                newsMessage.setToUserName(fromUserName);
+                newsMessage.setFromUserName(toUserName);
+                newsMessage.setCreateTime(new Date().getTime());
+                newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+                newsMessage.setArticles(articleList);
+                newsMessage.setArticleCount(articleList.size());
 
-			} else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_VOICE)) {
-				// ������Ϣ
-				int a = (int) (Math.random() * 10 + 1);
-				switch (a) {
-				case 1:
-					respContent = "�� ��������ú���/:rose";
-					break;
-				case 2:
-					respContent = "���� ����Ŷ/:strong";
-					break;
-				case 3:
-					respContent = "�� ����������ô" + Tools.emoji(0x1F618)
-							+ Tools.emoji(0x1F618);
-				case 4:
-					respContent = "רҵ���� ����98,������,superstar�����㣡";
-					break;
-				case 5:
-					respContent = "�Ͻ�ȥ�μ�ĳ�Ǹ��ְ�" + Tools.emoji(0x1F631);
-					break;
-				default:
-					respContent = "��˵��ͼ�����֪࣬������������ứ�����ĵ�����"
-							+ Tools.emoji(0x1F494);
-					break;
-				}
-			} else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_VIDEO)) {
-				// ��Ƶ��Ϣ
-				int a = (int) (Math.random() * 10 + 1);
-				switch (a) {
-				case 1:
-					respContent = "�� �ĵĲ���Ŷ/:rose";
-					break;
-				case 2:
-					respContent = "���� ����Ŷ/:strong";
-					break;
-				case 3:
-					respContent = "DuangDuangDuang~" + Tools.emoji(0x1F618)
-							+ Tools.emoji(0x1F618);
-				case 4:
-					respContent = "������,��һ���¹�ϣ�����㣡";
-					break;
-				case 5:
-					respContent = "�Ͻ�ȥ�μ���Ӱ������" + Tools.emoji(0x1F631);
-					break;
-				default:
-					respContent = "��˵��ͼ�����֪࣬������������ứ�����ĵ�����"+ Tools.emoji(0x1F494);
-					break;
-				}
-			} else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_LOCATION)) {
-				// ����λ����Ϣ
-				// �û����͵ľ�γ��
-				String lng = requestMap.get("Location_Y");
-				String lat = requestMap.get("Location_X");
-				// ����ת����ľ�γ��
-				String bd09Lng = null;
-				String bd09Lat = null;
-				// ���ýӿ�ת������
-				UserLocation userLocation = BaiduMapUtil.convertCoord(lng, lat);
-				if (null != userLocation) {
-					bd09Lng = userLocation.getBd09Lng();
-					bd09Lat = userLocation.getBd09Lat();
-				}
-				// �����û�����λ��
-				MySQLUtil.saveUserLocation(request, fromUserName, lng, lat,
-						bd09Lng, bd09Lat);
+                respXml = MessageUtil.messageToXml(newsMessage);
+            }
+        }
 
-				StringBuffer buffer = new StringBuffer();
-				buffer.append("[���][���]").append("�ɹ���������λ�ã�").append("\n\n");
-				buffer.append("���������������ؼ��ʻ�ȡ�ܱ���Ϣ�ˣ����磺").append("\n");
-				buffer.append("������ʳ").append("\n");
-				buffer.append("����KTV").append("\n");
-				buffer.append("��������վ").append("\n");
-				buffer.append("�����ԡ������������ֿ�ͷ��");
-				respContent = buffer.toString();
-			}
+        return respXml;
+    }
 
-			if (respContent != null) {
-				textMessage.setContent(respContent);
-				respXml = MessageUtil.messageToXml(textMessage);
-			}
+    /**
+     * 3、颜值检测
+     *
+     * @param fromUserName
+     * @param toUserName
+     * @return news图文消息
+     */
+    private static String getFaceUsageWithArticle(String fromUserName, String toUserName) {
+        NewsMessage newsMessage = new NewsMessage();
+        newsMessage.setToUserName(fromUserName);
+        newsMessage.setFromUserName(toUserName);
+        newsMessage.setCreateTime(new Date().getTime());
+        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
 
-			if (respContent == null && respXml==null) {
-				respContent = "���������ֹ��ϣ��Ժ��ٳ��԰ѣ�������~";
-				textMessage.setContent(respContent);
-				respXml = MessageUtil.messageToXml(textMessage);
-			}
+        Article article1 = new Article();
+        article1.setTitle("\ue335人脸检测使用说明");
+        article1.setDescription(Tools.getFaceUsage());
+        article1.setUrl("http://101.37.18.146/smart-wechat/face.jsp");
+        article1.setPicUrl("http://101.37.18.146/smart-wechat/images/facepp_inside.png");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "���������ֹ��ϣ��Ժ��ٳ��԰ѣ�������~";
-		}
+        List<Article> articleList = new ArrayList<Article>();
+        articleList.add(article1);
 
-		return respXml;
-	}
+        newsMessage.setArticleCount(articleList.size());
+        newsMessage.setArticles(articleList);
+
+        return respXml;
+    }
 }

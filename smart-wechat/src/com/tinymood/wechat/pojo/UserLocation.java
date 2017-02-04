@@ -1,16 +1,22 @@
-package org.taoran.course.pojo;
+package com.tinymood.wechat.pojo;
 
 /**
- * ÓÃ»§µØÀíÎ»ÖÃÀà
+ * ç”¨æˆ·åœ°ç†ä½ç½®ç±»
  * 
- * @author ßØßØ
- * @date 2015-4-9
+ * @author nothankyou
+ * @date 2017-02-03 22:09:50
  */
 public class UserLocation {
 	private String openId;
-	private String lng;
+
+	// çº¬åº¦
 	private String lat;
+
+	// ç»åº¦
+	private String lng;
+
 	private String bd09Lng;
+
 	private String bd09Lat;
 
 	public String getOpenId() {

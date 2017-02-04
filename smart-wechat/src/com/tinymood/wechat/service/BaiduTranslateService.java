@@ -1,115 +1,112 @@
-package org.taoran.course.service;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import org.taoran.course.util.TranslateResult;
-
-import com.google.gson.Gson;
-
-import net.sf.json.JSONObject;
-
+//package com.tinymood.wechat.service;
+//
+//import java.io.BufferedReader;
+//import java.io.InputStream;
+//import java.io.InputStreamReader;
+//import java.io.UnsupportedEncodingException;
+//import java.net.HttpURLConnection;
+//import java.net.URL;
+//
+//import com.tinymood.wechat.util.TranslateResult;
+//
 //import com.google.gson.Gson;
-
-/**
- * 
- * @author ßØßØ
- * @date 2015-4-12
- */
-public class BaiduTranslateService {
-	/**
-	 * ·¢ÆğhttpÇëÇó»ñÈ¡·µ»Ø½á¹û
-	 * 
-	 * @param requestUrl ÇëÇóµØÖ·
-	 * @return
-	 */
-	public static String httpRequest(String requestUrl) {
-		StringBuffer buffer = new StringBuffer();
-		try {
-			URL url = new URL(requestUrl);
-			HttpURLConnection httpUrlConn = (HttpURLConnection) url.openConnection();
-
-			httpUrlConn.setDoOutput(false);
-			httpUrlConn.setDoInput(true);
-			httpUrlConn.setUseCaches(false);
-
-			httpUrlConn.setRequestMethod("GET");
-			httpUrlConn.connect();
-
-			// ½«·µ»ØµÄÊäÈëÁ÷×ª»»³É×Ö·û´®
-			InputStream inputStream = httpUrlConn.getInputStream();
-			InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
-			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-			String str = null;
-			while ((str = bufferedReader.readLine()) != null) {
-				buffer.append(str);
-			}
-			bufferedReader.close();
-			inputStreamReader.close();
-			// ÊÍ·Å×ÊÔ´
-			inputStream.close();
-			inputStream = null;
-			httpUrlConn.disconnect();
-
-		} catch (Exception e) {
-		}
-		return buffer.toString();
-	}
-
-	/**
-	 * utf±àÂë
-	 * 
-	 * @param source
-	 * @return
-	 */
-	public static String urlEncodeUTF8(String source) {
-		String result = source;
-		try {
-			result = java.net.URLEncoder.encode(source, "utf-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-
-	/**
-	 * ·­Òë£¨ÖĞ->Ó¢ Ó¢->ÖĞ ÈÕ->ÖĞ £©
-	 * 
-	 * @param source
-	 * @return
-	 */
-	public static String translate(String source) {
-		String dst = null;
-
-		// ×é×°²éÑ¯µØÖ·
-		String requestUrl = "http://openapi.baidu.com/public/2.0/bmt/translate?client_id=buoCCw8xlInwYi5LxurlYYth&q={keyWord}&from=auto&to=auto";
-		// ¶Ô²ÎÊıqµÄÖµ½øĞĞurlEncode utf-8±àÂë
-		requestUrl = requestUrl.replace("{keyWord}", urlEncodeUTF8(source));
-
-		// ²éÑ¯²¢½âÎö½á¹û
-		try {
-			// ²éÑ¯²¢»ñÈ¡·µ»Ø½á¹û
-			String json = httpRequest(requestUrl);
-			// Í¨¹ıGson¹¤¾ß½«json×ª»»³ÉTranslateResult¶ÔÏó
-			TranslateResult translateResult = new Gson().fromJson(json, TranslateResult.class);
-			// È¡³ötranslateResultÖĞµÄÒëÎÄ
-			dst = translateResult.getTrans_result().get(0).getDst();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		if (null == dst)
-			dst = "·­ÒëÏµÍ³Òì³££¬ÇëÉÔºò³¢ÊÔ£¡";
-		return dst;
-	}
-
-	public static void main(String[] args) {
-		// ·­Òë½á¹û£ºThe network really powerful
-		System.out.println(translate("ÍøÂçÕæÇ¿´ó"));
-	}
-}
+//
+///**
+// *
+// * @author å““å““
+// * @date 2015-4-12
+// */
+//public class BaiduTranslateService {
+//	/**
+//	 * å‘èµ·httpè¯·æ±‚è·å–è¿”å›ç»“æœ
+//	 *
+//	 * @param requestUrl è¯·æ±‚åœ°å€
+//	 * @return
+//	 */
+//	public static String httpRequest(String requestUrl) {
+//		StringBuffer buffer = new StringBuffer();
+//		try {
+//			URL url = new URL(requestUrl);
+//			HttpURLConnection httpUrlConn = (HttpURLConnection) url.openConnection();
+//
+//			httpUrlConn.setDoOutput(false);
+//			httpUrlConn.setDoInput(true);
+//			httpUrlConn.setUseCaches(false);
+//
+//			httpUrlConn.setRequestMethod("GET");
+//			httpUrlConn.connect();
+//
+//			// å°†è¿”å›çš„è¾“å…¥æµè½¬æ¢æˆå­—ç¬¦ä¸²
+//			InputStream inputStream = httpUrlConn.getInputStream();
+//			InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
+//			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+//
+//			String str = null;
+//			while ((str = bufferedReader.readLine()) != null) {
+//				buffer.append(str);
+//			}
+//			bufferedReader.close();
+//			inputStreamReader.close();
+//			// é‡Šæ”¾èµ„æº
+//			inputStream.close();
+//			inputStream = null;
+//			httpUrlConn.disconnect();
+//
+//		} catch (Exception e) {
+//		}
+//		return buffer.toString();
+//	}
+//
+//	/**
+//	 * utfç¼–ç 
+//	 *
+//	 * @param source
+//	 * @return
+//	 */
+//	public static String urlEncodeUTF8(String source) {
+//		String result = source;
+//		try {
+//			result = java.net.URLEncoder.encode(source, "utf-8");
+//		} catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
+//		return result;
+//	}
+//
+//	/**
+//	 * ç¿»è¯‘ï¼ˆä¸­->è‹± è‹±->ä¸­ æ—¥->ä¸­ ï¼‰
+//	 *
+//	 * @param source
+//	 * @return
+//	 */
+//	public static String translate(String source) {
+//		String dst = null;
+//
+//		// ç»„è£…æŸ¥è¯¢åœ°å€
+//		String requestUrl = "http://openapi.baidu.com/public/2.0/bmt/translate?client_id=buoCCw8xlInwYi5LxurlYYth&q={keyWord}&from=auto&to=auto";
+//
+//		// å¯¹å‚æ•°qçš„å€¼è¿›è¡ŒurlEncode utf-8ç¼–ç 
+//		requestUrl = requestUrl.replace("{keyWord}", urlEncodeUTF8(source));
+//
+//		// æŸ¥è¯¢å¹¶è§£æç»“æœ
+//		try {
+//			// æŸ¥è¯¢å¹¶è·å–è¿”å›ç»“æœ
+//			String json = httpRequest(requestUrl);
+//			// é€šè¿‡Gsonå·¥å…·å°†jsonè½¬æ¢æˆTranslateResultå¯¹è±¡
+//			TranslateResult translateResult = new Gson().fromJson(json, TranslateResult.class);
+//			// å–å‡ºtranslateResultä¸­çš„è¯‘æ–‡
+//			dst = translateResult.getTrans_result().get(0).getDst();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		if (null == dst)
+//			dst = "ç¿»è¯‘ç³»ç»Ÿå¼‚å¸¸ï¼Œè¯·ç¨å€™å°è¯•ï¼";
+//		return dst;
+//	}
+//
+//	public static void main(String[] args) {
+//		// ç¿»è¯‘ç»“æœï¼šThe network really powerful
+//		System.out.println(translate("ç½‘ç»œçœŸå¼ºå¤§"));
+//	}
+//}

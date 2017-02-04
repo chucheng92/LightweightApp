@@ -1,10 +1,10 @@
-package org.taoran.course.pojo;
+package com.tinymood.wechat.pojo;
 
 /**
- * ÎÊ´ðÖªÊ¶model
+ * é—®ç­”çŸ¥è¯†model
  * 
- * @author ßØßØ
- * @date 2015-4-24
+ * @author nothankyou
+ * @date 2017-02-03 22:09:03
  */
 public class Knowledge {
 	private int id;

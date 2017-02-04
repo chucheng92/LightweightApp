@@ -1,210 +1,212 @@
-package org.taoran.course.service;
-
-import java.io.File;
-import java.util.List;
-import java.util.Random;
-
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.IntField;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
-import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
-import org.taoran.course.pojo.Knowledge;
-import org.taoran.course.util.MySQLUtil;
-import org.taoran.course.util.Tools;
-import org.wltea.analyzer.lucene.IKAnalyzer;
-
-/**
- * ÁÄÌì·şÎñÀà
- * 
- * @author ßØßØ
- * @date 2015-4-20
- */
-public class ChatService {
-	/**
-	 * µÃµ½Ë÷Òı´æ´¢Ä¿Â¼
-	 * 
-	 * @return WEB-INF/classes/index/
-	 */
-	public static String getIndexDir() {
-		// µÃµ½.classÎÄ¼şËùÔÚÂ·¾¶£¨WEB-INF/classes/£©
-		String classpath = ChatService.class.getResource("/").getPath();
-		// ½«classpathÖĞµÄ%20Ìæ»»Îª¿Õ¸ñ
-		classpath = classpath.replaceAll("%20", " ");
-		// Ë÷Òı´æ´¢Î»ÖÃ£ºWEB-INF/classes/index/
-		return classpath + "index/";
-	}
-
-	/**
-	 * ´´½¨Ë÷Òı
-	 */
-	public static void createIndex() {
-		// È¡µÃÎÊ´ğÖªÊ¶¿âÖĞµÄËùÓĞ¼ÇÂ¼
-		List<Knowledge> knowledgeList = MySQLUtil.findAllKnowledge();
-		Directory directory = null;
-		IndexWriter indexWriter = null;
-		try {
-			directory = FSDirectory.open(new File(getIndexDir()));
-			IndexWriterConfig iwConfig = new IndexWriterConfig(
-					Version.LUCENE_46, new IKAnalyzer(true));
-			indexWriter = new IndexWriter(directory, iwConfig);
-			Document doc = null;
-			// ±éÀúÎÊ´ğÖªÊ¶¿â´´½¨Ë÷Òı
-			for (Knowledge knowledge : knowledgeList) {
-				doc = new Document();
-				// ¶Ôquestion½øĞĞ·Ö´Ê´æ´¢
-				doc.add(new TextField("question", knowledge.getQuestion(),
-						Store.YES));
-				// ¶Ôid¡¢answerºÍcategory²»·Ö´Ê´æ´¢
-				doc.add(new IntField("id", knowledge.getId(), Store.YES));
-				doc.add(new StringField("answer", knowledge.getAnswer(),
-						Store.YES));
-				doc.add(new IntField("category", knowledge.getCategory(),
-						Store.YES));
-				indexWriter.addDocument(doc);
-			}
-			indexWriter.close();
-			directory.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * ´ÓË÷ÒıÎÄ¼şÖĞ¸ù¾İÎÊÌâ¼ìË÷´ğ°¸
-	 * 
-	 * @param content
-	 * @return Knowledge
-	 */
-	@SuppressWarnings("deprecation")
-	private static Knowledge searchIndex(String content) {
-		Knowledge knowledge = null;
-		try {
-			Directory directory = FSDirectory.open(new File(getIndexDir()));
-			IndexReader reader = IndexReader.open(directory);
-			IndexSearcher searcher = new IndexSearcher(reader);
-			// Ê¹ÓÃ²éÑ¯½âÎöÆ÷´´½¨Query
-			QueryParser questParser = new QueryParser(Version.LUCENE_46,
-					"question", new IKAnalyzer(true));
-			Query query = questParser.parse(QueryParser.escape(content));
-			// ¼ìË÷µÃ·Ö×î¸ßµÄÎÄµµ
-			TopDocs topDocs = searcher.search(query, 1);
-			if (topDocs.totalHits > 0) {
-				knowledge = new Knowledge();
-				ScoreDoc[] scoreDoc = topDocs.scoreDocs;
-				for (ScoreDoc sd : scoreDoc) {
-					Document doc = searcher.doc(sd.doc);
-					knowledge.setId(doc.getField("id").numericValue()
-							.intValue());
-					knowledge.setQuestion(doc.get("question"));
-					knowledge.setAnswer(doc.get("answer"));
-					knowledge.setCategory(doc.getField("category")
-							.numericValue().intValue());
-				}
-			}
-			reader.close();
-			directory.close();
-		} catch (Exception e) {
-			knowledge = null;
-			e.printStackTrace();
-		}
-		return knowledge;
-	}
-
-	/**
-	 * ÁÄÌì·½·¨£¨¸ù¾İquestion·µ»Øanswer£©
-	 * 
-	 * @param openId
-	 *            ÓÃ»§µÄOpenID
-	 * @param createTime
-	 *            ÏûÏ¢´´½¨Ê±¼ä
-	 * @param question
-	 *            ÓÃ»§ÉÏĞĞµÄÎÊÌâ
-	 * @return answer
-	 */
-	public static String chat(String openId, String createTime, String question) {
-		String answer = null;
-		int chatCategory = 0;
-		Knowledge knowledge = searchIndex(question);
-		// ÕÒµ½Æ¥ÅäÏî
-		if (null != knowledge) {
-			// Ğ¦»°
-			if (2 == knowledge.getCategory()) {
-				answer = MySQLUtil.getJoke();
-				chatCategory = 2;
-			}
-			// ÓïÂ¼
-			else if (4 == knowledge.getCategory()) {
-				answer = MySQLUtil.getYulu();
-				chatCategory = 4;
-			}
-			// ÉÏÏÂÎÄ
-			else if (3 == knowledge.getCategory()) {
-				// ÅĞ¶ÏÉÏÒ»´ÎµÄÁÄÌìÀà±ğ
-				int category = MySQLUtil.getLastCategory(openId);
-				// Èç¹ûÊÇĞ¦»°£¬±¾´Î¼ÌĞø»Ø¸´Ğ¦»°¸øÓÃ»§
-				if (2 == category) {
-					answer = MySQLUtil.getJoke();
-					chatCategory = 2;
-				} else if (4 == category) {
-					answer = MySQLUtil.getYulu();
-					chatCategory = 4;
-				} else {
-					answer = knowledge.getAnswer();
-					chatCategory = knowledge.getCategory();
-				}
-			}
-			// ÆÕÍ¨¶Ô»°
-			else {
-				answer = knowledge.getAnswer();
-				// Èç¹û´ğ°¸Îª¿Õ£¬¸ù¾İÖªÊ¶id´ÓÎÊ´ğÖªÊ¶·Ö±íÖĞËæ»ú»ñÈ¡Ò»Ìõ
-				if ("".equals(answer))
-					answer = MySQLUtil.getKnowledSub(knowledge.getId());
-				chatCategory = 1;
-			}
-		}
-		// Î´ÕÒµ½Æ¥ÅäÏî
-		else {
-			answer = getDefaultAnswer();
-			chatCategory = 0;
-		}
-		// ±£´æÁÄÌì¼ÇÂ¼
-		MySQLUtil.saveChatLog(openId, createTime, question, answer,
-				chatCategory);
-		return answer;
-	}
-
-	/**
-	 * Ëæ»ú»ñÈ¡Ò»¸öÄ¬ÈÏµÄ´ğ°¸
-	 * 
-	 * @return
-	 */
-	private static String getDefaultAnswer() {
-		String[] answer = { "Òª²»ÎÒÃÇÁÄµã±ğµÄ£¿", Tools.defaultMenu,"¶÷£¿Äãµ½µ×ÔÚËµÊ²Ã´ÄØ£¿", "Ã»ÓĞÌı¶®ÄãËµµÄ£¬ÄÜ·ñ»»¸öËµ·¨£¿","Tips: ÔÚĞ¦»°»òÓïÂ¼Ä£Ê½ÏÂ»Ø¸´¡¯¼ÌĞø¡®or¡®next¡¯or¡®ÏÂÒ»Ìõ¡¯¿ÉÒÔÖ±½ÓÊÕÈ¡ÏÂÒ»ÌõÅ¶£¬ºÜ°ô°É\ue409",
-				"ËäÈ»²»Ã÷°×ÄãµÄÒâË¼£¬µ«ÎÒÈ´ÄÜÓÃĞÄÈ¥¸ĞÊÜ", "ÌıµÄÎÒÒ»Í·ÎíË®£¬¸óÏÂµÄÖªÊ¶ÕæÊÇÔ¨²©Ñ½£¬Ä¤°İ~","Tips: ÔÚĞ¦»°»òÓïÂ¼Ä£Ê½ÏÂ»Ø¸´¡¯¼ÌĞø¡®or¡®next¡¯or¡®ÏÂÒ»Ìõ¡¯¿ÉÒÔÖ±½ÓÊÕÈ¡ÏÂÒ»ÌõÅ¶£¬ºÜ°ô°É\ue409",
-				"ÕæĞÄÌı²»¶®ÄãÔÚËµÊ²Ã´£¬Òª²»Äã»»ÖÖ±í´ï·½Ê½ÈçºÎ£¿", Tools.defaultMenu,"°¥£¬ÎÒĞ¡Ñ§ÓïÎÄÊÇÌåÓıÀÏÊ¦½ÌµÄ£¬Àí½âÆğÀ´ÓĞµãÀ§ÄÑÅ¶",Tools.defaultMenu,"Tips: ÔÚĞ¦»°»òÓïÂ¼Ä£Ê½ÏÂ»Ø¸´¡¯¼ÌĞø¡®or¡®next¡¯or¡®ÏÂÒ»Ìõ¡¯¿ÉÒÔÖ±½ÓÊÕÈ¡ÏÂÒ»ÌõÅ¶£¬ºÜ°ô°É\ue409",
-				"ÊÇÊÀ½ç±ä»¯Ì«¿ì£¬»¹ÊÇÎÒ²»¹»ÓĞ²Å£¿ÎªºÎÄãËµ»°ÎÒ²»Ã÷°×£¿", "Ğ¡ÃØÃÜ£¬»Ø¸´bookÊÔÊÔ¿´\ue409"};
-		return answer[getRandomNumber(answer.length)];
-	}
-
-	/**
-	 * Ëæ»úÉú³É 0~length-1 Ö®¼äµÄÄ³¸öÖµ
-	 * 
-	 * @return int
-	 */
-	private static int getRandomNumber(int length) {
-		Random random = new Random();
-		return random.nextInt(length);
-	}
-}
+//package com.tinymood.wechat.service;
+//
+//import java.io.File;
+//import java.util.List;
+//import java.util.Random;
+//
+//import org.apache.lucene.document.Document;
+//import org.apache.lucene.document.IntField;
+//import org.apache.lucene.document.StringField;
+//import org.apache.lucene.document.TextField;
+//import org.apache.lucene.document.Field.Store;
+//import org.apache.lucene.index.IndexReader;
+//import org.apache.lucene.index.IndexWriter;
+//import org.apache.lucene.index.IndexWriterConfig;
+//import org.apache.lucene.queryparser.classic.QueryParser;
+//import org.apache.lucene.search.IndexSearcher;
+//import org.apache.lucene.search.Query;
+//import org.apache.lucene.search.ScoreDoc;
+//import org.apache.lucene.search.TopDocs;
+//import org.apache.lucene.store.Directory;
+//import org.apache.lucene.store.FSDirectory;
+//import org.apache.lucene.util.Version;
+//import org.taoran.course.pojo.Knowledge;
+//import org.taoran.course.util.MySQLUtil;
+//import org.taoran.course.util.Tools;
+//import org.wltea.analyzer.lucene.IKAnalyzer;
+//
+//// æ™ºèƒ½èŠå¤© æ”¹ä¸ºå›¾çµAPIæ¥å…¥
+//
+///**
+// * èŠå¤©æœåŠ¡ç±»
+// *
+// * @author å““å““
+// * @date 2015-4-20
+// */
+//public class ChatService {
+//	/**
+//	 * å¾—åˆ°ç´¢å¼•å­˜å‚¨ç›®å½•
+//	 *
+//	 * @return WEB-INF/classes/index/
+//	 */
+//	public static String getIndexDir() {
+//		// å¾—åˆ°.classæ–‡ä»¶æ‰€åœ¨è·¯å¾„ï¼ˆWEB-INF/classes/ï¼‰
+//		String classpath = ChatService.class.getResource("/").getPath();
+//		// å°†classpathä¸­çš„%20æ›¿æ¢ä¸ºç©ºæ ¼
+//		classpath = classpath.replaceAll("%20", " ");
+//		// ç´¢å¼•å­˜å‚¨ä½ç½®ï¼šWEB-INF/classes/index/
+//		return classpath + "index/";
+//	}
+//
+//	/**
+//	 * åˆ›å»ºç´¢å¼•
+//	 */
+//	public static void createIndex() {
+//		// å–å¾—é—®ç­”çŸ¥è¯†åº“ä¸­çš„æ‰€æœ‰è®°å½•
+//		List<Knowledge> knowledgeList = MySQLUtil.findAllKnowledge();
+//		Directory directory = null;
+//		IndexWriter indexWriter = null;
+//		try {
+//			directory = FSDirectory.open(new File(getIndexDir()));
+//			IndexWriterConfig iwConfig = new IndexWriterConfig(
+//					Version.LUCENE_46, new IKAnalyzer(true));
+//			indexWriter = new IndexWriter(directory, iwConfig);
+//			Document doc = null;
+//			// éå†é—®ç­”çŸ¥è¯†åº“åˆ›å»ºç´¢å¼•
+//			for (Knowledge knowledge : knowledgeList) {
+//				doc = new Document();
+//				// å¯¹questionè¿›è¡Œåˆ†è¯å­˜å‚¨
+//				doc.add(new TextField("question", knowledge.getQuestion(),
+//						Store.YES));
+//				// å¯¹idã€answerå’Œcategoryä¸åˆ†è¯å­˜å‚¨
+//				doc.add(new IntField("id", knowledge.getId(), Store.YES));
+//				doc.add(new StringField("answer", knowledge.getAnswer(),
+//						Store.YES));
+//				doc.add(new IntField("category", knowledge.getCategory(),
+//						Store.YES));
+//				indexWriter.addDocument(doc);
+//			}
+//			indexWriter.close();
+//			directory.close();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+//
+//	/**
+//	 * ä»ç´¢å¼•æ–‡ä»¶ä¸­æ ¹æ®é—®é¢˜æ£€ç´¢ç­”æ¡ˆ
+//	 *
+//	 * @param content
+//	 * @return Knowledge
+//	 */
+//	@SuppressWarnings("deprecation")
+//	private static Knowledge searchIndex(String content) {
+//		Knowledge knowledge = null;
+//		try {
+//			Directory directory = FSDirectory.open(new File(getIndexDir()));
+//			IndexReader reader = IndexReader.open(directory);
+//			IndexSearcher searcher = new IndexSearcher(reader);
+//			// ä½¿ç”¨æŸ¥è¯¢è§£æå™¨åˆ›å»ºQuery
+//			QueryParser questParser = new QueryParser(Version.LUCENE_46,
+//					"question", new IKAnalyzer(true));
+//			Query query = questParser.parse(QueryParser.escape(content));
+//			// æ£€ç´¢å¾—åˆ†æœ€é«˜çš„æ–‡æ¡£
+//			TopDocs topDocs = searcher.search(query, 1);
+//			if (topDocs.totalHits > 0) {
+//				knowledge = new Knowledge();
+//				ScoreDoc[] scoreDoc = topDocs.scoreDocs;
+//				for (ScoreDoc sd : scoreDoc) {
+//					Document doc = searcher.doc(sd.doc);
+//					knowledge.setId(doc.getField("id").numericValue()
+//							.intValue());
+//					knowledge.setQuestion(doc.get("question"));
+//					knowledge.setAnswer(doc.get("answer"));
+//					knowledge.setCategory(doc.getField("category")
+//							.numericValue().intValue());
+//				}
+//			}
+//			reader.close();
+//			directory.close();
+//		} catch (Exception e) {
+//			knowledge = null;
+//			e.printStackTrace();
+//		}
+//		return knowledge;
+//	}
+//
+//	/**
+//	 * èŠå¤©æ–¹æ³•ï¼ˆæ ¹æ®questionè¿”å›answerï¼‰
+//	 *
+//	 * @param openId
+//	 *            ç”¨æˆ·çš„OpenID
+//	 * @param createTime
+//	 *            æ¶ˆæ¯åˆ›å»ºæ—¶é—´
+//	 * @param question
+//	 *            ç”¨æˆ·ä¸Šè¡Œçš„é—®é¢˜
+//	 * @return answer
+//	 */
+//	public static String chat(String openId, String createTime, String question) {
+//		String answer = null;
+//		int chatCategory = 0;
+//		Knowledge knowledge = searchIndex(question);
+//		// æ‰¾åˆ°åŒ¹é…é¡¹
+//		if (null != knowledge) {
+//			// ç¬‘è¯
+//			if (2 == knowledge.getCategory()) {
+//				answer = MySQLUtil.getJoke();
+//				chatCategory = 2;
+//			}
+//			// è¯­å½•
+//			else if (4 == knowledge.getCategory()) {
+//				answer = MySQLUtil.getYulu();
+//				chatCategory = 4;
+//			}
+//			// ä¸Šä¸‹æ–‡
+//			else if (3 == knowledge.getCategory()) {
+//				// åˆ¤æ–­ä¸Šä¸€æ¬¡çš„èŠå¤©ç±»åˆ«
+//				int category = MySQLUtil.getLastCategory(openId);
+//				// å¦‚æœæ˜¯ç¬‘è¯ï¼Œæœ¬æ¬¡ç»§ç»­å›å¤ç¬‘è¯ç»™ç”¨æˆ·
+//				if (2 == category) {
+//					answer = MySQLUtil.getJoke();
+//					chatCategory = 2;
+//				} else if (4 == category) {
+//					answer = MySQLUtil.getYulu();
+//					chatCategory = 4;
+//				} else {
+//					answer = knowledge.getAnswer();
+//					chatCategory = knowledge.getCategory();
+//				}
+//			}
+//			// æ™®é€šå¯¹è¯
+//			else {
+//				answer = knowledge.getAnswer();
+//				// å¦‚æœç­”æ¡ˆä¸ºç©ºï¼Œæ ¹æ®çŸ¥è¯†idä»é—®ç­”çŸ¥è¯†åˆ†è¡¨ä¸­éšæœºè·å–ä¸€æ¡
+//				if ("".equals(answer))
+//					answer = MySQLUtil.getKnowledSub(knowledge.getId());
+//				chatCategory = 1;
+//			}
+//		}
+//		// æœªæ‰¾åˆ°åŒ¹é…é¡¹
+//		else {
+//			answer = getDefaultAnswer();
+//			chatCategory = 0;
+//		}
+//		// ä¿å­˜èŠå¤©è®°å½•
+//		MySQLUtil.saveChatLog(openId, createTime, question, answer,
+//				chatCategory);
+//		return answer;
+//	}
+//
+//	/**
+//	 * éšæœºè·å–ä¸€ä¸ªé»˜è®¤çš„ç­”æ¡ˆ
+//	 *
+//	 * @return
+//	 */
+//	private static String getDefaultAnswer() {
+//		String[] answer = { "è¦ä¸æˆ‘ä»¬èŠç‚¹åˆ«çš„ï¼Ÿ", Tools.defaultMenu,"æ©ï¼Ÿä½ åˆ°åº•åœ¨è¯´ä»€ä¹ˆå‘¢ï¼Ÿ", "æ²¡æœ‰å¬æ‡‚ä½ è¯´çš„ï¼Œèƒ½å¦æ¢ä¸ªè¯´æ³•ï¼Ÿ","Tips: åœ¨ç¬‘è¯æˆ–è¯­å½•æ¨¡å¼ä¸‹å›å¤â€™ç»§ç»­â€˜orâ€˜nextâ€™orâ€˜ä¸‹ä¸€æ¡â€™å¯ä»¥ç›´æ¥æ”¶å–ä¸‹ä¸€æ¡å“¦ï¼Œå¾ˆæ£’å§\ue409",
+//				"è™½ç„¶ä¸æ˜ç™½ä½ çš„æ„æ€ï¼Œä½†æˆ‘å´èƒ½ç”¨å¿ƒå»æ„Ÿå—", "å¬çš„æˆ‘ä¸€å¤´é›¾æ°´ï¼Œé˜ä¸‹çš„çŸ¥è¯†çœŸæ˜¯æ¸Šåšå‘€ï¼Œè†œæ‹œ~","Tips: åœ¨ç¬‘è¯æˆ–è¯­å½•æ¨¡å¼ä¸‹å›å¤â€™ç»§ç»­â€˜orâ€˜nextâ€™orâ€˜ä¸‹ä¸€æ¡â€™å¯ä»¥ç›´æ¥æ”¶å–ä¸‹ä¸€æ¡å“¦ï¼Œå¾ˆæ£’å§\ue409",
+//				"çœŸå¿ƒå¬ä¸æ‡‚ä½ åœ¨è¯´ä»€ä¹ˆï¼Œè¦ä¸ä½ æ¢ç§è¡¨è¾¾æ–¹å¼å¦‚ä½•ï¼Ÿ", Tools.defaultMenu,"å“ï¼Œæˆ‘å°å­¦è¯­æ–‡æ˜¯ä½“è‚²è€å¸ˆæ•™çš„ï¼Œç†è§£èµ·æ¥æœ‰ç‚¹å›°éš¾å“¦",Tools.defaultMenu,"Tips: åœ¨ç¬‘è¯æˆ–è¯­å½•æ¨¡å¼ä¸‹å›å¤â€™ç»§ç»­â€˜orâ€˜nextâ€™orâ€˜ä¸‹ä¸€æ¡â€™å¯ä»¥ç›´æ¥æ”¶å–ä¸‹ä¸€æ¡å“¦ï¼Œå¾ˆæ£’å§\ue409",
+//				"æ˜¯ä¸–ç•Œå˜åŒ–å¤ªå¿«ï¼Œè¿˜æ˜¯æˆ‘ä¸å¤Ÿæœ‰æ‰ï¼Ÿä¸ºä½•ä½ è¯´è¯æˆ‘ä¸æ˜ç™½ï¼Ÿ", "å°ç§˜å¯†ï¼Œå›å¤bookè¯•è¯•çœ‹\ue409"};
+//		return answer[getRandomNumber(answer.length)];
+//	}
+//
+//	/**
+//	 * éšæœºç”Ÿæˆ 0~length-1 ä¹‹é—´çš„æŸä¸ªå€¼
+//	 *
+//	 * @return int
+//	 */
+//	private static int getRandomNumber(int length) {
+//		Random random = new Random();
+//		return random.nextInt(length);
+//	}
+//}

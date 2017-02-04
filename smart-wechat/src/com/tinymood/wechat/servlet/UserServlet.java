@@ -1,4 +1,4 @@
-package org.taoran.course.servlet;
+package com.tinymood.wechat.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,14 +16,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Ê¹ÓÃJDBC²âÊÔĞÂÀËSAEÊı¾İ¿â
- * 
- * @author ßØßØ
+ * ä½¿ç”¨JDBCæµ‹è¯•æ–°æµªSAEæ•°æ®åº“
+ *
+ * @author å““å““
  *
  */
 
 public class UserServlet extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 119132134141414675L;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,9 +32,9 @@ public class UserServlet extends HttpServlet {
 		response.setCharacterEncoding("gb2312");
 
 		PrintWriter out = response.getWriter();
-		// ²éÑ¯user
+		// æŸ¥è¯¢user
 		List<HashMap<String, Object>> userList = queryUser(request);
-		// ±éÀúList¼¯ºÏ
+		// éå†Listé›†åˆ
 		for (HashMap<String, Object> map : userList) {
 			out.println(map.get("name") + " " + map.get("age"));
 		}
@@ -43,42 +43,42 @@ public class UserServlet extends HttpServlet {
 	}
 
 	/**
-	 * ²éÑ¯SAE MySQLÊı¾İ¿âÖĞuser±í
+	 * æŸ¥è¯¢SAE MySQLæ•°æ®åº“ä¸­userè¡¨
 	 */
 	private List<HashMap<String, Object>> queryUser(HttpServletRequest request) {
 
 		List<HashMap<String, Object>> userList = new ArrayList<HashMap<String, Object>>();
-		
+
 		String dbName = "app_saber92";
 		String host = "w.rdc.sae.sina.com.cn";
 		String port = "3307";
 		String username = "2l0jj5xw1k";
 		String password = "hiwil13w0lw5iil1x41zy02235hx24mylyx555jy";
-																
+
 		String driverName = "com.mysql.jdbc.Driver";
 		String dbUrl = "jdbc:mysql://";
 		String serverName = host + ":" + port + "/";
 		String connName = dbUrl + serverName + dbName;
 		try {
-			// ¼ÓÔØMySQLÇı¶¯
+			// åŠ è½½MySQLé©±åŠ¨
 			Class.forName(driverName);
-			// »ñÈ¡Êı¾İ¿âÁ¬½Ó
+			// è·å–æ•°æ®åº“è¿æ¥
 			Connection conn = DriverManager.getConnection(connName, username, password);
-			// ¶¨Òå²éÑ¯SQLÓï¾ä
+			// å®šä¹‰æŸ¥è¯¢SQLè¯­å¥
 			String sql = "select * from user";
-			// ´´½¨PreparedStatement¶ÔÏó(°üº¬ÒÑ±àÒëµÄsqlÓï¾ä)
+			// åˆ›å»ºPreparedStatementå¯¹è±¡(åŒ…å«å·²ç¼–è¯‘çš„sqlè¯­å¥)
 			PreparedStatement ps = conn.prepareStatement(sql);
-			// Ö´ĞĞ²éÑ¯²¢»ñÈ¡½á¹û¼¯
+			// æ‰§è¡ŒæŸ¥è¯¢å¹¶è·å–ç»“æœé›†
 			ResultSet rs = ps.executeQuery();
 
-			// ±éÀú½á¹û¼¯
+			// éå†ç»“æœé›†
 			while (rs.next()) {
 				HashMap<String, Object> userMap = new HashMap<String, Object>();
 				userMap.put("name", rs.getString("name"));
 				userMap.put("age", rs.getInt("age"));
 				userList.add(userMap);
 			}
-			// ¹Ø±ÕÁ¬½Ó£¬ÊÍ·Å×ÊÔ´
+			// å…³é—­è¿æ¥ï¼Œé‡Šæ”¾èµ„æº
 			rs.close();
 			ps.close();
 			conn.close();

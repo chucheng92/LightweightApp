@@ -1,15 +1,16 @@
-package org.taoran.course.util;
+package com.tinymood.wechat.util;
 
 /**
- * ½á¹û¶Ô
+ * ç»“æžœå¯¹
  * 
- * @author ßØßØ
- * @date 2015-4-15
+ * @author nothankyou
+ * @date 2017-02-03 22:05:06
  */
 public class ResultPair {
-	// Ô­ÎÄ
+	// åŽŸæ–‡
 	private String src;
-	// ÒëÎÄ
+
+	// è¯‘æ–‡
 	private String dst;
 
 	public String getSrc() {
