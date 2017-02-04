@@ -7,24 +7,24 @@ package com.tinymood.wechat.message.req;
  */
 public class VideoMessage extends BaseReqMessage {
 	// 视频消息媒体id
-	private String mediaId;
+	private String MediaId;
 
 	// 视频消息缩略图的媒体id
-	private String thumbMediaId;
+	private String ThumbMediaId;
 
 	public String getMediaId() {
-		return mediaId;
+		return MediaId;
 	}
 
 	public void setMediaId(String mediaId) {
-		this.mediaId = mediaId;
+		MediaId = mediaId;
 	}
 
 	public String getThumbMediaId() {
-		return thumbMediaId;
+		return ThumbMediaId;
 	}
 
 	public void setThumbMediaId(String thumbMediaId) {
-		this.thumbMediaId = thumbMediaId;
+		ThumbMediaId = thumbMediaId;
 	}
 }

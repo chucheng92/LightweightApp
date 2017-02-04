@@ -7,10 +7,10 @@ public class Tools {
     public static final String menu = "「梦回少年」食用指南\n"
             + "------------------------\n" + "1 点歌分享\ue03e\n"
             + "2 周边搜索\n" + "3 颜值检测" + Tools.emoji(0x1F525)
-            + "\n" + "4 音乐聚合\n" + "5 历史文章\n" + "6 天启智能机器人\n" + "7 快捷回复\n" + "8 反馈建议\n" + "更多实用功能正在开发，请期待。\n"
+            + "\n" + "4 音乐聚合\n" + "5 文章聚合\n" + "6 天启智能机器人\n" + "7 快捷回复\n" + "8 反馈建议\n" + "更多实用功能正在开发，请期待。\n"
             + "回复“?”显示主菜单";
 
-    public static String welcome = "\uD83D\uDE0BHello~很高兴遇见你！我不是懒，只是有时候更新的比较慢。";
+    public static String welcome = "\uD83D\uDE0BHello~很高兴遇见你！我不是懒，只是有时候更新的比较慢。\n先试试以下功能吧:\n" + menu;
 
     /**
      * 关注提示语
@@ -28,16 +28,7 @@ public class Tools {
 
     // Debug
     public static void main(String[] args) {
-        System.out.println(getSubscribeMsg());
-        System.out.println(menu);
-        System.out.println(getMusicUsage());
-        System.out.println(getLocationUsage());
-        System.out.println(getFaceUsage());
-        System.out.println(getMusicAggregation());
         System.out.println(getHistoryArticles());
-        System.out.println(getRobotUsage());
-        System.out.println(getShortcutKeyword());
-        System.out.println(getSuggestUsage());
     }
 
     /**
@@ -69,7 +60,7 @@ public class Tools {
         buffer.append("然后指定关键词搜索").append("\n");
         buffer.append("格式：附近+关键词\n例如：附近美食、附近公交站、附近厕所").append("\n");
         buffer.append(Tools.emoji(0x1F525) + "小提示：有导航地图哦，再也不怕路痴了。"
-                + Tools.emoji(0x1F525) + "\n");
+                + Tools.emoji(0x1F525) + "\n\n");
         buffer.append("回复“?”显示主菜单");
 
         return buffer.toString();
@@ -82,7 +73,7 @@ public class Tools {
      */
     public static String getFaceUsage() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("\n");
+        buffer.append("颜值检测使用指南\n");
         buffer.append("方法）上传单人或多人人脸照片").append("\n");
         buffer.append("点击窗口底部的“+”按钮，发送图片。\n");
         buffer.append("回复“?”显示主菜单");
@@ -98,18 +89,18 @@ public class Tools {
     public static String getMusicAggregation() {
         String respContent = null;
         respContent = "\ue110 音乐聚合\n"
-                + "1 <a href=\"http://v.yinyuetai.com/video/2268593\">brave shine(UBW op2) - Aimer</a>\n\n"
+                + "1 <a href=\"http://v.yinyuetai.com/video/2268593\">brave shine(UBW op2) - Aimer</a>\n"
                 + "2 <a href=\"http://music.163.com/#/song?id=29550217\">ideal white - 俱野ましろ</a>\n"
                 + "3 <a href=\"http://music.163.com/#/song?id=29736027\">believe - Kalafina</a>\n"
                 + "4 <a href=\"http://music.163.com/#/song?id=560108\">MEMORIA - 他井エイル</a>\n"
                 + "5 <a href=\"http://music.163.com/#/song?id=608404\">oath sign - LISA</a>\n"
-                + "6 <a href=\"http://music.163.com/#/song?id=756338\">to the beginning - Kalafina</a>\n\n"
-                + "7 <a href=\"http://music.163.com/#/song?id=30953009\">see you again-Wiz Khalifa/Charlie Puth</a>\n\n"
+                + "6 <a href=\"http://music.163.com/#/song?id=756338\">to the beginning - Kalafina</a>\n"
+                + "7 <a href=\"http://music.163.com/#/song?id=30953009\">see you again-Wiz Khalifa/Charlie Puth</a>\n"
                 + "8 <a href=\"http://music.163.com/#/song?id=579954\">恋爱サ┼キュレ┼ション - 花泽香菜</a>\n"
                 + "9 <a href=\"http://music.qq.com/qqmusic.html?id=5034876\">You Are Beautiful - James Blunt </a>\n"
                 + "10 <a href=\"http://music.qq.com/qqmusic.html?id=4825889\">时间煮雨 - 郁可唯</a>\n"
                 + "11 <a href=\"http://music.qq.com/qqmusic.html?id=442823\">Live Like You're Dying - Lenka</a>\n"
-                + "12 <a href=\"http://music.163.com/#/song?id=27674128\">恋するフォ┼チュンクッキ┼ - AKB48</a>\n\n"
+                + "12 <a href=\"http://music.163.com/#/song?id=27674128\">恋するフォ┼チュンクッキ┼ - AKB48</a>\n"
                 + "后台回复歌曲名或私聊少年，推荐你喜欢的歌曲。\n"
                 + "少年会将各位推荐的音乐，每周进行聚合，将你的分享推荐给更多人~\n感谢你的分享和鼓励。\n\n"
                 + "回复“?”显示主菜单";
@@ -123,24 +114,12 @@ public class Tools {
      * @return
      */
     public static String getHistoryArticles() {
-        String respContent = null;
-        respContent = "\ue110 历史文章\n"
-                + "1 <a href=\"http://v.yinyuetai.com/video/2268593\">brave shine(UBW op2) - Aimer</a>\n\n"
-                + "2 <a href=\"http://music.163.com/#/song?id=29550217\">ideal white - 俱野ましろ</a>\n"
-                + "3 <a href=\"http://music.163.com/#/song?id=29736027\">believe - Kalafina</a>\n"
-                + "4 <a href=\"http://music.163.com/#/song?id=560108\">MEMORIA - 他井エイル</a>\n"
-                + "5 <a href=\"http://music.163.com/#/song?id=608404\">oath sign - LISA</a>\n"
-                + "6 <a href=\"http://music.163.com/#/song?id=756338\">to the beginning - Kalafina</a>\n\n"
-                + "7 <a href=\"http://music.163.com/#/song?id=30953009\">see you again-Wiz Khalifa/Charlie Puth</a>\n\n"
-                + "8 <a href=\"http://music.163.com/#/song?id=579954\">恋爱サ┼キュレ┼ション - 花泽香菜</a>\n"
-                + "9 <a href=\"http://music.qq.com/qqmusic.html?id=5034876\">You Are Beautiful - James Blunt </a>\n"
-                + "10 <a href=\"http://music.qq.com/qqmusic.html?id=4825889\">时间煮雨 - 郁可唯</a>\n"
-                + "11 <a href=\"http://music.qq.com/qqmusic.html?id=442823\">Live Like You're Dying - Lenka</a>\n"
-                + "12 <a href=\"http://music.163.com/#/song?id=27674128\">恋するフォ┼チュンクッキ┼ - AKB48</a>\n\n"
-                + "回复“?”显示主菜单";
+
+        String respContent = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI4MTM0MDM1OQ==&scene=124#wechat_redirect";
 
         return respContent;
     }
+
 
     /**
      * 6、天启智能机器人

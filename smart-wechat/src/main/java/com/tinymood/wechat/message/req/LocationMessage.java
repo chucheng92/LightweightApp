@@ -7,46 +7,46 @@ package com.tinymood.wechat.message.req;
  */
 public class LocationMessage extends BaseReqMessage {
 	// 纬度
-	private String location_x;
+	private String Location_X;
 
 	// 经度
-	private String location_y;
+	private String Location_Y;
 
 	// 缩放大小
-	private String scale;
+	private String Scale;
 
 	// 地理位置信息
-	private String label;
+	private String Label;
 
-    public String getLocation_x() {
-        return location_x;
+    public String getLocation_X() {
+        return Location_X;
     }
 
-    public void setLocation_x(String location_x) {
-        this.location_x = location_x;
+    public void setLocation_X(String location_X) {
+        Location_X = location_X;
     }
 
-    public String getLocation_y() {
-        return location_y;
+    public String getLocation_Y() {
+        return Location_Y;
     }
 
-    public void setLocation_y(String location_y) {
-        this.location_y = location_y;
+    public void setLocation_Y(String location_Y) {
+        Location_Y = location_Y;
     }
 
     public String getScale() {
-        return scale;
+        return Scale;
     }
 
     public void setScale(String scale) {
-        this.scale = scale;
+        Scale = scale;
     }
 
     public String getLabel() {
-        return label;
+        return Label;
     }
 
     public void setLabel(String label) {
-        this.label = label;
+        Label = label;
     }
 }

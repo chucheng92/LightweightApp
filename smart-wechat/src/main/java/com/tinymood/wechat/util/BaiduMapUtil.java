@@ -189,13 +189,13 @@ public class BaiduMapUtil {
 					+ "米" + "  点击进入导航\n");
 			// P1表示用户发送的位置（坐标转换后），p2表示当前POI所在位置
 			article.setUrl(String.format(
-					"http://1.saber92.sinaapp.com/route.jsp?p1=%s,%s&p2=%s,%s",
+					"http://101.37.18.146/smart-wechat/route.jsp?p1=%s,%s&p2=%s,%s",
 					bd09Lng, bd09Lat, place.getLng(), place.getLat()));
 			// 将首条图文的图片设置为大图
 			if (i == 0)
-				article.setPicUrl("http://1.saber92.sinaapp.com/images/big.jpg");
+				article.setPicUrl("http://101.37.18.146/smart-wechat/images/cover.jpg");
 			else
-				article.setPicUrl("http://1.saber92.sinaapp.com/images/1.jpg");
+				article.setPicUrl("http://101.37.18.146/smart-wechat/images/1.jpg");
 
 			article.setDescription("");
 

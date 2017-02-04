@@ -7,33 +7,35 @@ package com.tinymood.wechat.message.req;
  */
 public class LinkMessage extends BaseReqMessage {
 	// 消息标题
-	private String title;
+	private String Title;
+
 	// 消息描述
-	private String description;
+	private String Description;
+
 	// 消息链接url
-	private String url;
+	private String Url;
 
 	public String getTitle() {
-		return title;
+		return Title;
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		Title = title;
 	}
 
 	public String getDescription() {
-		return description;
+		return Description;
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		Description = description;
 	}
 
 	public String getUrl() {
-		return url;
+		return Url;
 	}
 
 	public void setUrl(String url) {
-		this.url = url;
+		Url = url;
 	}
 }

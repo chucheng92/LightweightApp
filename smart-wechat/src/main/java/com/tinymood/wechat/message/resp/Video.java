@@ -9,24 +9,24 @@ package com.tinymood.wechat.message.resp;
  */
 public class Video {
 	// 媒体文件id
-	private String mediaId;
+	private String MediaId;
 
 	// 缩略文件id
-	private String thumbMediaId;
+	private String ThumbMediaId;
 
 	public String getMediaId() {
-		return mediaId;
+		return MediaId;
 	}
 
 	public void setMediaId(String mediaId) {
-		this.mediaId = mediaId;
+		MediaId = mediaId;
 	}
 
 	public String getThumbMediaId() {
-		return thumbMediaId;
+		return ThumbMediaId;
 	}
 
 	public void setThumbMediaId(String thumbMediaId) {
-		this.thumbMediaId = thumbMediaId;
+		ThumbMediaId = thumbMediaId;
 	}
 }

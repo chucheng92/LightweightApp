@@ -9,58 +9,58 @@ package com.tinymood.wechat.message.req;
  */
 public class BaseReqMessage {
 	// 接收方（开发者）
-	private String toUserName;
+	private String ToUserName;
 
 	// 发送方（用户） OpenId
-	private String fromUserName;
+	private String FromUserName;
 
 	// 创建时间
-	private long createTime;
+	private long CreateTime;
 
 	// 消息类型(text/image/location/link/voice/video/shortvideo)
     // 注意：voice和video消息实际也能接收 不过拿不到相应文件
-	private String msgType;
+	private String MsgType;
 
 	// 消息id 64位
-	private long msgId;
+	private long MsgId;
 
     public String getToUserName() {
-        return toUserName;
+        return ToUserName;
     }
 
     public void setToUserName(String toUserName) {
-        this.toUserName = toUserName;
+        ToUserName = toUserName;
     }
 
     public String getFromUserName() {
-        return fromUserName;
+        return FromUserName;
     }
 
     public void setFromUserName(String fromUserName) {
-        this.fromUserName = fromUserName;
+        FromUserName = fromUserName;
     }
 
     public long getCreateTime() {
-        return createTime;
+        return CreateTime;
     }
 
     public void setCreateTime(long createTime) {
-        this.createTime = createTime;
+        CreateTime = createTime;
     }
 
     public String getMsgType() {
-        return msgType;
+        return MsgType;
     }
 
     public void setMsgType(String msgType) {
-        this.msgType = msgType;
+        MsgType = msgType;
     }
 
     public long getMsgId() {
-        return msgId;
+        return MsgId;
     }
 
     public void setMsgId(long msgId) {
-        this.msgId = msgId;
+        MsgId = msgId;
     }
 }

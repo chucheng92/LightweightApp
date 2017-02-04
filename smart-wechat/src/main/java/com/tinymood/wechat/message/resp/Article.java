@@ -7,47 +7,47 @@ package com.tinymood.wechat.message.resp;
  */
 public class Article {
 	// 标题
-	private String title;
+	private String Title;
 
 	// 描述
-	private String description;
+	private String Description;
 
 	// 大图 640*320
 	// 小图 80*80
-	private String picUrl;
+	private String PicUrl;
 
 	// 点击跳转链接，即文章url
-	private String url;
+	private String Url;
 
 	public String getTitle() {
-		return title;
+		return Title;
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		Title = title;
 	}
 
 	public String getDescription() {
-		return description;
+		return Description;
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		Description = description;
 	}
 
 	public String getPicUrl() {
-		return picUrl;
+		return PicUrl;
 	}
 
 	public void setPicUrl(String picUrl) {
-		this.picUrl = picUrl;
+		PicUrl = picUrl;
 	}
 
 	public String getUrl() {
-		return url;
+		return Url;
 	}
 
 	public void setUrl(String url) {
-		this.url = url;
+		Url = url;
 	}
 }

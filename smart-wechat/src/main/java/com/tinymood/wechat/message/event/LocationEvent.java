@@ -8,35 +8,35 @@ package com.tinymood.wechat.message.event;
  */
 public class LocationEvent extends BaseEvent {
 	// 地理位置纬度
-	private String latitude;
+	private String Latitude;
 
 	// 地理位置经度
-	private String longitude;
+	private String Longitude;
 
 	// 地理位置精度
-	private String precision;
+	private String Precision;
 
 	public String getLatitude() {
-		return latitude;
+		return Latitude;
 	}
 
 	public void setLatitude(String latitude) {
-		this.latitude = latitude;
+		Latitude = latitude;
 	}
 
 	public String getLongitude() {
-		return longitude;
+		return Longitude;
 	}
 
 	public void setLongitude(String longitude) {
-		this.longitude = longitude;
+		Longitude = longitude;
 	}
 
 	public String getPrecision() {
-		return precision;
+		return Precision;
 	}
 
 	public void setPrecision(String precision) {
-		this.precision = precision;
+		Precision = precision;
 	}
 }

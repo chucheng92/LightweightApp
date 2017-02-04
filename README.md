@@ -1,6 +1,6 @@
 ## WeChat Account Application！
 
- 一个Java开发的微信公众号
+一个Java开发智能微信公众号
 
 ### 联系我
 

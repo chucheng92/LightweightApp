@@ -9,57 +9,57 @@ package com.tinymood.wechat.message.resp;
  */
 public class Music {
 	// 音乐名称
-	private String title;
+	private String Title;
 
 	// 音乐描述
-	private String description;
+	private String Description;
 
 	// 音乐文件链接
-	private String musicUrl;
+	private String MusicUrl;
 
 	// 音乐文件链接（高品质）,WIFI下播放此链接
-	private String hqMusicUrl;
+	private String HQMusicUrl;
 
 	// 缩略图的媒体id
-	private String thumbMediaId;
+	private String ThumbMediaId;
 
     public String getTitle() {
-        return title;
+        return Title;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        Title = title;
     }
 
     public String getDescription() {
-        return description;
+        return Description;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        Description = description;
     }
 
     public String getMusicUrl() {
-        return musicUrl;
+        return MusicUrl;
     }
 
     public void setMusicUrl(String musicUrl) {
-        this.musicUrl = musicUrl;
+        MusicUrl = musicUrl;
     }
 
-    public String getHqMusicUrl() {
-        return hqMusicUrl;
+    public String getHQMusicUrl() {
+        return HQMusicUrl;
     }
 
-    public void setHqMusicUrl(String hqMusicUrl) {
-        this.hqMusicUrl = hqMusicUrl;
+    public void setHQMusicUrl(String HQMusicUrl) {
+        this.HQMusicUrl = HQMusicUrl;
     }
 
     public String getThumbMediaId() {
-        return thumbMediaId;
+        return ThumbMediaId;
     }
 
     public void setThumbMediaId(String thumbMediaId) {
-        this.thumbMediaId = thumbMediaId;
+        ThumbMediaId = thumbMediaId;
     }
 }

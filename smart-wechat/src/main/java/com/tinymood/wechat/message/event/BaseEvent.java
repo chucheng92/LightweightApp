@@ -8,57 +8,57 @@ package com.tinymood.wechat.message.event;
  */
 public class BaseEvent {
 	// 开发者
-	private String toUserName;
+	private String ToUserName;
 
 	// 发送方（用户）帐号 OpenId
-	private String fromUserName;
+	private String FromUserName;
 
 	// 消息创建时间 整型
-	private long createTime;
+	private long CreateTime;
 
 	// 消息类型（event）
-	private String msgType;
+	private String MsgType;
 
 	// 事件类型（subscribe、unsubscribe、扫描带参二维码（subscribe和SCAN）、LOCATION、自定义菜单(CLICK和VIEW)）
-	private String event;
+	private String Event;
 
     public String getToUserName() {
-        return toUserName;
+        return ToUserName;
     }
 
     public void setToUserName(String toUserName) {
-        this.toUserName = toUserName;
+        ToUserName = toUserName;
     }
 
     public String getFromUserName() {
-        return fromUserName;
+        return FromUserName;
     }
 
     public void setFromUserName(String fromUserName) {
-        this.fromUserName = fromUserName;
+        FromUserName = fromUserName;
     }
 
     public long getCreateTime() {
-        return createTime;
+        return CreateTime;
     }
 
     public void setCreateTime(long createTime) {
-        this.createTime = createTime;
+        CreateTime = createTime;
     }
 
     public String getMsgType() {
-        return msgType;
+        return MsgType;
     }
 
     public void setMsgType(String msgType) {
-        this.msgType = msgType;
+        MsgType = msgType;
     }
 
     public String getEvent() {
-        return event;
+        return Event;
     }
 
     public void setEvent(String event) {
-        this.event = event;
+        Event = event;
     }
 }

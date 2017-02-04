@@ -23,11 +23,6 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2015-4-9
  */
 public class CoreService {
-    // 返回给微信服务器的xml消息
-    private static String respXml;
-    // 文本消息内容
-    private static String respContent;
-
     /**
      * 处理微信发来的请求
      *
@@ -35,17 +30,29 @@ public class CoreService {
      * @return
      */
     public static String processRequest(HttpServletRequest request) {
+        // 返回给微信服务器的xml消息
+        String respXml = null;
+
+        // 文本消息内容
+        String respContent = null;
         try {
             // xml请求解析
             Map<String, String> requestMap = MessageUtil.parseXml(request);
-            // 发送方帐号（open_id）
+
+            // 用户帐号（open_id）
             String fromUserName = requestMap.get("FromUserName");
+
             // 公众帐号
             String toUserName = requestMap.get("ToUserName");
+
             // 消息类型
             String msgType = requestMap.get("MsgType");
+
             // 创建时间
             String createTime = requestMap.get("CreateTime");
+
+            //语音识别结果
+            String recognition = requestMap.get("Recognition");
 
             // 回复文本消息
             TextMessage textMessage = new TextMessage();
@@ -59,18 +66,21 @@ public class CoreService {
                 // 文本消息内容
                 String content = requestMap.get("Content").trim();
 
-                if (content.startsWith("歌曲")) {
+                if (content.equals("?") || content.equals("？")) {
+                    respContent = Tools.menu;
+                } else if (content.startsWith("歌曲")) {
                     respXml = musicFuntion(content, fromUserName, toUserName);
                     if (respXml == null) {
                         respXml = "";
                     }
                     return respXml;
                 } else if (content.startsWith("附近")) {
-                    respXml = locationFunction(request, content, fromUserName, toUserName);
-                    if (respXml == null) {
-                        respXml = "";
-                    }
-                    return respXml;
+                    respContent = "代码调试中，不久将会开放。发语音和我聊聊吧~";
+//                    respXml = locationFunction(request, content, fromUserName, toUserName);
+//                    if (respXml == null) {
+//                        respXml = "";
+//                    }
+//                    return respXml;
                 } else if (content.equalsIgnoreCase("music")) {
                     respContent = Tools.getMusicAggregation();
                 } else if (content.equalsIgnoreCase("book")) {
@@ -84,16 +94,13 @@ public class CoreService {
                             respContent = Tools.getLocationUsage();
                             break;
                         case "3":
-                            respXml = getFaceUsageWithArticle(fromUserName, toUserName);
-                            if (respXml == null) {
-                                respXml = "";
-                            }
-                            return respXml;
+                            respContent = Tools.getFaceUsage();
+                            break;
                         case "4":
                             respContent = Tools.getMusicAggregation();
                             break;
                         case "5":
-                            respContent = Tools.getHistoryArticles();
+                            respContent = "文章精选还在排版中，可以先试试查看历史消息~";
                             break;
                         case "6":
                             respContent = Tools.getRobotUsage();
@@ -105,6 +112,7 @@ public class CoreService {
                             respContent = Tools.getSuggestUsage();
                             break;
                         default:
+                            respContent = TulingService.getTulingResult(content);
                             break;
                     }
                 }
@@ -140,25 +148,7 @@ public class CoreService {
                     } else if (eventKey.equals("12")) {
                         respContent = Tools.getLocationUsage();
                     } else if (eventKey.equals("13")) {
-                        NewsMessage newsMessage = new NewsMessage();
-                        newsMessage.setToUserName(fromUserName);
-                        newsMessage.setFromUserName(toUserName);
-                        newsMessage.setCreateTime(new Date().getTime());
-                        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-
-                        Article article1 = new Article();
-                        article1.setTitle("\ue335人脸检测使用说明");
-                        article1.setDescription(Tools.getFaceUsage());
-                        article1.setUrl("http://1.lemontime.sinaapp.com/face.jsp");
-                        article1.setPicUrl("http://1.lemontime.sinaapp.com/images/facepp_inside.png");
-
-                        List<Article> articleList = new ArrayList<Article>();
-                        articleList.add(article1);
-
-                        newsMessage.setArticleCount(articleList.size());
-                        newsMessage.setArticles(articleList);
-
-                        respXml = MessageUtil.messageToXml(newsMessage);
+                        respContent = Tools.getFaceUsage();
                     } else if (eventKey.equals("21")) {
                         respContent = Tools.getMusicAggregation();
                     } else if (eventKey.equals("22")) {
@@ -190,6 +180,7 @@ public class CoreService {
                     case 3:
                         respContent = "DuangDuangDuang~" + Tools.emoji(0x1F618)
                                 + Tools.emoji(0x1F618);
+                        break;
                     case 4:
                         respContent = "相信我,下一个陈冠希就是你！";
                         break;
@@ -228,9 +219,13 @@ public class CoreService {
                 buffer.append("附近公交站").append("\n");
                 buffer.append("必须以“附近”两个字开头！");
                 respContent = buffer.toString();
+            } else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_VOICE)) {
+                respContent = "\uD83D\uDE0B" + TulingService.getTulingResult(recognition);
             }
 
-            respContent += "";
+            if (null == respContent) {
+                respContent = "";
+            }
             textMessage.setContent(respContent);
             respXml = MessageUtil.messageToXml(textMessage);
 
@@ -251,6 +246,16 @@ public class CoreService {
      * @return 音乐消息
      */
     private static String musicFuntion(String content, String fromUserName, String toUserName) {
+        String respXml = null;
+        String respContent = null;
+
+        // 未找到音乐回复文本消息，找到回复音乐文件
+        TextMessage textMessage = new TextMessage();
+        textMessage.setToUserName(fromUserName);
+        textMessage.setFromUserName(toUserName);
+        textMessage.setCreateTime(new Date().getTime());
+        textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+
         // 如果以“歌曲”2个字开头
         // 将歌曲2个字及歌曲后面的+、空格、-等特殊符号去掉
         String keyWord = content.replaceAll("^歌曲[\\+ ~!@#%^-_=]?",
@@ -258,6 +263,8 @@ public class CoreService {
         // 如果歌曲名称为空
         if ("".equals(keyWord)) {
             respContent = Tools.getMusicUsage();
+            textMessage.setContent(respContent);
+            respXml = MessageUtil.messageToXml(textMessage);
         } else {
             String[] kwArr = keyWord.split("@");
             // 歌曲名称
@@ -272,8 +279,11 @@ public class CoreService {
                     musicAuthor);
             // 未搜索到音乐
             if (null == music) {
-                respContent = "我已经很努力了，还是没有找到歌曲<" + musicTitle
-                        + ">\n" + "啊，心塞塞/:8*/:8* 不加歌手搜索试试看";
+//                respContent = "我已经很努力了，还是没有找到歌曲<" + musicTitle
+//                        + ">\n" + "啊，心塞塞/:8*/:8* 不加歌手搜索试试看";
+                respContent = "API迁移过程中，请耐心等待开放。发语音和我聊会吧~";
+                textMessage.setContent(respContent);
+                respXml = MessageUtil.messageToXml(textMessage);
             } else {
                 // 音乐消息
                 MusicMessage musicMessage = new MusicMessage();
@@ -297,7 +307,7 @@ public class CoreService {
      * @param toUserName
      * @return news图文
      */
-    private static String locationFunction(HttpServletRequest request, String content, String fromUserName, String toUserName) {
+    private static String locationFunction(HttpServletRequest request, String content, String fromUserName, String toUserName, String respContent, String respXml) {
         String keyWord = content.replaceAll("附近", "").trim();
         // 获取用户最后一次发送的地理位置
         UserLocation location = MySQLUtil.getLastLocation(request,
@@ -334,35 +344,6 @@ public class CoreService {
                 respXml = MessageUtil.messageToXml(newsMessage);
             }
         }
-
-        return respXml;
-    }
-
-    /**
-     * 3、颜值检测
-     *
-     * @param fromUserName
-     * @param toUserName
-     * @return news图文消息
-     */
-    private static String getFaceUsageWithArticle(String fromUserName, String toUserName) {
-        NewsMessage newsMessage = new NewsMessage();
-        newsMessage.setToUserName(fromUserName);
-        newsMessage.setFromUserName(toUserName);
-        newsMessage.setCreateTime(new Date().getTime());
-        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-
-        Article article1 = new Article();
-        article1.setTitle("\ue335人脸检测使用说明");
-        article1.setDescription(Tools.getFaceUsage());
-        article1.setUrl("http://101.37.18.146/smart-wechat/face.jsp");
-        article1.setPicUrl("http://101.37.18.146/smart-wechat/images/facepp_inside.png");
-
-        List<Article> articleList = new ArrayList<Article>();
-        articleList.add(article1);
-
-        newsMessage.setArticleCount(articleList.size());
-        newsMessage.setArticles(articleList);
 
         return respXml;
     }

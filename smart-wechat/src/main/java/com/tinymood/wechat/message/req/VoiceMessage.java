@@ -9,35 +9,35 @@ package com.tinymood.wechat.message.req;
  */
 public class VoiceMessage extends BaseReqMessage {
 	// 媒体文件id
-	private String mediaId;
+	private String MediaId;
 
 	// 语音文件格式
-	private String format;
+	private String Format;
 
 	// 语音识别结果
-	private String recognition;
+	private String Recognition;
 
     public String getMediaId() {
-        return mediaId;
+        return MediaId;
     }
 
     public void setMediaId(String mediaId) {
-        this.mediaId = mediaId;
+        MediaId = mediaId;
     }
 
     public String getFormat() {
-        return format;
+        return Format;
     }
 
     public void setFormat(String format) {
-        this.format = format;
+        Format = format;
     }
 
     public String getRecognition() {
-        return recognition;
+        return Recognition;
     }
 
     public void setRecognition(String recognition) {
-        this.recognition = recognition;
+        Recognition = recognition;
     }
 }

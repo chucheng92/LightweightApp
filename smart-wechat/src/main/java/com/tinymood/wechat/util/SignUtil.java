@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public class SignUtil {
     // 与接口配置信息中的token要一致
-	private static String token = "smart-wechat";
+	private static String token = "smartwechat";
 
 	/**
 	 * 验证签名

@@ -8,13 +8,13 @@ package com.tinymood.wechat.message.resp;
  */
 public class VideoMessage extends BaseRespMessage {
 	// 视频内容
-	private Video video;
+	private Video Video;
 
-	public Video getVideo() {
-		return video;
+	public com.tinymood.wechat.message.resp.Video getVideo() {
+		return Video;
 	}
 
-	public void setVideo(Video video) {
-		this.video = video;
+	public void setVideo(com.tinymood.wechat.message.resp.Video video) {
+		Video = video;
 	}
 }

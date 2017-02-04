@@ -6,13 +6,13 @@ package com.tinymood.wechat.message.resp;
  */
 public class Voice {
 	// 语音文件id
-	private String mediaId;
+	private String MediaId;
 
 	public String getMediaId() {
-		return mediaId;
+		return MediaId;
 	}
 
 	public void setMediaId(String mediaId) {
-		this.mediaId = mediaId;
+		MediaId = mediaId;
 	}
 }

@@ -140,7 +140,7 @@ public class BaiduMusicService {
 				// 设置普通品质音乐链接
 				music.setMusicUrl(url);
 				// 设置高品质音乐链接
-				music.setHqMusicUrl(durl);
+				music.setHQMusicUrl(durl);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -154,6 +154,6 @@ public class BaiduMusicService {
 		System.out.println("音乐名称：" + music.getTitle());
 		System.out.println("音乐描述：" + music.getDescription());
 		System.out.println("普通品质链接：" + music.getMusicUrl());
-		System.out.println("高品质链接：" + music.getHqMusicUrl());
+		System.out.println("高品质链接：" + music.getHQMusicUrl());
 	}
 }

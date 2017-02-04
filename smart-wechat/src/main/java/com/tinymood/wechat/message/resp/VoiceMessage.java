@@ -6,13 +6,13 @@ package com.tinymood.wechat.message.resp;
  */
 public class VoiceMessage extends BaseRespMessage {
 	// 语音内容
-	private Voice voice;
+	private Voice Voice;
 
-	public Voice getVoice() {
-		return voice;
+	public com.tinymood.wechat.message.resp.Voice getVoice() {
+		return Voice;
 	}
 
-	public void setVoice(Voice voice) {
-		this.voice = voice;
+	public void setVoice(com.tinymood.wechat.message.resp.Voice voice) {
+		Voice = voice;
 	}
 }

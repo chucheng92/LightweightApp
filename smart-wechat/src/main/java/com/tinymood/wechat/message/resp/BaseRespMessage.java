@@ -8,58 +8,58 @@ package com.tinymood.wechat.message.resp;
  */
 public class BaseRespMessage {
 	// 接收方（用户 openId）
-	private String toUserName;
+	private String ToUserName;
 
 	// 发送方（开发者）
-	private String fromUserName;
+	private String FromUserName;
 
 	// 创建时间
-	private long createTime;
+	private long CreateTime;
 
 	// 消息类型(text/image/music/voice/video/news)
     // 注意：voice和video消息只能在编辑模式下使用
-	private String msgType;
+	private String MsgType;
 
 	// 星标标识
-	private int starFlag;
+	private int FuncFlag;
 
     public String getToUserName() {
-        return toUserName;
+        return ToUserName;
     }
 
     public void setToUserName(String toUserName) {
-        this.toUserName = toUserName;
+        ToUserName = toUserName;
     }
 
     public String getFromUserName() {
-        return fromUserName;
+        return FromUserName;
     }
 
     public void setFromUserName(String fromUserName) {
-        this.fromUserName = fromUserName;
+        FromUserName = fromUserName;
     }
 
     public long getCreateTime() {
-        return createTime;
+        return CreateTime;
     }
 
     public void setCreateTime(long createTime) {
-        this.createTime = createTime;
+        CreateTime = createTime;
     }
 
     public String getMsgType() {
-        return msgType;
+        return MsgType;
     }
 
     public void setMsgType(String msgType) {
-        this.msgType = msgType;
+        MsgType = msgType;
     }
 
-    public int getStarFlag() {
-        return starFlag;
+    public int getFuncFlag() {
+        return FuncFlag;
     }
 
-    public void setStarFlag(int starFlag) {
-        this.starFlag = starFlag;
+    public void setFuncFlag(int funcFlag) {
+        FuncFlag = funcFlag;
     }
 }
