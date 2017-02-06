@@ -75,4 +75,9 @@ public class TulingService {
 
         return result;
     }
+
+    public static void main(String[] args) {
+        String res = getTulingResult("鱼香肉丝怎么做");
+        System.out.println(res);
+    }
 }
