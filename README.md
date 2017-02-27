@@ -7,7 +7,7 @@ Intelligent WeChat Public Account Based-on Java
 ### 联系我
 
 - WebSite: [http://taoxiaoran.top][1]
-- Mail: 932191671@qq.com
+- Mail: xmusaber@163.com
 - Linux交流群: [257265338][2]
 - 开源技术小组: [521087632][3]
   
