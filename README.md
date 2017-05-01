@@ -2,7 +2,7 @@
 
 基于Java开发的智能微信公众号
 
-Intelligent WeChat Public Account Based-on Java
+Intelligent WeChat Public Account Program Based-on Java
 
 ### 联系我
 
